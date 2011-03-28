@@ -1,0 +1,50 @@
+/*
+ * Copyright 2011 Intel Corporation.
+ *
+ * This program is licensed under the terms and conditions of the
+ * Apache License, version 2.0.  The full text of the Apache License is at 	
+ * http://www.apache.org/licenses/LICENSE-2.0
+ */
+
+#ifndef EMAILMESSAGE_H
+#define EMAILMESSAGE_H
+
+#include <QMailAccount>
+#include <QMailStore>
+#include <QDeclarativeItem>
+
+class EmailMessage : public QDeclarativeItem
+{
+    Q_OBJECT
+
+public:
+    explicit EmailMessage (QDeclarativeItem *parent = 0);
+    ~EmailMessage ();
+
+    Q_INVOKABLE void setFrom (const QString &sender);
+    Q_INVOKABLE void setTo (const QStringList &toList);
+    Q_INVOKABLE void setCc (const QStringList &ccList);
+    Q_INVOKABLE void setBcc(const QStringList &bccList);
+    Q_INVOKABLE void setSubject (const QString &subject);
+    Q_INVOKABLE void setBody (const QString &body);
+    Q_INVOKABLE void setAttachments (const QStringList &uris);
+    Q_INVOKABLE void setPriority (int priority = 0 /* normal */);
+    Q_INVOKABLE void send();
+
+
+signals:
+    void sendCompleted();
+
+private slots:
+    void onSendCompleted();
+
+private:
+    void processAttachments();
+
+    QMailMessage m_msg;
+    QMailAccount m_account;
+    QString m_bodyText;
+    QStringList m_attachments;
+};
+
+#endif

@@ -1,0 +1,236 @@
+/*
+ * Copyright 2011 Intel Corporation.
+ *
+ * This program is licensed under the terms and conditions of the
+ * Apache License, version 2.0.  The full text of the Apache License is at 	
+ * http://www.apache.org/licenses/LICENSE-2.0
+ */
+
+import Qt 4.7
+import MeeGo.Labs.Components 0.1
+import "settings.js" as Settings
+
+Expandobox {
+    // ugly workaround to index name collision in
+    // DropDown onSelectionChanged signal
+    property int listIndex: -1
+    Component.onCompleted: { listIndex = index }
+    barContent: Component {
+        Item {
+            Image {
+                id: icon
+                anchors.left: parent.left
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.margins: 20
+                source: { switch (model.preset) {
+                    case "4":
+                        return "/usr/share/themes/" + theme_name + "/icons/services/aim.png";
+                        break;
+                    case "2":
+                        return "/usr/share/themes/" + theme_name + "/icons/services/gmail.png"
+                        break;
+                    case "5":
+                        return "/usr/share/themes/" + theme_name + "/icons/services/msmail.png"
+                        break;
+                    case "1":
+                        return "/usr/share/themes/" + theme_name + "/icons/services/generic.png"
+                        break;
+                    case "3":
+                        return "/usr/share/themes/" + theme_name + "/icons/services/yahoo.png"
+                        break;
+                    default:
+                        return "/usr/share/themes/" + theme_name + "/icons/services/generic.png"
+                        break;
+                    }
+                }
+            }
+            Text {
+                id: label
+                anchors.left: parent.left
+                anchors.right: togglebutton.left
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.leftMargin: 100
+                font.pixelSize: theme_fontPixelSizeLarge
+                elide: Text.ElideRight
+                color: theme_fontColorNormal
+                text: {
+                    if (model.description) {
+                        return model.address + " - " + model.description;
+                    } else {
+                        return model.address;
+                    }
+                }
+            }
+            ToggleButton {
+                id: togglebutton
+                anchors.right: parent.right
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.margins: 10
+                on: model.enabled
+                onOnChanged: accountSettingsModel.setDataWrapper(index, on, 34)
+            }
+        }
+    }
+    content: Component {
+        Rectangle {
+            anchors.left: parent.left
+            anchors.right: parent.right
+            height: column.height
+            color: "#eaf6fb"
+        Column {
+            id: column
+            anchors.left: parent.left
+            anchors.right: parent.right
+
+            ControlGroup {
+                children: [
+                Item { width: 1; height: 1; },   // spacer
+                TextControl {
+                    label: qsTr("Account description")
+                    text: model.description
+                    textInput.onTextChanged: accountSettingsModel.setDataWrapper(index, text, 33)
+                },
+                TextControl {
+                    label: qsTr("Your name")
+                    text: model.name
+                    textInput.onTextChanged: accountSettingsModel.setDataWrapper(index, text, 35)
+                },
+                TextControl {
+                    label: qsTr("Email address")
+                    text: model.address
+                    inputMethodHints: Qt.ImhNoAutoUppercase | Qt.ImhEmailCharactersOnly
+                    textInput.onTextChanged: accountSettingsModel.setDataWrapper(index, text, 36)
+                },
+                PasswordControl {
+                    label: qsTr("Password")
+                    text: model.password
+                    textInput.onTextChanged: accountSettingsModel.setDataWrapper(index, text, 37)
+                },
+                Item { width: 1; height: 1; }   // spacer
+                ]
+            }
+            ControlGroup {
+                title: qsTr("Receiving settings")
+                subtitle: qsTr("You may need to contact your email provider for these settings.")
+                children: [
+                Item { width: 1; height: 1; },   // spacer
+                DropDownControl {
+                    label: qsTr("Server type")
+                    dataList: Settings.serviceModel
+                    selectedValue: Settings.serviceName(model.recvType)
+                    onSelectionChanged: accountSettingsModel.setDataWrapper(listIndex, Settings.serviceCode(data), 38)
+                },
+                TextControl {
+                    label: qsTr("Server address")
+                    text: model.recvServer
+                    inputMethodHints: Qt.ImhNoAutoUppercase
+                    textInput.onTextChanged: accountSettingsModel.setDataWrapper(index, text, 39)
+                },
+                TextControl {
+                    label: qsTr("Port")
+                    text: model.recvPort
+                    inputMethodHints: Qt.ImhDigitsOnly
+                    textInput.onTextChanged: accountSettingsModel.setDataWrapper(index, text, 40)
+                },
+                DropDownControl {
+                    label: qsTr("Security")
+                    dataList: Settings.encryptionModel
+                    selectedValue: Settings.encryptionName(model.recvSecurity)
+                    onSelectionChanged: accountSettingsModel.setDataWrapper(listIndex, Settings.encryptionCode(data), 41)
+                },
+                TextControl {
+                    label: qsTr("Username")
+                    text: model.recvUsername
+                    inputMethodHints: Qt.ImhNoAutoUppercase
+                    textInput.onTextChanged: accountSettingsModel.setDataWrapper(index, text, 42)
+                },
+                PasswordControl {
+                    label: qsTr("Password")
+                    text: model.recvPassword
+                    textInput.onTextChanged: accountSettingsModel.setDataWrapper(index, text, 43)
+                },
+                Item { width: 1; height: 1; }   // spacer
+                ]
+            }
+            ControlGroup {
+                title: qsTr("Sending settings")
+                subtitle: qsTr("You may need to contact your email provider for these settings.")
+                children: [
+                Item { width: 1; height: 1; },   // spacer
+                TextControl {
+                    label: qsTr("Server address")
+                    text: model.sendServer
+                    inputMethodHints: Qt.ImhNoAutoUppercase
+                    textInput.onTextChanged: accountSettingsModel.setDataWrapper(index, text, 44)
+                },
+                TextControl {
+                    label: qsTr("Port")
+                    text: model.sendPort
+                    inputMethodHints: Qt.ImhDigitsOnly
+                    textInput.onTextChanged: accountSettingsModel.setDataWrapper(index, text, 45)
+                },
+                DropDownControl {
+                    label: qsTr("Authentication")
+                    dataList: Settings.authenticationModel
+                    selectedValue: Settings.authenticationName(model.sendAuth)
+                    onSelectionChanged: accountSettingsModel.setDataWrapper(listIndex, Settings.authenticationCode(data), 46)
+                },
+                DropDownControl {
+                    label: qsTr("Security")
+                    dataList: Settings.encryptionModel
+                    selectedValue: Settings.encryptionName(model.sendSecurity)
+                    onSelectionChanged: accountSettingsModel.setDataWrapper(listIndex, Settings.encryptionCode(data), 47)
+                },
+                TextControl {
+                    label: qsTr("Username")
+                    text: model.sendUsername
+                    inputMethodHints: Qt.ImhNoAutoUppercase
+                    textInput.onTextChanged: accountSettingsModel.setDataWrapper(index, text, 48)
+                },
+                PasswordControl {
+                    label: qsTr("Password")
+                    text: model.sendPassword
+                    textInput.onTextChanged: accountSettingsModel.setDataWrapper(index, text, 49)
+                },
+                Item { width: 1; height: 1; }   // spacer
+                ]
+            }
+            Item { width: 1; height: 20; }
+            Button {
+                anchors.horizontalCenter: parent.horizontalCenter
+                height: 45
+                width: 300
+                title: qsTr("Delete Account")
+                bgSourceUp: "image://theme/btn_red_up"
+                bgSourceDn: "image://theme/btn_red_dn"
+                onClicked: {
+                    showModalDialog(verifyDelete);
+                    dialogLoader.item.settingsPage = settingsPage;
+                    dialogLoader.item.index = index;
+                }
+            }
+            Item { width: 1; height: 20; }
+        }
+        }
+    }
+    Component {
+        id: verifyDelete
+        ModalDialog {
+            property variant settingsPage
+            property int index
+            leftButtonText: qsTr ("Yes")
+            rightButtonText: qsTr ("Cancel")
+            dialogTitle: qsTr ("Delete account")
+            contentLoader.sourceComponent: DialogText {
+                text: qsTr ("Are you sure you want to delete this account?")
+            }
+
+            onDialogClicked: {
+                dialogLoader.sourceComponent = undefined;
+                if (button == 1) {
+                    settingsPage.accountSettingsModel.deleteRow(index);
+                }
+            }
+        }
+    }
+}

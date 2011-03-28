@@ -1,0 +1,3 @@
+[Desktop Entry]
+Exec=/usr/bin/emailnotificationd
+X-Meego-Priority=Low

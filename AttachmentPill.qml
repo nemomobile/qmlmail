@@ -1,0 +1,59 @@
+import Qt 4.7
+
+Item {
+    id: pill
+
+    property string uri: ""
+    property string name: "test"
+    property int mX: 0
+    property int mY: 0
+
+    signal longPress (string uri, int mouseX, int mouseY);
+
+    width: leftImage.width + centreImage.width + rightImage.width
+    height: centreImage.height
+
+    onUriChanged: {
+        console.log ("uri for attachment: " + uri);
+        name = uri.slice (uri.lastIndexOf ('/') + 1);
+    }
+
+    Image {
+        id: leftImage
+        anchors.left: parent.left
+        source: "image://theme/email/btn_attachment_left"
+    }
+
+    Image {
+        id: centreImage
+        anchors.left: leftImage.right
+        width: text.width
+        fillMode: Image.TileHorizontally
+        source: "image://theme/email/btn_attachment_middle"
+
+        Text {
+            id: text
+            anchors.verticalCenter: parent.verticalCenter
+            text: name
+            font.pixelSize: theme_fontPixelSizeMedium
+            color: theme_fontColorNormal
+        }
+    }
+
+    Image {
+        id: rightImage
+        anchors.right: parent.right
+        source: "image://theme/email/btn_attachment_right"
+    }
+
+    MouseArea {
+        anchors.fill: parent
+
+        onPressAndHold: {
+            var map = mapToItem(scene, mouseX, mouseY);
+            mX = map.x;
+            mY = map.y
+            pill.longPress (uri, mX, mY);
+        }
+    }
+}
