@@ -9,7 +9,10 @@ qmlfiles.path += $$INSTALL_ROOT/usr/share/$$TARGET
 desktop.files += email-settings.desktop
 desktop.path += $$INSTALL_ROOT/usr/share/meego-ux-settings/apps/
 
-INSTALLS += qmlfiles desktop
+schemas.files += meego-app-email.schemas
+schemas.path +=$$INSTALL_ROOT/etc/gconf/schemas/
+
+INSTALLS += qmlfiles desktop schemas
 
 TRANSLATIONS += *.qml settings/*.qml settings/*.js
 PROJECT_NAME = meego-app-email
