@@ -467,7 +467,7 @@ bool EmailAgent::openAttachment(const QString & uri)
     else if (s.contains("audio", Qt::CaseInsensitive))
     {
         parameters << "--app" << "meego-app-music";
-        parameters << "--cmd" << "play";
+        parameters << "--cmd" << "playSong";
     }
     else if (s.contains("Ogg data", Qt::CaseInsensitive))
     {
