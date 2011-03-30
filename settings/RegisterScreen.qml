@@ -39,17 +39,20 @@ Item {
                     visible: emailAccount.preset != 0
                 },
                 TextControl {
+                    id: nameField
                     label: qsTr("Your name:")
                     text: emailAccount.name
                     textInput.onTextChanged: emailAccount.name = text
                 },
                 TextControl {
+                    id: addressField
                     label: qsTr("Email address:")
                     text: emailAccount.address
                     inputMethodHints: Qt.ImhNoAutoUppercase | Qt.ImhEmailCharactersOnly
                     textInput.onTextChanged: emailAccount.address = text
                 },
                 PasswordControl {
+                    id: passwordField
                     label: qsTr("Password:")
                     text: emailAccount.password
                     textInput.onTextChanged: emailAccount.password = text
@@ -94,13 +97,37 @@ Item {
             anchors.margins: 10
             //color: "white"
             title: qsTr("Next")
-            onClicked: {
-                emailAccount.applyPreset();
-                if (emailAccount.preset != 0) {
-                    settingsPage.state = "DetailsScreen";
+            function validate() {
+                var errors = 0;
+                if (nameField.text.length === 0) {
+                    nameField.errorText = qsTr("This field is required");
+                    errors++;
                 } else {
-                    settingsPage.state = "ManualScreen";
-                    loader.item.message = qsTr("Please fill in account details:");
+                    nameField.errorText = "";
+                }
+                if (addressField.text.length === 0) {
+                    addressField.errorText = qsTr("This field is required");
+                    errors++;
+                } else {
+                    addressField.errorText = "";
+                }
+                if (passwordField.text.length === 0) {
+                    passwordField.errorText = qsTr("This field is required");
+                    errors++;
+                } else {
+                    passwordField.errorText = "";
+                }
+                return errors === 0;
+            }
+            onClicked: {
+                if (validate()) {
+                    emailAccount.applyPreset();
+                    if (emailAccount.preset != 0) {
+                        settingsPage.state = "DetailsScreen";
+                    } else {
+                        settingsPage.state = "ManualScreen";
+                        loader.item.message = qsTr("Please fill in account details:");
+                    }
                 }
             }
         }

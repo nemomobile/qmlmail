@@ -19,6 +19,7 @@ Column {
     property alias textInput: textentry.textInput
     property alias inputMethodHints: textentry.inputMethodHints
     property alias enabled: textentry.enabled
+    property alias errorText: inlineNotification.text
     Text {
         id: label
         height: 30
@@ -30,5 +31,12 @@ Column {
         id: textentry
         anchors.left: parent.left
         anchors.right: parent.right
+    }
+    InlineNotification {
+        id: inlineNotification
+        anchors.left: parent.left
+        anchors.right: parent.right
+        height: 40
+        visible: text.length > 0
     }
 }

@@ -52,12 +52,14 @@ Item {
                             onSelectionChanged: emailAccount.recvType = Settings.serviceCode(data)
                         },
                         TextControl {
+                            id: recvServerField
                             label: qsTr("Server address")
                             text: emailAccount.recvServer
                             inputMethodHints: Qt.ImhNoAutoUppercase
                             textInput.onTextChanged: emailAccount.recvServer = text
                         },
                         TextControl {
+                            id: recvPortField
                             label: qsTr("Port")
                             text: emailAccount.recvPort
                             inputMethodHints: Qt.ImhDigitsOnly
@@ -70,12 +72,14 @@ Item {
                             onSelectionChanged: emailAccount.recvSecurity = Settings.encryptionCode(data)
                         },
                         TextControl {
+                            id: recvUsernameField
                             label: qsTr("Username")
                             text: emailAccount.recvUsername
                             inputMethodHints: Qt.ImhNoAutoUppercase
                             textInput.onTextChanged: emailAccount.recvUsername = text
                         },
                         PasswordControl {
+                            id: recvPasswordField
                             label: qsTr("Password")
                             text: emailAccount.recvPassword
                             textInput.onTextChanged: emailAccount.recvPassword = text
@@ -89,18 +93,21 @@ Item {
                     children: [
                         Item { width: 1; height: 1; },   // spacer
                         TextControl {
+                            id: sendServerField
                             label: qsTr("Server address")
                             text: emailAccount.sendServer
                             inputMethodHints: Qt.ImhNoAutoUppercase
                             textInput.onTextChanged: emailAccount.sendServer = text
                         },
                         TextControl {
+                            id: sendPortField
                             label: qsTr("Port")
                             text: emailAccount.sendPort
                             inputMethodHints: Qt.ImhDigitsOnly
                             textInput.onTextChanged: emailAccount.sendPort = text
                         },
                         DropDownControl {
+                            id: sendAuthField
                             label: qsTr("Authentication")
                             dataList: Settings.authenticationModel
                             selectedValue: Settings.authenticationName(emailAccount.sendAuth)
@@ -113,12 +120,14 @@ Item {
                             onSelectionChanged: emailAccount.sendSecurity = Settings.encryptionCode(data)
                         },
                         TextControl {
+                            id: sendUsernameField
                             label: qsTr("Username")
                             text: emailAccount.sendUsername
                             inputMethodHints: Qt.ImhNoAutoUppercase
                             textInput.onTextChanged: emailAccount.sendUsername = text
                         },
                         PasswordControl {
+                            id: sendPasswordField
                             label: qsTr("Password")
                             text: emailAccount.sendPassword
                             textInput.onTextChanged: emailAccount.sendPassword = text
@@ -164,7 +173,65 @@ Item {
             anchors.margins: 10
             //color: "white"
             title: qsTr("Next")
-            onClicked: settingsPage.state = "DetailsScreen"
+            function validate() {
+                var errors = 0;
+                if (recvServerField.text.length === 0) {
+                    recvServerField.errorText = qsTr("This field is required");
+                    errors++;
+                } else {
+                    recvServerField.errorText = "";
+                }
+                if (recvPortField.text.length === 0) {
+                    recvPortField.errorText = qsTr("This field is required");
+                    errors++;
+                } else {
+                    recvPortField.errorText = "";
+                }
+                if (recvUsernameField.text.length === 0) {
+                    recvUsernameField.errorText = qsTr("This field is required");
+                    errors++;
+                } else {
+                    recvUsernameField.errorText = "";
+                }
+                if (recvPasswordField.text.length === 0) {
+                    recvPasswordField.errorText = qsTr("This field is required");
+                    errors++;
+                } else {
+                    recvPasswordField.errorText = "";
+                }
+
+                if (sendServerField.text.length === 0) {
+                    sendServerField.errorText = qsTr("This field is required");
+                    errors++;
+                } else {
+                    sendServerField.errorText = "";
+                }
+                if (sendPortField.text.length === 0) {
+                    sendPortField.errorText = qsTr("This field is required");
+                    errors++;
+                } else {
+                    sendPortField.errorText = "";
+                }
+                // FIXME: reading selectedValue doesn't work with the current DropDown implementation
+                if (sendAuthField.selectedValue != Settings.authenticationModel[0] && sendUsernameField.text.length === 0) {
+                    sendUsernameField.errorText = qsTr("This field is required");
+                    errors++;
+                } else {
+                    sendUsernameField.errorText = "";
+                }
+                if (sendAuthField.selectedValue != Settings.authenticationModel[0] && sendPasswordField.text.length === 0) {
+                    sendPasswordField.errorText = qsTr("This field is required");
+                    errors++;
+                } else {
+                    sendPasswordField.errorText = "";
+                }
+                console.log(sendAuthField.selectedValue);
+                return errors === 0;
+            }
+            onClicked: {
+                if (validate())
+                    settingsPage.state = "DetailsScreen";
+            }
         }
         Button {
             anchors.right: parent.right
