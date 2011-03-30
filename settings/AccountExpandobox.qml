@@ -53,11 +53,22 @@ Expandobox {
                 font.pixelSize: theme_fontPixelSizeLarge
                 elide: Text.ElideRight
                 color: theme_fontColorNormal
+                function unique(provider) {
+                    var providers = new Array();
+                    for (var i = 0; i < accountSettingsModel.rowCount(); i++) {
+                        var description = accountSettingsModel.dataWrapper(i, 33);
+                        if (typeof providers[description] === 'undefined')
+                            providers[description] = 1;
+                        else
+                            providers[description] += 1;
+                    }
+                    return providers[provider] == 1;
+                }
                 text: {
-                    if (model.description) {
-                        return model.address + " - " + model.description;
+                    if (unique(model.description)) {
+                        return model.description;
                     } else {
-                        return model.address;
+                        return qsTr("%1 - %2").arg(model.address).arg(model.description);
                     }
                 }
             }

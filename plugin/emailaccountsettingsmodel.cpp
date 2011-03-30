@@ -330,6 +330,11 @@ bool EmailAccountSettingsModel::setData(const QModelIndex &index, const QVariant
     return false;
 }
 
+QVariant EmailAccountSettingsModel::dataWrapper(int row, int role)
+{
+    return data(index(row, 0), role);
+}
+
 bool EmailAccountSettingsModel::setDataWrapper(int row, const QVariant &value, int role)
 {
     return setData(index(row, 0), value, role);

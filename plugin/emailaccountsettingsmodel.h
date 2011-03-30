@@ -46,7 +46,8 @@ public:
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
 
-    // wrapper to allow setData to be called from QML
+    // wrappers to allow data, setData to be called from QML
+    Q_INVOKABLE QVariant dataWrapper(int row, int role);
     Q_INVOKABLE bool setDataWrapper(int row, const QVariant &value, int role);
 
     Q_INVOKABLE int updateInterval();
