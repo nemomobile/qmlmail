@@ -199,13 +199,23 @@ Item {
 
         delegate: Rectangle {
             id: dinstance
-            height: 90
+            height: theme_listBackgroundPixelHeightTwo
             width: parent.width
             Image {
                 id: itemBackground
                 anchors.fill: parent
                 source: readStatus ? "image://theme/email/bg_reademail_l" : "image://theme/email/bg_unreademail_l"
             }
+
+            Image {
+                id: readStatusIcon
+                anchors.left: parent.left
+                anchors.leftMargin: 10
+                anchors.verticalCenter: parent.verticalCenter
+                source: "image://meegotheme/widgets/apps/email/email-unread"
+                opacity: readStatus ? 0 : 1
+            }
+
             property string msender
             msender: {
                 var a;
@@ -225,34 +235,26 @@ Item {
                 anchors.top: parent.top
                 anchors.left: parent.left
                 width: parent.width
-                height: 45
+                height: theme_listBackgroundPixelHeightTwo / 2
 
-                Image {
-                    id: readStatusIcon
-                    width: 27
-                    height: 28
-                    anchors.left: parent.left
-                    anchors.leftMargin: 3
-                    anchors.verticalCenter: parent.verticalCenter
-                    source: "image://theme/email/icn_unreaddot"
-                    opacity: readStatus ? 0 : 1
-                }
                 Text {
                     id: senderText
-                    anchors.left: readStatusIcon.right
-                    anchors.leftMargin: 3
+                    anchors.left: parent.left
+                    anchors.leftMargin: 40
                     width: (parent.width * 2) / 3
                     text: senderDisplayName != "" ? senderDisplayName : senderEmailAddress
                     font.bold: readStatus ? false : true
                     font.pixelSize: theme_fontPixelSizeNormal
-                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.bottom: parent.bottom
+                    anchors.bottomMargin: 4
                     elide: Text.ElideRight
                 }
                 Text {
                     anchors.right: parent.right
                     anchors.rightMargin: 5
                     font.pixelSize: theme_fontPixelSizeSmall
-                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.bottom: parent.bottom
+                    anchors.bottomMargin: 4
                     text: fuzzy.getFuzzy(qDateTime);
                 }
             }
@@ -260,14 +262,16 @@ Item {
                 id: subjectLine
                 anchors.top: fromLine.bottom
                 anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.leftMargin: 40
                 width: parent.width
-                height: 45
+                height: theme_listBackgroundPixelHeightTwo / 2
 
                 Text {
                     id: subjectText
-                    anchors.leftMargin: 30
                     anchors.left: parent.left
-                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.top: parent.top
+                    anchors.topMargin: 4
                     text: subject
                     width: (parent.width * 2) / 3
                     font.pixelSize: theme_fontPixelSizeNormal
@@ -276,14 +280,16 @@ Item {
                 Image {
                     id: attachmentLeft
                     anchors.right: attachmentMiddle.left
-                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.top: parent.top
+                    anchors.topMargin: 4
                     source: "image://theme/email/bg_attachment_left"
                     opacity: numberOfAttachments ? 1 : 0
                 }
                 Image {
                     id: attachmentMiddle
                     anchors.right: attachmentRight.left
-                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.top: parent.top
+                    anchors.topMargin: 4
                     width: numberOfAttachmentLabel.width + attachmentIcon.width + 1
                     source: "image://theme/email/bg_attachment_mid"
                     Text {
@@ -297,14 +303,16 @@ Item {
                 Image {
                     id: attachmentRight
                     anchors.right: parent.right
-                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.top: parent.top
+                    anchors.topMargin: 4
                     anchors.rightMargin: 5
                     source: "image://theme/email/bg_attachment_right"
                     opacity: numberOfAttachments ? 1 : 0
                 }
                 Image {
                     id: attachmentIcon
-                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.top: parent.top
+                    anchors.topMargin: 4
                     height: attachmentMiddle.height
                     anchors.left: attachmentLeft.right
                     anchors.leftMargin: numberOfAttachmentLabel.width + 1
