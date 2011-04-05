@@ -111,15 +111,9 @@ Column {
             id: toLabel
             text: qsTr ("To:")
 
-            function addContactTo (contact) {
-                console.log ("email address:" + contact.emailAddress);
-                toModel.append ({"name":"", "email":contact.emailAddress});
-            }
-
             onClicked: {
                 var picker = contactsPicker.createObject (scene);
                 picker.promptString = qsTr ("Select contact");
-                picker.contactSelected.connect (addContactTo);
                 fieldMode = 1
                 picker.show ();
             }
@@ -143,15 +137,9 @@ Column {
             id: ccLabel
             text: qsTr ("Cc:")
 
-            function addContactTo (contact) {
-                console.log ("email address:" + contact.emailAddress);
-                ccModel.append ({"name":"", "email":contact.emailAddress});
-            }
-
             onClicked: {
                 var picker = contactsPicker.createObject (scene);
                 picker.promptString = qsTr ("Select contact");
-                picker.contactSelected.connect (addContactTo);
                 fieldMode = 2;
                 picker.visible = true;
             }
@@ -176,15 +164,9 @@ Column {
             id: bccLabel
             text: qsTr ("Bcc:")
 
-            function addContactTo (contact) {
-                console.log ("email address:" + contact.details.emailAddress);
-                bccModel.append ({"name":"", "email":contact.emailAddress});
-            }
-
             onClicked: {
                 var picker = contactsPicker.createObject (scene);
                 picker.promptString = qsTr ("Select contact");
-                picker.contactSelected.connect (addContactTo);
                 fieldMode = 3;
                 picker.show ();
             }
@@ -226,11 +208,11 @@ Column {
 
             onContactSelected: {
                 for(var count=0; count < contact.emails.length; count++){
-                    if(fieldMode == 1){
+                    if(fieldMode == 1) {
                         toModel.append({"name":"", "email":contact.emails[count].emailAddress});
-                    }else if(fieldMode == 2){
+                    } else if(fieldMode == 2) {
                         ccModel.append({"name":"", "email":contact.emails[count].emailAddress});
-                    }else if(fieldMode == 3){
+                    } else if(fieldMode == 3) {
                         bccModel.append({"name":"", "email":contact.emails[count].emailAddress});
                     }
                 }
