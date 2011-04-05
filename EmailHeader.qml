@@ -24,6 +24,7 @@ Column {
     property int priority: 0
 
     property bool showOthers: false
+    property int fieldMode : 0 //To = 1, CC = 2, BCC = 3
 
     focus: true
 
@@ -119,6 +120,7 @@ Column {
                 var picker = contactsPicker.createObject (scene);
                 picker.promptString = qsTr ("Select contact");
                 picker.contactSelected.connect (addContactTo);
+                fieldMode = 1
                 picker.show ();
             }
         }
@@ -150,6 +152,7 @@ Column {
                 var picker = contactsPicker.createObject (scene);
                 picker.promptString = qsTr ("Select contact");
                 picker.contactSelected.connect (addContactTo);
+                fieldMode = 2;
                 picker.visible = true;
             }
         }
@@ -182,6 +185,7 @@ Column {
                 var picker = contactsPicker.createObject (scene);
                 picker.promptString = qsTr ("Select contact");
                 picker.contactSelected.connect (addContactTo);
+                fieldMode = 3;
                 picker.show ();
             }
         }
@@ -219,6 +223,19 @@ Column {
         id: contactsPicker
 
         ContactsPicker {
+
+            onContactSelected: {
+                for(var count=0; count < contact.emails.length; count++){
+                    if(fieldMode == 1){
+                        toModel.append({"name":"", "email":contact.emails[count].emailAddress});
+                    }else if(fieldMode == 2){
+                        ccModel.append({"name":"", "email":contact.emails[count].emailAddress});
+                    }else if(fieldMode == 3){
+                        bccModel.append({"name":"", "email":contact.emails[count].emailAddress});
+                    }
+                }
+                fieldMode = 0;
+            }
         }
     }
 }
