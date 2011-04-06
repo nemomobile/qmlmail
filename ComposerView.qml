@@ -62,7 +62,7 @@ Item {
             anchors.left: parent.left
             anchors.top: parent.top
 
-            iconName: "icns_export/icn_send"
+            iconName: "mail-send"
 
             onClicked: {
                 var i;
@@ -131,7 +131,7 @@ Item {
             anchors.left: division1.right
             anchors.top: parent.top
 
-            iconName: "icns_export/icn_save"
+            iconName: "document-save"
 
             onClicked: {
                 console.log ("Save email");
@@ -156,7 +156,7 @@ Item {
             anchors.right: parent.right
             anchors.top: parent.top
 
-            iconName: "icns_export/icn_delete"
+            iconName: "edit-delete"
 
             onClicked: {
                 showModalDialog (verifyCancel);

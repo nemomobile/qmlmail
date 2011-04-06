@@ -13,18 +13,25 @@ Item {
 
     property string iconName: ""
     property alias rotating: imageRotation.running
-    width: image.width
-    height: image.height
+    width: buttonBackground.width
+    height: buttonBackground.height
 
     state: "up"
 
     signal clicked
 
+    BorderImage {
+        id: buttonBackground
+        anchors.centerIn: parent
+        source: "image://meegotheme/widgets/common/action-item/action-item-background-active"
+        opacity: (container.state == "up") ? 0 : 1
+    }
+
     Image {
         id: image
         anchors.centerIn: parent
 
-        source: "image://theme/email/" + iconName + "_" + container.state
+        source: "image://meegotheme/icons/actionbar/" + iconName + ((container.state == "up") ? "" : "-active")
         NumberAnimation on rotation {
             id: imageRotation
             running: false

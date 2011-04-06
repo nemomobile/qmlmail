@@ -12,12 +12,11 @@ import MeeGo.App.Email 0.1
 
 Item {
     id: container
-    anchors.left: parent.left
-    anchors.right: parent.right
-    anchors.bottom: parent.bottom
 
     height: navigationBar.height
     width: scene.content.width
+
+    property int buttonWidth: (parent.width - 4) / 5
 
     ListModel {
         id: toModel
@@ -95,100 +94,120 @@ Item {
     BorderImage {
         id: navigationBar
         width: parent.width
-        source: "image://theme/navigationBar_l"
+        source: "image://meegotheme/widgets/common/action-bar/action-bar-background"
     }
-    Item {
-        anchors.fill: parent
+    Item  {
+        anchors.left: parent.left
+        width: parent.width
 
-        ToolbarButton {
-            id: composeButton
-            anchors.left: parent.left
-            anchors.top: parent.top
-            iconName: "icns_export/icn_compose"
-            onClicked: {
-                var newPage;
-
-                scene.addApplicationPage (composer);
-                newPage = scene.currentApplication;
-                attachmentsModel.clear();
-                newPage.composer.attachmentsModel = attachmentsModel;
-            }
-        }
         Item {
-            id: replyAndForwardButtonsRow
-            anchors.left: composeButton.right
-            anchors.top: parent.top
-            height: parent.height
-            width: parent.width - (composeButton.width * 2)
-            Row {
-                spacing: (scene.content.width - (composeButton.width * 5) - (division1.width * 2)) / 4
-                height: parent.height
-                Image {
-                    id: division1
-                    anchors.verticalCenter: parent.verticalCenter
-                    height: parent.height
-                    source: "image://theme/email/div"
-                }
-                ToolbarButton {
-                    id:replyButton
-                    iconName: "icns_export/icn_reply"
-                    onClicked: {
-                        var newPage;
+            id: composeButton
+            width: (scene.content.width - 4) / 5
 
-                        scene.addApplicationPage (composer);
-                        newPage = scene.currentApplication;
-                        setMessageDetails (newPage.composer, scene.currentMessageIndex, false);
-                    }
-                }
-
-                ToolbarButton {
-                    id:replyallButton
-                    iconName: "icns_export/icn_replyall"
-                    onClicked: {
-                        var newPage;
-
-                        scene.addApplicationPage (composer);
-                        newPage = scene.currentApplication;
-                        setMessageDetails (newPage.composer, scene.currentMessageIndex, true);
-                    }
-                }
-
-                ToolbarButton {
-                    id:forwardButton
-                    iconName: "icns_export/icn_forward"
-                    onClicked: {
-                        var newPage;
-
-                        scene.addApplicationPage (composer);
-                        newPage = scene.currentApplication;
-
-                        newPage.composer.quotedBody = qsTr("-------- Forwarded Message --------") + messageListModel.quotedBody (scene.currentMessageIndex);
-                        newPage.composer.subject = qsTr("[Fwd: %1]").arg(messageListModel.subject (scene.currentMessageIndex));
-                        newPage.composer.attachmentsModel = mailAttachmentModel;
-                    }
+            ToolbarButton {
+                anchors.horizontalCenter: composeButton.horizontalCenter
+                iconName: "mail-compose"
+                onClicked: {
+                    var newPage;
+                    scene.addApplicationPage (composer);
+                    newPage = scene.currentApplication;
+                    attachmentsModel.clear();
+                    newPage.composer.attachmentsModel = attachmentsModel;
                 }
             }
         }
         Image {
-            id: division2
-            anchors.right: deleteButton.left
-            height: parent.height
-            anchors.verticalCenter: parent.verticalCenter
-            source: "image://theme/email/div"
+            id: separator1
+            anchors.left: composeButton.right
+            source: "image://meegotheme/widgets/common/action-bar/action-bar-separator"
         }
 
-        ToolbarButton {
+        Item {
+            id: replyButton
+            anchors.left: separator1.right
+            width: (scene.content.width - 4) / 5
+            ToolbarButton {
+                anchors.horizontalCenter: replyButton.horizontalCenter
+                iconName: "mail-reply"
+                onClicked: {
+                    var newPage;
+
+                    scene.addApplicationPage (composer);
+                    newPage = scene.currentApplication;
+                    setMessageDetails (newPage.composer, scene.currentMessageIndex, false);
+		}
+	    }
+        }
+
+        Image {
+            id: separator2
+            anchors.left: replyButton.right
+            source: "image://meegotheme/widgets/common/action-bar/action-bar-separator"
+        }
+
+        Item {
+            id:replyallButton
+            anchors.left: separator2.right
+            width: (scene.content.width - 4) / 5
+            ToolbarButton {
+                anchors.horizontalCenter: replyallButton.horizontalCenter
+                iconName: "mail-reply-all"
+                onClicked: {
+                    var newPage;
+
+                    scene.addApplicationPage (composer);
+                newPage = scene.currentApplication;
+                    setMessageDetails (newPage.composer, scene.currentMessageIndex, true);
+                }
+            }
+        }
+
+        Image {
+            id: separator3
+            anchors.left: replyallButton.right
+            source: "image://meegotheme/widgets/common/action-bar/action-bar-separator"
+        }
+
+        Item {
+            id:forwardButton
+            anchors.left: separator3.right
+            width: (scene.content.width - 4) / 5
+            ToolbarButton {
+                anchors.horizontalCenter: forwardButton.horizontalCenter
+                iconName: "mail-forward"
+                onClicked: {
+                    var newPage;
+
+                    scene.addApplicationPage (composer);
+                    newPage = scene.currentApplication;
+
+                    newPage.composer.quotedBody = qsTr("-------- Forwarded Message --------") + messageListModel.quotedBody (scene.currentMessageIndex);
+                    newPage.composer.subject = qsTr("[Fwd: %1]").arg(messageListModel.subject (scene.currentMessageIndex));
+                    newPage.composer.attachmentsModel = mailAttachmentModel;
+                }
+            }
+        }
+
+        Image {
+            id: separator4
+            anchors.left: forwardButton.right
+            source: "image://meegotheme/widgets/common/action-bar/action-bar-separator"
+        }
+
+        Item {
             id: deleteButton
+            anchors.left: separator4.right
+            width: (scene.content.width - 4) / 5
+            ToolbarButton {
+                anchors.horizontalCenter: deleteButton.horizontalCenter
+                iconName: "edit-delete"
 
-            anchors.right: parent.right
-            anchors.top: parent.top
-            iconName: "icns_export/icn_delete"
-
-            onClicked: {
-                if (emailAgent.confirmDeleteMail()) {
-                    showModalDialog(verifyDelete);
-                } else {
-                    deleteMessage();
+                onClicked: {
+                    if (emailAgent.confirmDeleteMail()) {
+                        showModalDialog(verifyDelete);
+                    } else {
+                        deleteMessage();
+                    }
                 }
             }
         }

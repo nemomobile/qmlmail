@@ -11,57 +11,66 @@ import MeeGo.Labs.Components 0.1
 import MeeGo.App.Email 0.1
 
 Item {
-    id: container
+    id: folderListViewToolbar
     anchors.bottom: parent.bottom
     width: parent.width
     height: navigationBarImage.height
 
-    ApplicationsModel {
-        id: appModel
-    }
-
     BorderImage {
         id: navigationBarImage
         width: parent.width
-        verticalTileMode: BorderImage.Stretch
-        source: "image://theme/navigationBar_l"
+        source: "image://meegotheme/widgets/common/action-bar/action-bar-background"
     }
     Item {
         anchors.fill: parent
 
-      
         ToolbarButton {
-            id: accountSetting
-            anchors.left: parent.left 
-            anchors.top: parent.top
-            iconName: "show-settings"
-
+        id: composeButton
+        anchors.left: parent.left
+        anchors.top: parent.top
+        iconName: "mail-compose"
             onClicked: {
-                var cmd = "/usr/bin/meego-qml-launcher --app meego-ux-settings --opengl --fullscreen --cmd showPage --cdata \"Email\"";  //i18n ok
-                appModel.launch(cmd);
+                mailAttachmentModel.clear();
+                folderListView.addApplicationPage(composer);
             }
         }
-
         Image {
             id: division1
-            anchors.left: accountSetting.right
+            anchors.left: composeButton.right
+            anchors.top: parent.top
+            height: parent.height
+            source: "image://theme/email/div"
+        }
+
+/*        ToolbarButton {
+        id: editButton
+        anchors.left: division1.right
+        anchors.top: parent.top
+        iconName: "mail-editlist"
+            onClicked: {
+            }
+        }
+        Image {
+            anchors.left: editButton.right
+            anchors.top: parent.top
+            height: parent.height
+            source: "image://theme/email/div"
+        }
+*/
+        Image {
+            id: division3
+            anchors.right: refreshButton.left
+            anchors.top: parent.top
             anchors.verticalCenter: parent.verticalCenter
             height: parent.height
             source: "image://theme/email/div"
         }
 
-        Image {
-            id: division2
-            anchors.right: refreshButton.left
-            anchors.verticalCenter: parent.verticalCenter
-            height: parent.height
-            source: "image://theme/email/div"
-        }
         Item {
             id:refreshButton 
             anchors.right: parent.right
             anchors.top: parent.top
-            height: container.height
+            height: refreshImage.height
             width: refreshImage.width
             Image {
                 id: refreshImage
@@ -88,7 +97,7 @@ Item {
                     }
                     else
                     {
-                        emailAgent.accountsSync();
+                        emailAgent.synchronize(scene.currentMailAccountId);
                         scene.refreshInProgress = true;
                     }
                 }

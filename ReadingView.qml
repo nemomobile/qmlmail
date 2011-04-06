@@ -368,22 +368,26 @@ Item {
             text: qsTr("Downloading...")
         }
     }
-    Rectangle {
+    Item {
         id: previousNextEmailRect
         anchors.bottom: readingViewToolbar.top
         anchors.left: parent.left
         anchors.right: parent.right
         width: scene.content.width
         height: previousEmailButton.height
-        color: "#0d0303"
+        //color: "#0d0303"
+    BorderImage {
+        id: navigationBar
+        width: parent.width
+        source: "image://meegotheme/widgets/common/action-bar/action-bar-background"
+    }
 
         ToolbarButton  {
             id: previousEmailButton
             anchors.left: parent.left
             anchors.top: parent.top
-            anchors.bottom: parent.bottom
             visible: scene.currentMessageIndex > 0 ? true : false
-            iconName: "icns_export/icn_previous_email" 
+            iconName: "mail-message-previous" 
             onClicked: {
                 if (scene.currentMessageIndex > 0)
                 {
@@ -398,9 +402,8 @@ Item {
 
             anchors.right: parent.right
             anchors.top: parent.top
-            anchors.bottom: parent.bottom
             visible: (scene.currentMessageIndex + 1) < messageListModel.messagesCount() ? true : false
-            iconName: "icns_export/icn_next_email"
+            iconName: "mail-message-next" 
 
             onClicked: {
                 if (scene.currentMessageIndex < messageListModel.messagesCount())
@@ -413,5 +416,9 @@ Item {
     } 
     ReadingViewToolbar {
         id: readingViewToolbar
+        anchors.right: parent.right
+        anchors.left: parent.left
+        anchors.bottom: parent.bottom
+        width: scene.content.width
     }
 }
