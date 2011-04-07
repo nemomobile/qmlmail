@@ -43,11 +43,13 @@ public:
         MessageSenderEmailAddressRole,                         // returns sender's email address
         MessageCcRole,                                         // returns a list of Cc (email + displayName)
         MessageBccRole,                                        // returns a list of Bcc (email + displayName)
-        MessageTimeStampRole                                   // returns timestamp in QDateTime format
+        MessageTimeStampRole,                                  // returns timestamp in QDateTime format
+        MessageSelectModeRole                                  // returns the select mode
     };
 
 
     EmailMessageListModel (QObject *parent = 0);
+    ~EmailMessageListModel();
     int rowCount (const QModelIndex & parent = QModelIndex()) const;
     QVariant data (const QModelIndex & index, int role = Qt::DisplayRole) const;
     QString bodyHtmlText(QMailMessagePartContainer *container) const;
@@ -81,6 +83,10 @@ public slots:
     Q_INVOKABLE QVariant toList (int index);
     Q_INVOKABLE QVariant messageRead (int index);
     Q_INVOKABLE int messagesCount ();
+    Q_INVOKABLE void deSelectAllMessages();
+    Q_INVOKABLE void selectMessage( int index );
+    Q_INVOKABLE void deSelectMessage (int index );
+    Q_INVOKABLE void deleteSelectedMessageIds();
 
 private slots:
     void downloadActivityChanged(QMailServiceAction::Activity);
@@ -93,8 +99,10 @@ private:
     QProcess m_messageServerProcess;
     QMailAccountIdList m_mailAccountIds;
     QMailRetrievalAction *m_retrievalAction;
+    QMailStorageAction *m_storageAction;
     QString m_search;
     QMailMessageKey m_key;                  // key set externally other than search
+    QList<QMailMessageId> m_selectedMsgIds;
 };
 
 #endif

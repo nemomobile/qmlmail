@@ -22,6 +22,8 @@ Item {
     property string deleteFolder: qsTr("Delete folder")
     property string attachments: qsTr("Attachments")
     property bool gettingMoreMessages: false
+    property bool inSelectMode: false
+    property int numOfSelectedMessages: 0
 
     Component.onCompleted: { 
         scene.folderListViewClickCount = 0;
@@ -204,7 +206,16 @@ Item {
             Image {
                 id: itemBackground
                 anchors.fill: parent
-                source: readStatus ? "image://theme/email/bg_reademail_l" : "image://theme/email/bg_unreademail_l"
+                source: {
+                    if (inSelectMode)
+                    {
+                        return selected ? "image://theme/email/bg_unreademail_l" : "image://theme/email/bg_reademail_l";
+                    }
+                    else
+                    {
+                        return readStatus ? "image://theme/email/bg_reademail_l" : "image://theme/email/bg_unreademail_l";
+                    }
+                }
             }
 
             Image {
@@ -213,7 +224,30 @@ Item {
                 anchors.leftMargin: 10
                 anchors.verticalCenter: parent.verticalCenter
                 source: "image://meegotheme/widgets/apps/email/email-unread"
-                opacity: readStatus ? 0 : 1
+                opacity: {
+                    if (inSelectMode == true || readStatus == true)
+                        return 0;
+                    else
+                        return 1;
+                }
+            }
+
+            Image {
+                id: selectIcon
+                anchors.left: parent.left
+                anchors.leftMargin: 10
+                anchors.verticalCenter: parent.verticalCenter
+                source:"image://meegotheme/widgets/common/checkbox/checkbox-background"
+                opacity: (inSelectMode == true && selected == 0) ? 1 : 0
+            }
+
+            Image {
+                id: selectActiveIcon
+                anchors.left: parent.left
+                anchors.leftMargin: 10
+                anchors.verticalCenter: parent.verticalCenter
+                source:"image://meegotheme/widgets/common/checkbox/checkbox-background-active"
+                opacity: (inSelectMode == true && selected == 1) ? 1 : 0
             }
 
             property string msender
@@ -240,7 +274,7 @@ Item {
                 Text {
                     id: senderText
                     anchors.left: parent.left
-                    anchors.leftMargin: 40
+                    anchors.leftMargin: 50
                     width: (parent.width * 2) / 3
                     text: senderDisplayName != "" ? senderDisplayName : senderEmailAddress
                     font.bold: readStatus ? false : true
@@ -263,7 +297,7 @@ Item {
                 anchors.top: fromLine.bottom
                 anchors.left: parent.left
                 anchors.right: parent.right
-                anchors.leftMargin: 40
+                anchors.leftMargin: 50
                 width: parent.width
                 height: theme_listBackgroundPixelHeightTwo / 2
 
@@ -326,30 +360,50 @@ Item {
                 onClicked: {
                     if (scene.folderListViewClickCount == 0)
                     {
-                        scene.mailId = messageId;
-                        scene.mailSubject = subject;
-                        scene.mailSender = sender;
-                        scene.mailTimeStamp = timeStamp;
-                        scene.mailBody = body;
-                        scene.mailQuotedBody = quotedBody;
-                        scene.mailHtmlBody = htmlBody;
-                        scene.mailAttachments = listOfAttachments;
-                        scene.numberOfMailAttachments = numberOfAttachments;
-                        scene.mailRecipients = recipients;
-                        toListModel.init();
-                        scene.mailCc = cc;
-                        ccListModel.init();
-                        scene.mailBcc = bcc;
-                        bccListModel.init();
-                        scene.currentMessageIndex = index;
-                        mailAttachmentModel.init();
-                        emailAgent.markMessageAsRead (messageId);
-                        scene.mailReadFlag = true;
-                        folderListView.addApplicationPage(reader);
+                        if (inSelectMode)
+                        {
+                            if (selected)
+                            {
+                                messageListModel.deSelectMessage(index);
+                                folderListContainer.numOfSelectedMessages = folderListContainer.numOfSelectedMessages - 1;
+                            }
+                            else
+                            {
+                                messageListModel.selectMessage(index);
+                                folderListContainer.numOfSelectedMessages = folderListContainer.numOfSelectedMessages + 1;
+                            }
+                        }
+                        else
+                        {
+                            scene.mailId = messageId;
+                            scene.mailSubject = subject;
+                            scene.mailSender = sender;
+                            scene.mailTimeStamp = timeStamp;
+                            scene.mailBody = body;
+                            scene.mailQuotedBody = quotedBody;
+                            scene.mailHtmlBody = htmlBody;
+                            scene.mailAttachments = listOfAttachments;
+                            scene.numberOfMailAttachments = numberOfAttachments;
+                            scene.mailRecipients = recipients;
+                            toListModel.init();
+                            scene.mailCc = cc;
+                            ccListModel.init();
+                            scene.mailBcc = bcc;
+                            bccListModel.init();
+                            scene.currentMessageIndex = index;
+                            mailAttachmentModel.init();
+                            emailAgent.markMessageAsRead (messageId);
+                            scene.mailReadFlag = true;
+                            folderListView.addApplicationPage(reader);
+                        }
+                        scene.folderListViewClickCount = 0;
+                        return;
                     }
                     scene.folderListViewClickCount++;
                 }
                 onPressAndHold: {
+                    if (inSelectMode)
+                        return;
                     scene.mailId = messageId;
                     scene.mailReadFlag = readStatus;
                     scene.currentMessageIndex = index;
@@ -366,5 +420,16 @@ Item {
     }
     FolderListViewToolbar {
         id: folderListViewToolbar
+
+        onEditModeBegin: {
+            messageListModel.deSelectAllMessages();
+            folderListContainer.inSelectMode = true;
+            folderListContainer.numOfSelectedMessages = 0;
+        }
+
+        onEditModeEnd: {
+            messageListModel.deSelectAllMessages();
+            folderListContainer.inSelectMode = false;
+        }
     }
 }

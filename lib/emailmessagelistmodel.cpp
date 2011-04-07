@@ -140,7 +140,8 @@ QString EmailMessageListModel::bodyPlainText(const QMailMessage &mailMsg) const
 //![0]
 EmailMessageListModel::EmailMessageListModel(QObject *parent)
     : QMailMessageListModel(parent),
-      m_retrievalAction(new QMailRetrievalAction(this))
+      m_retrievalAction(new QMailRetrievalAction(this)),
+      m_storageAction(new QMailStorageAction(this))
 {
     QHash<int, QByteArray> roles;
     roles[QMailMessageModelBase::MessageAddressTextRole] = "sender";
@@ -167,6 +168,7 @@ EmailMessageListModel::EmailMessageListModel(QObject *parent)
     roles[MessageCcRole] = "cc";
     roles[MessageBccRole] = "bcc";
     roles[MessageTimeStampRole] = "qDateTime";
+    roles[MessageSelectModeRole] = "selected";
     setRoleNames(roles);
 
     initMailServer();
@@ -179,6 +181,13 @@ EmailMessageListModel::EmailMessageListModel(QObject *parent)
     m_key = key();
     QMailMessageSortKey sortKey = QMailMessageSortKey::timeStamp(Qt::DescendingOrder);
     QMailMessageListModel::setSortKey(sortKey);
+    m_selectedMsgIds.clear();
+}
+
+EmailMessageListModel::~EmailMessageListModel()
+{
+    delete m_retrievalAction;
+    delete m_storageAction;
 }
 
 int EmailMessageListModel::rowCount(const QModelIndex & parent) const {
@@ -333,6 +342,14 @@ QVariant EmailMessageListModel::data(const QModelIndex & index, int role) const 
     {
         QMailMessage message (idFromIndex(index));
         return (message.date().toLocalTime());
+    }
+    else if (role == MessageSelectModeRole)
+    {
+       int selected = 0;
+       QMailMessageId msgId = idFromIndex(index);
+       if (m_selectedMsgIds.contains(msgId) == true)
+           selected = 1;
+        return (selected);
     }
 
     return QMailMessageListModel::data(index, role);
@@ -572,6 +589,54 @@ QVariant EmailMessageListModel::messageRead (int idx)
 int EmailMessageListModel::messagesCount ()
 {
     return rowCount();
+}
+
+void EmailMessageListModel::deSelectAllMessages()
+{
+    if (m_selectedMsgIds.size() == 0)
+        return;
+
+    QMailMessageIdList msgIds = m_selectedMsgIds;
+    m_selectedMsgIds.clear();
+    foreach (QMailMessageId msgId,  msgIds)
+    {
+        for (int row = 0; row < rowCount(); row++)
+        {
+            QVariant vMsgId = data(index(row), QMailMessageModelBase::MessageIdRole);
+    
+            if (msgId == vMsgId.value<QMailMessageId>())
+                dataChanged (index(row), index(row));
+        }
+    }
+}
+
+void EmailMessageListModel::selectMessage( int idx )
+{
+    QMailMessageId msgId = idFromIndex(index(idx));
+
+    if (!m_selectedMsgIds.contains (msgId))
+    {
+        m_selectedMsgIds.append(msgId);
+    dataChanged(index(idx), index(idx));
+    }
+}
+
+void EmailMessageListModel::deSelectMessage (int idx )
+{
+    QMailMessageId msgId = idFromIndex(index(idx));
+
+    m_selectedMsgIds.removeOne(msgId);
+    dataChanged(index(idx), index(idx));
+}
+
+void EmailMessageListModel::deleteSelectedMessageIds()
+{
+    if (m_selectedMsgIds.size() == 0)
+        return;
+    QMailMessage msg (m_selectedMsgIds[0]);
+    m_storageAction->deleteMessages(m_selectedMsgIds);
+    m_selectedMsgIds.clear();
+    m_retrievalAction->exportUpdates(msg.parentAccountId());
 }
 
 void EmailMessageListModel::downloadActivityChanged(QMailServiceAction::Activity activity)
