@@ -32,6 +32,7 @@ Item {
     Column {
         anchors.fill: parent
         anchors.topMargin: 10
+        spacing: 5
 
         EmailHeader {
             id: header
@@ -43,7 +44,7 @@ Item {
 
         Image {
             width: parent.width
-            height: composer.height - header.height
+            height: composer.height - header.height - parent.spacing
             source: "image://theme/email/bg_reademail_l"
 
             EditPane {

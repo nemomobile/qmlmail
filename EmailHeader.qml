@@ -24,7 +24,6 @@ Column {
     property int priority: 0
 
     property bool showOthers: false
-    property int fieldMode : 0 //To = 1, CC = 2, BCC = 3
 
     focus: true
 
@@ -79,13 +78,13 @@ Column {
 
         Image {
             id: ccToggle
-            width: ccBccLabel.width + 20
+            width: ccBcclabel.width + 20
             height: parent.height
 
             source: "image://theme/btn_blue_up"
 
             Text {
-                id: ccBccLabel
+                id: ccBcclabel
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: qsTr("Cc/Bcc")
@@ -102,81 +101,75 @@ Column {
     }
 
     Row {
+        //: The "to" recipient label.
+        property string toLabel: qsTr("To")
+
         width: parent.width
+
         spacing: 5
 
         // Expand to fill the height correctly
         height: toRecipients.height
 
-        VerticalAligner {
-            id: toLabel
-            text: qsTr ("To:")
-
-            onClicked: {
-                var picker = contactsPicker.createObject (scene);
-                picker.promptString = qsTr ("Select contact");
-                fieldMode = 1
-                picker.show ();
-            }
-        }
-
         EmailRecipientEntry {
             id: toRecipients
 
-            width: parent.width - (toLabel.width + 25/* + addTo.width + 30*/)
+            defaultText: parent.toLabel
+            width: parent.width - toAddButton.width - 20 - spacing
+        }
+
+        AddRecipient {
+            id: toAddButton
+            label: parent.toLabel
+            recipients: toRecipients
         }
     }
 
     Row {
+        //: The Cc (carbon copy) label.
+        property string ccLabel: qsTr("Cc")
+
         width: parent.width
         spacing: 5
 
         height: ccRecipients.height
         visible: showOthers
 
-        VerticalAligner {
-            id: ccLabel
-            text: qsTr ("Cc:")
-
-            onClicked: {
-                var picker = contactsPicker.createObject (scene);
-                picker.promptString = qsTr ("Select contact");
-                fieldMode = 2;
-                picker.visible = true;
-            }
-        }
-
         EmailRecipientEntry {
             id: ccRecipients
 
-            width: parent.width - (ccLabel.width +25)
+            defaultText: parent.ccLabel
+            width: parent.width - ccAddButton.width - 20 - spacing
         }
 
+        AddRecipient {
+            id: ccAddButton
+            label: parent.ccLabel
+            recipients: ccRecipients
+        }
     }
 
     Row {
+        //: The Bcc (blind carbon copy) label.
+        property string bccLabel: qsTr("Bcc")
+
         width: parent.width
         spacing: 5
 
         height: bccRecipients.height
         visible: showOthers
 
-        VerticalAligner {
-            id: bccLabel
-            text: qsTr ("Bcc:")
-
-            onClicked: {
-                var picker = contactsPicker.createObject (scene);
-                picker.promptString = qsTr ("Select contact");
-                fieldMode = 3;
-                picker.show ();
-            }
-        }
-
         EmailRecipientEntry {
             id: bccRecipients
 
-            width: parent.width - (bccLabel.width + 25)
+            defaultText: parent.bccLabel
+            width: parent.width - bccAddButton.width - 20 - spacing
+        }
+
+        AddRecipient {
+            id: bccAddButton
+            label: parent.bccLabel
+            recipients: bccRecipients
         }
     }
 
@@ -202,23 +195,4 @@ Column {
         opacity: (model.count > 0) ? 1 : 0
     }
 
-    Component {
-        id: contactsPicker
-
-        ContactsPicker {
-
-            onContactSelected: {
-                for(var count=0; count < contact.emails.length; count++){
-                    if(fieldMode == 1) {
-                        toModel.append({"name":"", "email":contact.emails[count].emailAddress});
-                    } else if(fieldMode == 2) {
-                        ccModel.append({"name":"", "email":contact.emails[count].emailAddress});
-                    } else if(fieldMode == 3) {
-                        bccModel.append({"name":"", "email":contact.emails[count].emailAddress});
-                    }
-                }
-                fieldMode = 0;
-            }
-        }
-    }
 }

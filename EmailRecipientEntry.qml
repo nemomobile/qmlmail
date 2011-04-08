@@ -6,6 +6,7 @@ BorderImage {
 
     property alias model: repeater.model
     property alias text: input.text
+    property alias defaultText: recipientListLabel.text
 
     border.top: 10
     border.bottom: 10
@@ -19,6 +20,16 @@ BorderImage {
         if (text != "") {
             background.model.append ({name:"", email:text});
         }
+    }
+
+    Text {
+        id: recipientListLabel
+        x: 10
+        anchors.verticalCenter: parent.verticalCenter
+        font.pixelSize: theme_fontPixelSizeLarge
+        color: "slategrey"
+
+        visible: repeater.model.count == 0
     }
 
     Flickable {
