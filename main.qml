@@ -446,14 +446,15 @@ Window {
                 anchors.fill:parent
                 height: 50
                 id: markAsReadUnread
-                width: parent.width
+                width: menuLabel.width + 20
                 Text {
+                    id: menuLabel
                     anchors.left: parent.left
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.leftMargin: 14
                     text: scene.mailReadFlag ? qsTr("Mark as unread") : qsTr("Mark as read") 
                     color:theme_fontColorNormal
-                    font.pixelSize: (scene.isLandscapeView())?theme_fontPixelSizeLarger:theme_fontPixelSizeLarge
+                    font.pixelSize: theme_fontPixelSizeLarge
                 }
                 MouseArea{
                 anchors.fill: parent

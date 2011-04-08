@@ -79,12 +79,13 @@ Column {
 
         Image {
             id: ccToggle
-            width: 100
+            width: ccBccLabel.width + 20
             height: parent.height
 
             source: "image://theme/btn_blue_up"
 
             Text {
+                id: ccBccLabel
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: qsTr("Cc/Bcc")
