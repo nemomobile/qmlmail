@@ -75,8 +75,7 @@ void FolderListModel::setAccountKey(QVariant id)
   // Get all the folders belonging to this email account
     QMailAccountId accountId = id.value<QMailAccountId>();
     QMailFolderKey key = QMailFolderKey::parentAccountId(accountId);
-    //QMailFolderSortKey sortKey = QMailFolderSortKey::serverCount(Qt::DescendingOrder);
-    m_mailFolderIds = QMailStore::instance()->queryFolders(key/*, sortKey*/);
+    m_mailFolderIds = QMailStore::instance()->queryFolders(key);
 }
 
 QStringList FolderListModel::folderNames()
