@@ -7,10 +7,11 @@
  */
 
 import Qt 4.7
-import MeeGo.Labs.Components 0.1
+import MeeGo.Labs.Components 0.1 as Labs
+import MeeGo.Components 0.1
 import MeeGo.App.Email 0.1
 
-Window {
+Labs.Window {
     id: scene
     property string topicSender: qsTr("Sender")
     property string topicSubject: qsTr("Subject")
@@ -73,7 +74,7 @@ Window {
             if (code != 1040)
             {
                 errMsg = msg;
-                showErrorMessage();
+                confirmDialog.show();
             }
         }
     }
@@ -102,12 +103,6 @@ Window {
             accountList.push(qsTr("Account switcher"));
             scene.filterModel = accountList;
         }
-    }
-
-    function showErrorMessage()
-    {
-        messageBoxLoader.sourceComponent = messageBoxcomponent;
-        messageBoxLoader.item.parent = scene.container;
     }
 
     ListModel {
@@ -155,30 +150,28 @@ Window {
         composer.subject = "Re: " + messageListModel.subject (messageID);  //i18n ok
     }
 
-    Loader {
-        id:messageBoxLoader
-    }
+    ModalDialog {
+        id:confirmDialog
+        showCancelButton: false
+        showAcceptButton: true
+        acceptButtonText: qsTr("OK")
+        autoCenter: true
+        aligneTitleCenter: true
+        title: qsTr("Error")
 
-   Component {
-        id:messageBoxcomponent
-        ModalDialog {
-            id:confirmDialog
-            z:500
-            rightButtonText: qsTr("OK")
-            dialogTitle: qsTr("Error")
+        content: Item {
+            id:confirmMsg
+            anchors.fill: parent
+            anchors.margins: 10
+
             Text {
-                id:confirmMsg
                 text: scene.errMsg;
-                anchors.centerIn:parent
                 color:theme_fontColorNormal
                 font.pixelSize: theme_fontPixelSizeLarge
-                elide: Text.ElideRight
+                wrapMode: Text.Wrap
             }
-            onDialogClicked: {
-                messageBoxLoader.sourceComponent = undefined
-            }
-
         }
+        onAccepted: {}
     }
 
     FuzzyDateTime {
@@ -370,7 +363,7 @@ Window {
 
     Component {
         id: folderList
-        ApplicationPage {
+        Labs.ApplicationPage {
             id: folderListView
             anchors.fill: parent
             title: scene.folderListViewTitle
@@ -409,7 +402,7 @@ Window {
 
     Component {
         id: mailAccount
-        ApplicationPage {
+        Labs.ApplicationPage {
             id: accountListView
             anchors.fill: parent
             title: qsTr("Account list")
@@ -427,7 +420,7 @@ Window {
 
     Component {
         id: composer
-        ApplicationPage {
+        Labs.ApplicationPage {
             id: composerPage
 
             Component.onCompleted: {
@@ -474,7 +467,7 @@ Window {
 
     Component {
         id: reader
-        ApplicationPage {
+        Labs.ApplicationPage {
             id: readingView
             anchors.fill: parent
             title: scene.mailSubject
@@ -520,4 +513,6 @@ Window {
             }
         }
     }
+
+    TopItem { id: topItem }
 }
