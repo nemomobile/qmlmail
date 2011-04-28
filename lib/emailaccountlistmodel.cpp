@@ -144,15 +144,26 @@ int EmailAccountListModel::getRowCount()
     return rowCount();
 }
 
-QVariant EmailAccountListModel::getAccountList()
+QVariant EmailAccountListModel::getAllDisplayNames()
 {
-    QStringList accountList;
+    QStringList displayNameList;
     for (int row = 0; row < rowCount(); row++)
     {
         QString displayName = data(index(row), EmailAccountListModel::DisplayName).toString();
-        accountList << displayName;
+        displayNameList << displayName;
     }
-    return accountList;
+    return displayNameList;
+}
+
+QVariant EmailAccountListModel::getAllEmailAddresses()
+{
+    QStringList emailAddressList;
+    for (int row = 0; row < rowCount(); row++)
+    {
+        QString emailAddress = data(index(row), EmailAccountListModel::EmailAddress).toString();
+        emailAddressList << emailAddress;
+    }
+    return emailAddressList;
 }
 
 QVariant EmailAccountListModel::getAccountIdByIndex(int idx)
