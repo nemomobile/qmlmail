@@ -10,6 +10,7 @@ import Qt 4.7
 import MeeGo.Components 0.1
 import MeeGo.App.Email 0.1
 import QtWebKit 1.0
+import Qt.labs.gestures 2.0
 
 Item {
     id: container
@@ -231,6 +232,9 @@ Item {
             anchors.topMargin: 2
             width: parent.width
             height: parent.height
+
+            property variant centerPoint
+
             contentWidth: {
                 if (scene.mailHtmlBody == "") 
                     return edit.paintedWidth;
@@ -285,6 +289,39 @@ Item {
                 onCursorRectangleChanged: flick.ensureVisible(cursorRectangle)
                 text: scene.mailBody
                 opacity:  (scene.mailHtmlBody == "") ? 1 : 0
+            }
+
+            GestureArea {
+                anchors.fill: parent
+
+                Pinch {
+                    onStarted: {
+                        flick.interactive = false;
+                        flick.centerPoint = scene.mapToItem(flick, gesture.centerPoint.x, gesture.centerPoint.y);
+                    }
+
+                    onUpdated: {
+                        var cw = flick.contentWidth;
+                        var ch = flick.contentHeight;
+
+                        if (scene.mailHtmlBody == "") {
+                            var newPixelSize = edit.font.pixelSize * gesture.scaleFactor;
+                            edit.font.pixelSize = Math.max(theme_fontPixelSizeLarge, Math.min(newPixelSize, theme_fontPixelSizeLargest3));
+                        } else {
+                            var newScale = htmlViewer.contentsScale * gesture.scaleFactor;
+                            var minScale = 1.0;
+                            var maxScale = 5.0;
+                            htmlViewer.contentsScale = Math.max(minScale, Math.min(newScale, maxScale));
+                        }
+
+                        flick.contentX = (flick.centerPoint.x + flick.contentX) / cw * flick.contentWidth - flick.centerPoint.x;
+                        flick.contentY = (flick.centerPoint.y + flick.contentY) / ch * flick.contentHeight - flick.centerPoint.y;
+                    }
+
+                    onFinished: {
+                        flick.interactive = true;
+                    }
+                }
             }
         }
     }
