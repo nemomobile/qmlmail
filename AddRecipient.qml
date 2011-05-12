@@ -12,6 +12,7 @@ import MeeGo.App.Email 0.1
 
 
 BorderImage {
+    id: container
     property EmailRecipientEntry recipients
     property string label
 
@@ -40,7 +41,7 @@ BorderImage {
         anchors.fill: parent
 
         onClicked: {
-            var picker = contactsPicker.createObject (scene);
+            var picker = contactsPicker.createObject (container);
             //: The contact (e-mail recipient) picker title.
             picker.promptString = qsTr ("Select \"%1\" recipient").arg(label);
             picker.show ();
