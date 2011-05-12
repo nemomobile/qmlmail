@@ -12,10 +12,10 @@ import MeeGo.Components 0.1
 import MeeGo.Settings 0.1
 import MeeGo.App.Email 0.1
 
-Labs.ApplicationPage {
-	id: settingsPage
+AppPage {
+    id: settingsPage
     property alias accountSettingsModel: accountSettingsModel
-	title: qsTr("Email Settings")
+    pageTitle: qsTr("Email Settings")
     disableSearch: true
     Translator { catalog: "meego-app-email" }
     EmailAccount { id: emailAccount }
