@@ -14,10 +14,10 @@ Item {
     id: folderListMenu
     property bool scrollInFolderList: false
     height: {
-        var realHeight = scene.width;
-        if (scene.orientation == 1 || scene.orientation == 3)
+        var realHeight = window.width;
+        if (window.orientation == 1 || window.orientation == 3)
         {
-           realHeight = scene.height;
+           realHeight = window.height;
         }
         var maxHeight = 50 * (5 + mailFolderListModel.totalNumberOfFolders());
         if (maxHeight > (realHeight - 170))
@@ -97,7 +97,7 @@ Item {
         anchors.top: sortDivider.bottom
         Text {
             id: goToFolderTitle
-            text: scene.goToFolderLabel
+            text: window.goToFolderLabel
             font.bold: true
             anchors.left: parent.left
             anchors.leftMargin: 10
@@ -155,10 +155,12 @@ Item {
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    scene.currentFolderId = folderId;
-                    folderListView.title = qsTr("%1 %2").arg(currentAccountDisplayName).arg(folderName);
+                    window.currentFolderId = folderId;
+                    window.folderListViewTitle = currentAccountDisplayName + " " + folderName;
                     folderListView.closeMenu();
                     messageListModel.setFolderKey(folderId);
+                    window.popPage();
+                    window.addPage(folderList);
                 }
             }
         }

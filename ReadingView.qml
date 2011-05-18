@@ -14,8 +14,8 @@ import Qt.labs.gestures 2.0
 
 Item {
     id: container
-    width: scene.width
-    parent: readingView.content
+    width: parent.width
+    parent: readingView
     anchors.fill: parent
     
     property string uri;
@@ -31,9 +31,11 @@ Item {
     Connections {
         target: messageListModel
         onMessageDownloadCompleted: {
-            scene.mailHtmlBody = messageListModel.htmlBody(scene.currentMessageIndex);
+            window.mailHtmlBody = messageListModel.htmlBody(window.currentMessageIndex);
         }
     }
+
+    TopItem { id: topItem }
 
     ModalDialog {
         id: unsupportedFileFormat
@@ -65,12 +67,12 @@ Item {
             if (index == 0)  // open attachment
             {
                 openFlag = true;
-                emailAgent.downloadAttachment(messageListModel.messageId(scene.currentMessageIndex), uri);
+                emailAgent.downloadAttachment(messageListModel.messageId(window.currentMessageIndex), uri);
             }
             else if (index == 1) // Save attachment
             {
                 openFlag = false;
-                emailAgent.downloadAttachment(messageListModel.messageId(scene.currentMessageIndex), uri);
+                emailAgent.downloadAttachment(messageListModel.messageId(window.currentMessageIndex), uri);
             }
         }
         Connections {
@@ -120,7 +122,7 @@ Item {
             EmailAddress {
                 anchors.verticalCenter: parent.verticalCenter
                 added: false
-                emailAddress: scene.mailSender
+                emailAddress: window.mailSender
             }
         }
     }
@@ -186,7 +188,7 @@ Item {
             Text {
                 width: subjectRect.width - subjectLabel.width - 10
                 font.pixelSize: theme_fontPixelSizeLarge
-                text: scene.mailSubject
+                text: window.mailSubject
                 anchors.verticalCenter: parent.verticalCenter
                 elide: Text.ElideRight
             }
@@ -199,9 +201,9 @@ Item {
         anchors.topMargin: 1
         anchors.left: parent.left
         anchors.right: parent.right
-        width: scene.content.width
+        width: parent.width
         height: 41
-        opacity: (scene.numberOfMailAttachments > 0) ? 1 : 0
+        opacity: (window.numberOfMailAttachments > 0) ? 1 : 0
         AttachmentView {
             height: parent.height
             width: parent.width
@@ -210,6 +212,7 @@ Item {
             onAttachmentSelected: {
                 container.uri = uri;
                 attachmentContextMenu.model = [openLabel, saveLabel];
+console.log ("===========>  " + mX + " - " + mY);
                 attachmentContextMenu.setPosition(mX, mY);
                 attachmentContextMenu.show();
             }
@@ -217,11 +220,11 @@ Item {
     }
     Rectangle {
         id: bodyTextArea
-        anchors.top: (scene.numberOfMailAttachments > 0) ? attachmentRect.bottom : subjectRect.bottom
+        anchors.top: (window.numberOfMailAttachments > 0) ? attachmentRect.bottom : subjectRect.bottom
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: downloadInProgress ? progressBarRect.top : previousNextEmailRect.top
-        width: scene.content.width
+        width: parent.width
         border.width: 1
         border.color: "black"
         color: "white"
@@ -236,13 +239,13 @@ Item {
             property variant centerPoint
 
             contentWidth: {
-                if (scene.mailHtmlBody == "") 
+                if (window.mailHtmlBody == "") 
                     return edit.paintedWidth;
                 else
                     return htmlViewer.width;
             }
             contentHeight:  {
-                if (scene.mailHtmlBody == "") 
+                if (window.mailHtmlBody == "") 
                     return edit.paintedHeight;
                 else
                     return htmlViewer.height;
@@ -262,7 +265,7 @@ Item {
             }
             WebView {
                 id: htmlViewer
-                html: scene.mailHtmlBody
+                html: window.mailHtmlBody
                 transformOrigin: Item.TopLeft
                 anchors.left: parent.left
                 anchors.topMargin: 2
@@ -272,7 +275,7 @@ Item {
                 contentsScale: 1
                 focus: true
                 clip: true
-                opacity:  (scene.mailHtmlBody == "") ? 0 : 1
+                opacity:  (window.mailHtmlBody == "") ? 0 : 1
             }
 
             TextEdit {
@@ -287,8 +290,8 @@ Item {
                 font.pixelSize: theme_fontPixelSizeLarge
                 readOnly: true
                 onCursorRectangleChanged: flick.ensureVisible(cursorRectangle)
-                text: scene.mailBody
-                opacity:  (scene.mailHtmlBody == "") ? 1 : 0
+                text: window.mailBody
+                opacity:  (window.mailHtmlBody == "") ? 1 : 0
             }
 
             GestureArea {
@@ -297,14 +300,14 @@ Item {
                 Pinch {
                     onStarted: {
                         flick.interactive = false;
-                        flick.centerPoint = scene.mapToItem(flick, gesture.centerPoint.x, gesture.centerPoint.y);
+                        flick.centerPoint = window.mapToItem(flick, gesture.centerPoint.x, gesture.centerPoint.y);
                     }
 
                     onUpdated: {
                         var cw = flick.contentWidth;
                         var ch = flick.contentHeight;
 
-                        if (scene.mailHtmlBody == "") {
+                        if (window.mailHtmlBody == "") {
                             var newPixelSize = edit.font.pixelSize * gesture.scaleFactor;
                             edit.font.pixelSize = Math.max(theme_fontPixelSizeLarge, Math.min(newPixelSize, theme_fontPixelSizeLargest3));
                         } else {
@@ -408,7 +411,7 @@ Item {
         anchors.bottom: readingViewToolbar.top
         anchors.left: parent.left
         anchors.right: parent.right
-        width: scene.content.width
+        width: parent.width
         height: previousEmailButton.height
         //color: "#0d0303"
     BorderImage {
@@ -421,13 +424,13 @@ Item {
             id: previousEmailButton
             anchors.left: parent.left
             anchors.top: parent.top
-            visible: scene.currentMessageIndex > 0 ? true : false
+            visible: window.currentMessageIndex > 0 ? true : false
             iconName: "mail-message-previous" 
             onClicked: {
-                if (scene.currentMessageIndex > 0)
+                if (window.currentMessageIndex > 0)
                 {
-                    scene.currentMessageIndex = scene.currentMessageIndex - 1;
-                    scene.updateReadingView(scene.currentMessageIndex);
+                    window.currentMessageIndex = window.currentMessageIndex - 1;
+                    window.updateReadingView(window.currentMessageIndex);
                 }
             }
         }
@@ -437,14 +440,14 @@ Item {
 
             anchors.right: parent.right
             anchors.top: parent.top
-            visible: (scene.currentMessageIndex + 1) < messageListModel.messagesCount() ? true : false
+            visible: (window.currentMessageIndex + 1) < messageListModel.messagesCount() ? true : false
             iconName: "mail-message-next" 
 
             onClicked: {
-                if (scene.currentMessageIndex < messageListModel.messagesCount())
+                if (window.currentMessageIndex < messageListModel.messagesCount())
                 {
-                    scene.currentMessageIndex = scene.currentMessageIndex + 1;
-                    scene.updateReadingView(scene.currentMessageIndex);
+                    window.currentMessageIndex = window.currentMessageIndex + 1;
+                    window.updateReadingView(window.currentMessageIndex);
                 }
             }
         }
@@ -454,6 +457,6 @@ Item {
         anchors.right: parent.right
         anchors.left: parent.left
         anchors.bottom: parent.bottom
-        width: scene.content.width
+        width: parent.width
     }
 }

@@ -56,7 +56,7 @@ BorderImage {
         iconName: "mail-editlist-cancel"
 
         onClicked: {
-            scene.previousApplicationPage ();
+            window.popPage ();
         }
     }
 }

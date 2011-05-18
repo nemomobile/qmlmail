@@ -12,8 +12,8 @@ import MeeGo.App.Email 0.1
 
 Item {
     id: folderListContainer
-    width: scene.width
-    parent: folderListView.content
+    width: window.width
+    parent: folderListView
     anchors.fill: parent
 
     property string chooseFolder: qsTr("Choose folder:")
@@ -26,7 +26,7 @@ Item {
     property int numOfSelectedMessages: 0
 
     Component.onCompleted: { 
-        scene.folderListViewClickCount = 0;
+        window.folderListViewClickCount = 0;
         gettingMoreMessages = false;
     }
     Connections {
@@ -54,10 +54,14 @@ Item {
         id: attachmentsModel
     }
 
+    TopItem {
+        id: folderListViewTopItem
+    }
+
     function setMessageDetails (composer, messageID, replyToAll) {
         var dateline = qsTr ("On %1 %2 wrote:").arg(messageListModel.timeStamp (messageID)).arg(messageListModel.mailSender (messageID));
 
-        composer.quotedBody = dateline + "\n" +  messageListModel.quotedBody (messageID); //i18n ok
+        composer.quotedBody = "\n" + dateline + "\n" +  messageListModel.quotedBody (messageID); //i18n ok
         attachmentsModel.clear();
         composer.attachmentsModel = attachmentsModel;
         toModel.clear();
@@ -96,7 +100,7 @@ Item {
             text: qsTr ("Are you sure you want to delete this email?")
         }
 
-        onAccepted: { emailAgent.deleteMessage (scene.mailId) }
+        onAccepted: { emailAgent.deleteMessage (window.mailId) }
     }
 
     ContextMenu {
@@ -110,26 +114,26 @@ Item {
                 if (index == 0)  // Reply
                 {
                     var newPage;
-                    scene.addApplicationPage (composer);
-                    newPage = scene.currentApplication;
-                    setMessageDetails (newPage.composer, scene.currentMessageIndex, false);
+                    window.addPage (composer);
+                    newPage = window.pageStack.currentPage;
+                    setMessageDetails (newPage.composer, window.currentMessageIndex, false);
                 }
                 else if (index == 1)   // Reply to all
                 {
                     var newPage;
-                    scene.addApplicationPage (composer);
-                    newPage = scene.currentApplication;
-                    setMessageDetails (newPage.composer, scene.currentMessageIndex, true);
+                    window.addPage (composer);
+                    newPage = window.pageStack.currentPage;
+                    setMessageDetails (newPage.composer, window.currentMessageIndex, true);
                 }
                 else if (index == 2)   // Forward
                 {
                     var newPage;
-                    scene.addApplicationPage (composer);
-                    newPage = scene.currentApplication;
+                    window.addPage (composer);
+                    newPage = window.pageStack.currentPage;
 
-                    newPage.composer.quotedBody = qsTr("-------- Forwarded Message --------") + messageListModel.quotedBody (scene.currentMessageIndex);
-                    newPage.composer.subject = qsTr("[Fwd: %1]").arg(messageListModel.subject (scene.currentMessageIndex));
-                    scene.mailAttachments = messageListModel.attachments(scene.currentMessageIndex);
+                    newPage.composer.quotedBody = "\n" + qsTr("-------- Forwarded Message --------") + messageListModel.quotedBody (window.currentMessageIndex);
+                    newPage.composer.subject = qsTr("[Fwd: %1]").arg(messageListModel.subject (window.currentMessageIndex));
+                    window.mailAttachments = messageListModel.attachments(window.currentMessageIndex);
                     mailAttachmentModel.init();
                     newPage.composer.attachmentsModel = mailAttachmentModel;
                 }
@@ -138,19 +142,19 @@ Item {
                     if ( emailAgent.confirmDeleteMail())
                         verifyDelete.show();
                     else
-                        emailAgent.deleteMessage (scene.mailId);
+                        emailAgent.deleteMessage (window.mailId);
                 }
                 else if (index == 4)   // Mark as read/unread
                 {
-                    if (scene.mailReadFlag)
+                    if (window.mailReadFlag)
                     {
-                        emailAgent.markMessageAsUnread (scene.mailId);
-                        scene.mailReadFlag = 0;
+                        emailAgent.markMessageAsUnread (window.mailId);
+                        window.mailReadFlag = 0;
                     }
                     else
                     {
-                        emailAgent.markMessageAsRead (scene.mailId);
-                        scene.mailReadFlag = 1;
+                        emailAgent.markMessageAsRead (window.mailId);
+                        window.mailReadFlag = 1;
                     }
                 }
             }
@@ -192,7 +196,7 @@ Item {
             height: 90
             width: parent.width
             visible: {
-                var folderServerCount = mailFolderListModel.folderServerCount(scene.currentFolderId);
+                var folderServerCount = mailFolderListModel.folderServerCount(window.currentFolderId);
                 if (messageListView.count < folderServerCount)
                     return true;
                 else
@@ -211,7 +215,7 @@ Item {
                 }
                 onClicked: {
                     gettingMoreMessages = true;
-                    emailAgent.getMoreMessages(scene.currentFolderId);
+                    emailAgent.getMoreMessages(window.currentFolderId);
                 }
             }
         }
@@ -375,7 +379,7 @@ Item {
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    if (scene.folderListViewClickCount == 0)
+                    if (window.folderListViewClickCount == 0)
                     {
                         if (inSelectMode)
                         {
@@ -392,39 +396,39 @@ Item {
                         }
                         else
                         {
-                            scene.mailId = messageId;
-                            scene.mailSubject = subject;
-                            scene.mailSender = sender;
-                            scene.mailTimeStamp = timeStamp;
-                            scene.mailBody = body;
-                            scene.mailQuotedBody = quotedBody;
-                            scene.mailHtmlBody = htmlBody;
-                            scene.mailAttachments = listOfAttachments;
-                            scene.numberOfMailAttachments = numberOfAttachments;
-                            scene.mailRecipients = recipients;
+                            window.mailId = messageId;
+                            window.mailSubject = subject;
+                            window.mailSender = sender;
+                            window.mailTimeStamp = timeStamp;
+                            window.mailBody = body;
+                            window.mailQuotedBody = quotedBody;
+                            window.mailHtmlBody = htmlBody;
+                            window.mailAttachments = listOfAttachments;
+                            window.numberOfMailAttachments = numberOfAttachments;
+                            window.mailRecipients = recipients;
                             toListModel.init();
-                            scene.mailCc = cc;
+                            window.mailCc = cc;
                             ccListModel.init();
-                            scene.mailBcc = bcc;
+                            window.mailBcc = bcc;
                             bccListModel.init();
-                            scene.currentMessageIndex = index;
+                            window.currentMessageIndex = index;
                             mailAttachmentModel.init();
                             emailAgent.markMessageAsRead (messageId);
-                            scene.mailReadFlag = true;
-                            folderListView.addApplicationPage(reader);
+                            window.mailReadFlag = true;
+                            window.addPage(reader);
                         }
-                        scene.folderListViewClickCount = 0;
+                        window.folderListViewClickCount = 0;
                         return;
                     }
-                    scene.folderListViewClickCount++;
+                    window.folderListViewClickCount++;
                 }
                 onPressAndHold: {
                     if (inSelectMode)
                         return;
-                    scene.mailId = messageId;
-                    scene.mailReadFlag = readStatus;
-                    scene.currentMessageIndex = index;
-                    var map = mapToItem(scene, mouseX, mouseY);
+                    window.mailId = messageId;
+                    window.mailReadFlag = readStatus;
+                    window.currentMessageIndex = index;
+                    var map = mapToItem(folderListViewTopItem.topItem, mouseX, mouseY);
                     contextMenu.model = [qsTr("Reply"), qsTr("Reply to all"), qsTr("Forward"), qsTr("Delete"), 
                                          readStatus ? qsTr("Mark as unread") : qsTr("Mark as read")]
                     contextMenu.setPosition(map.x, map.y);

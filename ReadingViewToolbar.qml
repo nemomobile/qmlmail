@@ -14,7 +14,7 @@ Item {
     id: container
 
     height: navigationBar.height
-    width: scene.content.width
+    width: window.content.width
 
     property int buttonWidth: (parent.width - 4) / 5
 
@@ -50,21 +50,21 @@ Item {
             }
         }
         onAccepted: {
-            emailAgent.deleteMessage (scene.mailId);
-            scene.previousApplicationPage();
+            emailAgent.deleteMessage (window.mailId);
+            window.popPage();
         }
     }
 
     function deleteMessage()
     {
-        emailAgent.deleteMessage (scene.mailId);
-        scene.previousApplicationPage();
+        emailAgent.deleteMessage (window.mailId);
+        window.popPage();
     }
 
     function setMessageDetails (composer, messageID, replyToAll) {
         var dateline = qsTr ("On %1 %2 wrote:").arg(messageListModel.timeStamp (messageID)).arg(messageListModel.mailSender (messageID));
 
-        composer.quotedBody = dateline + "\n" + messageListModel.quotedBody (messageID); //i18n ok
+        composer.quotedBody = "\n" + dateline + "\n" + messageListModel.quotedBody (messageID); //i18n ok
         attachmentsModel.clear();
         composer.attachmentsModel = attachmentsModel;
         toModel.clear();
@@ -106,15 +106,15 @@ Item {
 
         Item {
             id: composeButton
-            width: (scene.content.width - 4) / 5
+            width: (parent.width - 4) / 5
 
             ToolbarButton {
                 anchors.horizontalCenter: composeButton.horizontalCenter
                 iconName: "mail-compose"
                 onClicked: {
                     var newPage;
-                    scene.addApplicationPage (composer);
-                    newPage = scene.currentApplication;
+                    window.addPage (composer);
+                    newPage = window.pageStack.currentPage;
                     attachmentsModel.clear();
                     newPage.composer.attachmentsModel = attachmentsModel;
                 }
@@ -129,16 +129,16 @@ Item {
         Item {
             id: replyButton
             anchors.left: separator1.right
-            width: (scene.content.width - 4) / 5
+            width: (parent.width - 4) / 5
             ToolbarButton {
                 anchors.horizontalCenter: replyButton.horizontalCenter
                 iconName: "mail-reply"
                 onClicked: {
                     var newPage;
 
-                    scene.addApplicationPage (composer);
-                    newPage = scene.currentApplication;
-                    setMessageDetails (newPage.composer, scene.currentMessageIndex, false);
+                    window.addPage (composer);
+                    newPage = window.pageStack.currentPage;
+                    setMessageDetails (newPage.composer, window.currentMessageIndex, false);
 		}
 	    }
         }
@@ -152,16 +152,16 @@ Item {
         Item {
             id:replyallButton
             anchors.left: separator2.right
-            width: (scene.content.width - 4) / 5
+            width: (parent.width - 4) / 5
             ToolbarButton {
                 anchors.horizontalCenter: replyallButton.horizontalCenter
                 iconName: "mail-reply-all"
                 onClicked: {
                     var newPage;
 
-                    scene.addApplicationPage (composer);
-                newPage = scene.currentApplication;
-                    setMessageDetails (newPage.composer, scene.currentMessageIndex, true);
+                    window.addPage (composer);
+                    newPage = window.pageStack.currentPage;
+                    setMessageDetails (newPage.composer, window.currentMessageIndex, true);
                 }
             }
         }
@@ -175,18 +175,18 @@ Item {
         Item {
             id:forwardButton
             anchors.left: separator3.right
-            width: (scene.content.width - 4) / 5
+            width: (parent.width - 4) / 5
             ToolbarButton {
                 anchors.horizontalCenter: forwardButton.horizontalCenter
                 iconName: "mail-forward"
                 onClicked: {
                     var newPage;
 
-                    scene.addApplicationPage (composer);
-                    newPage = scene.currentApplication;
+                    window.addPage (composer);
+                    newPage = window.pageStack.currentPage;
 
-                    newPage.composer.quotedBody = qsTr("-------- Forwarded Message --------") + messageListModel.quotedBody (scene.currentMessageIndex);
-                    newPage.composer.subject = qsTr("[Fwd: %1]").arg(messageListModel.subject (scene.currentMessageIndex));
+                    newPage.composer.quotedBody = "\n" + qsTr("-------- Forwarded Message --------") + messageListModel.quotedBody (window.currentMessageIndex);
+                    newPage.composer.subject = qsTr("[Fwd: %1]").arg(messageListModel.subject (window.currentMessageIndex));
                     newPage.composer.attachmentsModel = mailAttachmentModel;
                 }
             }
@@ -201,7 +201,7 @@ Item {
         Item {
             id: deleteButton
             anchors.left: separator4.right
-            width: (scene.content.width - 4) / 5
+            width: (parent.width - 4) / 5
             ToolbarButton {
                 anchors.horizontalCenter: deleteButton.horizontalCenter
                 iconName: "edit-delete"

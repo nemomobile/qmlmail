@@ -53,7 +53,7 @@ Item {
                 id: editPane
                 font.pixelSize: theme_fontPixelSizeLarge
                 text : {
-                    var sig = emailAgent.getSignatureForAccount(scene.currentMailAccountId);
+                    var sig = emailAgent.getSignatureForAccount(window.currentMailAccountId);
                     if (sig == "")
                         return composer.quotedBody;
                     else

@@ -67,30 +67,30 @@ Item {
             Image {
                 id: refreshImage
                 anchors.centerIn: parent
-                opacity: scene.refreshInProgress ? 0 : 1
+                opacity: window.refreshInProgress ? 0 : 1
                 source: "image://meegotheme/icons/actionbar/view-sync"
             }
 
             EmailSpinner {
                 id: spinner
                 anchors.centerIn: parent
-                opacity: scene.refreshInProgress ? 1 : 0
-                spinning: scene.refreshInProgress
+                opacity: window.refreshInProgress ? 1 : 0
+                spinning: window.refreshInProgress
                 maxSpinTime: 3600000
             }
 
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    if (scene.refreshInProgress == true)
+                    if (window.refreshInProgress == true)
                     {
                         emailAgent.cancelSync();
-                        scene.refreshInProgress = false;
+                        window.refreshInProgress = false;
                     }
                     else
                     {
                         emailAgent.accountsSync();
-                        scene.refreshInProgress = true;
+                        window.refreshInProgress = true;
                     }
                 }
             }

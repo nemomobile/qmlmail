@@ -13,8 +13,8 @@ import MeeGo.App.Email 0.1
 
 Item {
     id: container
-    width: scene.width
-    parent: accountListView.content
+    width: window.width
+    parent: accountListView
     anchors.fill: parent
 
     property int topicHeight: 58
@@ -33,7 +33,7 @@ Item {
             var cmd = "/usr/bin/meego-qml-launcher --app meego-ux-settings --opengl --fullscreen --cmd showPage --cdata \"Email\"";  //i18n ok
             appModel.launch(cmd);
         }
-        scene.currentMailAccountIndex = 0;
+        window.currentMailAccountIndex = 0;
     }
 
 
@@ -58,9 +58,9 @@ Item {
             property string accountDisplayName;
             accountDisplayName: {
                 accountDisplayName = displayName;
-                scene.currentAccountDisplayName = displayName;
+                window.currentAccountDisplayName = displayName;
                 if (index == 0)
-                    scene.currentMailAccountId = mailAccountId;
+                    window.currentMailAccountId = mailAccountId;
             }
 
             Image {
@@ -146,18 +146,19 @@ Item {
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    if (scene.accountPageClickCount == 0)
+                    if (window.accountPageClickCount == 0)
                     {
                         listView.currentIndex = index;
-                        scene.currentMailAccountId = mailAccountId;
-                        scene.currentMailAccountIndex = index;
-                        scene.currentAccountDisplayName = displayName;
+                        window.currentMailAccountId = mailAccountId;
+                        window.currentMailAccountIndex = index;
+                        window.currentAccountDisplayName = displayName;
                         messageListModel.setAccountKey (mailAccountId);
-                        scene.folderListViewTitle = qsTr("%1 %2").arg(scene.currentAccountDisplayName).arg(mailFolderListModel.inboxFolderName());
-                        scene.applicationPage = folderList;
-                        scene.currentFolderId = mailFolderListModel.inboxFolderId();
+                        mailFolderListModel.setAccountKey(mailAccountId);
+                        window.folderListViewTitle = window.currentAccountDisplayName + " " + mailFolderListModel.inboxFolderName();
+                        window.switchBook (folderList);
+                        window.currentFolderId = mailFolderListModel.inboxFolderId();
                     }
-                    scene.accountPageClickCount++;
+                    window.accountPageClickCount++;
                 }
             }
         }
@@ -167,7 +168,7 @@ Item {
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: parent.bottom
-        width: scene.width
+        width: window.width
         height: 120
         AccountViewToolbar {}
     }

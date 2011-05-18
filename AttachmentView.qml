@@ -34,6 +34,7 @@ Flickable {
 
             AttachmentPill {
                 uri: modelData
+                parent: container
 
                 onLongPress: {
                     container.attachmentSelected (uri, mX, mY);
