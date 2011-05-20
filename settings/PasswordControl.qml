@@ -47,7 +47,7 @@ Column {
         id: textentry
         anchors.left: parent.left
         anchors.right: parent.right
-        textInput.echoMode: TextInput.Password
+        echoMode: TextInput.Password
         onTextChanged: {
             if (!suppress) {
                 root.textChanged();

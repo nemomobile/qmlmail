@@ -113,16 +113,12 @@ BorderImage {
                     width: input.width
                     height: 35
 
-                    TextInput {
+                    TextEntry {
                         id: input
                         visible: false
 
                         anchors.verticalCenter: parent.verticalCenter
                         inputMethodHints: Qt.ImhEmailCharactersOnly | Qt.ImhNoAutoUppercase
-
-                        CCPContextArea {
-                            editor: parent
-                        }
 
                         function addEmailAddress () {
                             if (text != "") {
