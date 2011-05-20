@@ -44,8 +44,8 @@ class EmailAccount : public QObject {
     Q_PROPERTY(int preset READ preset WRITE setPreset)
 
     // error message and code from configuration test
-    Q_PROPERTY(QString errorMessage READ errorMessage)
-    Q_PROPERTY(int errorCode READ errorCode)
+    Q_PROPERTY(QString errorMessage READ errorMessage NOTIFY testFailed)
+    Q_PROPERTY(int errorCode READ errorCode NOTIFY testFailed)
 
 public:
     EmailAccount();
