@@ -6,7 +6,7 @@
  * http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import Qt 4.7
+import QtQuick 1.0
 import MeeGo.Components 0.1
 import MeeGo.App.Email 0.1
 
@@ -54,6 +54,10 @@ Window {
     property variant argv: [] 
     property variant accountFilterModel: []
 
+    Theme {
+        id: theme
+    }
+
     toolBarTitle: qsTr("Email")
     fullScreen: true
     automaticBookSwitching: false
@@ -81,8 +85,8 @@ Window {
 
                 Text {
                     text: window.errMsg;
-                    color:theme_fontColorNormal
-                    font.pixelSize: theme_fontPixelSizeLarge
+                    color:theme.fontColorNormal
+                    font.pixelSize: theme.fontPixelSizeLarge
                     wrapMode: Text.Wrap
                 }
             }

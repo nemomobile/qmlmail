@@ -6,7 +6,7 @@
  * http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import Qt 4.7
+import QtQuick 1.0
 import MeeGo.Components 0.1
 import MeeGo.App.Email 0.1
 import QtWebKit 1.0
@@ -48,8 +48,8 @@ Item {
             anchors.margins: 10
             Text {
                 text: qsTr("File format is not supported.");
-                color: theme_fontColorNormal
-                font.pixelSize: theme_fontPixelSizeLarge
+                color: theme.fontColorNormal
+                font.pixelSize: theme.fontPixelSizeLarge
                 wrapMode: Text.Wrap
             }
         }
@@ -114,7 +114,7 @@ Item {
             anchors.topMargin: 1
             Text {
                 width: subjectLabel.width
-                font.pixelSize: theme_fontPixelSizeMedium
+                font.pixelSize: theme.fontPixelSizeMedium
                 text: qsTr("From:")
                 anchors.verticalCenter: parent.verticalCenter
                 horizontalAlignment: Text.AlignRight
@@ -148,7 +148,7 @@ Item {
             Text {
                 width: subjectLabel.width
                 id: toLabel
-                font.pixelSize: theme_fontPixelSizeMedium
+                font.pixelSize: theme.fontPixelSizeMedium
                 text: qsTr("To:")
                 horizontalAlignment: Text.AlignRight
                 anchors.verticalCenter: parent.verticalCenter
@@ -181,13 +181,13 @@ Item {
             anchors.leftMargin: 3
             Text {
                 id: subjectLabel
-                font.pixelSize: theme_fontPixelSizeMedium
+                font.pixelSize: theme.fontPixelSizeMedium
                 text: qsTr("Subject:")
                 anchors.verticalCenter: parent.verticalCenter
             }
             Text {
                 width: subjectRect.width - subjectLabel.width - 10
-                font.pixelSize: theme_fontPixelSizeLarge
+                font.pixelSize: theme.fontPixelSizeLarge
                 text: window.mailSubject
                 anchors.verticalCenter: parent.verticalCenter
                 elide: Text.ElideRight
@@ -287,7 +287,7 @@ console.log ("===========>  " + mX + " - " + mY);
                 focus: true
                 wrapMode: TextEdit.Wrap
                 //textFormat: TextEdit.RichText
-                font.pixelSize: theme_fontPixelSizeLarge
+                font.pixelSize: theme.fontPixelSizeLarge
                 readOnly: true
                 onCursorRectangleChanged: flick.ensureVisible(cursorRectangle)
                 text: window.mailBody
@@ -309,7 +309,7 @@ console.log ("===========>  " + mX + " - " + mY);
 
                         if (window.mailHtmlBody == "") {
                             var newPixelSize = edit.font.pixelSize * gesture.scaleFactor;
-                            edit.font.pixelSize = Math.max(theme_fontPixelSizeLarge, Math.min(newPixelSize, theme_fontPixelSizeLargest3));
+                            edit.font.pixelSize = Math.max(theme.fontPixelSizeLarge, Math.min(newPixelSize, theme.fontPixelSizeLargest3));
                         } else {
                             var newScale = htmlViewer.contentsScale * gesture.scaleFactor;
                             var minScale = 1.0;
@@ -401,8 +401,8 @@ console.log ("===========>  " + mX + " - " + mY);
             anchors.top: parent.top
             horizontalAlignment: Text.AlignLeft
             verticalAlignment:Text.AlignVCenter
-            font.pixelSize: theme_fontPixelSizeLarge
-            color: theme_fontColorMediaHighlight
+            font.pixelSize: theme.fontPixelSizeLarge
+            color: theme.fontColorMediaHighlight
             text: qsTr("Downloading...")
         }
     }
@@ -417,7 +417,7 @@ console.log ("===========>  " + mX + " - " + mY);
     BorderImage {
         id: navigationBar
         width: parent.width
-        source: "image://meegotheme/widgets/common/action-bar/action-bar-background"
+        source: "image://themedimage/widgets/common/action-bar/action-bar-background"
     }
 
         ToolbarButton  {

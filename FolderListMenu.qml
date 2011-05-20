@@ -6,7 +6,8 @@
  * http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import Qt 4.7
+import QtQuick 1.0
+import MeeGo.Components 0.1
 import MeeGo.App.Email 0.1
 import Qt.labs.gestures 2.0
 
@@ -30,6 +31,7 @@ Item {
     }
     
     width: Math.max(sortTitle.width, goToFolderTitle.width) + 30
+
     Item {
         id: sort
         height: 50
@@ -42,12 +44,13 @@ Item {
             anchors.left: parent.left
             anchors.leftMargin: 10
             anchors.verticalCenter: parent.verticalCenter
-            color:theme_fontColorNormal
-            font.pixelSize: theme_fontPixelSizeLarge
+            color:theme.fontColorNormal
+            font.pixelSize: theme.fontPixelSizeLarge
             horizontalAlignment: Text.AlignLeft
             elide: Text.ElideRight
         }
     }
+
     SortFilter {
         id: sortFilter
         anchors.top: sort.bottom
@@ -102,8 +105,8 @@ Item {
             anchors.left: parent.left
             anchors.leftMargin: 10
             anchors.verticalCenter: parent.verticalCenter
-            color:theme_fontColorNormal
-            font.pixelSize: theme_fontPixelSizeLarge
+            color:theme.fontColorNormal
+            font.pixelSize: theme.fontPixelSizeLarge
             horizontalAlignment: Text.AlignLeft
             elide: Text.ElideRight
         }
@@ -134,8 +137,8 @@ Item {
                 id: folderLabel
                 height: 50
                 text:  folderName
-                font.pixelSize: theme_fontPixelSizeLarge
-                color:theme_fontColorNormal
+                font.pixelSize: theme.fontPixelSizeLarge
+                color:theme.fontColorNormal
                 anchors.left: parent.left
                 anchors.leftMargin: 15
                 verticalAlignment: Text.AlignVCenter
@@ -143,11 +146,11 @@ Item {
             }
             Text {
                 height: 50
-                font.pixelSize: theme_fontPixelSizeLarge
+                font.pixelSize: theme.fontPixelSizeLarge
                 text: qsTr("(%1)").arg(folderUnreadCount)
                 anchors.left: folderLabel.right
                 anchors.leftMargin: 10
-                color:theme_fontColorNormal
+                color:theme.fontColorNormal
                 verticalAlignment: Text.AlignVCenter
                 opacity: folderUnreadCount ? 1 : 0
             }

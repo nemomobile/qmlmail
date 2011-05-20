@@ -6,7 +6,7 @@
  * http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import Qt 4.7
+import QtQuick 1.0
 import MeeGo.Components 0.1
 import MeeGo.App.Email 0.1
 
@@ -29,6 +29,7 @@ Item {
         window.folderListViewClickCount = 0;
         gettingMoreMessages = false;
     }
+
     Connections {
         target: emailAgent
         onSyncCompleted: {
@@ -172,8 +173,8 @@ Item {
             id:confirmMsg
             text: qsTr ("There are no messages in this folder.")
             anchors.centerIn: emptyMailboxView
-            color:theme_fontColorNormal
-            font.pixelSize: theme_fontPixelSizeLarge
+            color:theme.fontColorNormal
+            font.pixelSize: theme.fontPixelSizeLarge
             elide: Text.ElideRight
         }
     }
@@ -222,7 +223,7 @@ Item {
 
         delegate: Rectangle {
             id: dinstance
-            height: theme_listBackgroundPixelHeightTwo
+            height: theme.listBackgroundPixelHeightTwo
             width: parent.width
             Image {
                 id: itemBackground
@@ -244,7 +245,7 @@ Item {
                 anchors.left: parent.left
                 anchors.leftMargin: 10
                 anchors.verticalCenter: parent.verticalCenter
-                source: "image://meegotheme/widgets/apps/email/email-unread"
+                source: "image://themedimage/widgets/apps/email/email-unread"
                 opacity: {
                     if (inSelectMode == true || readStatus == true)
                         return 0;
@@ -258,7 +259,7 @@ Item {
                 anchors.left: parent.left
                 anchors.leftMargin: 10
                 anchors.verticalCenter: parent.verticalCenter
-                source:"image://meegotheme/widgets/common/checkbox/checkbox-background"
+                source:"image://themedimage/widgets/common/checkbox/checkbox-background"
                 opacity: (inSelectMode == true && selected == 0) ? 1 : 0
             }
 
@@ -267,7 +268,7 @@ Item {
                 anchors.left: parent.left
                 anchors.leftMargin: 10
                 anchors.verticalCenter: parent.verticalCenter
-                source:"image://meegotheme/widgets/common/checkbox/checkbox-background-active"
+                source:"image://themedimage/widgets/common/checkbox/checkbox-background-active"
                 opacity: (inSelectMode == true && selected == 1) ? 1 : 0
             }
 
@@ -282,7 +283,7 @@ Item {
                 {
                     a = "";
                 }
-                a[0] == undefined ? "":a[0];
+                a[0] == undefined ? "" : a[0];
             }
            
             Item {
@@ -290,7 +291,7 @@ Item {
                 anchors.top: parent.top
                 anchors.left: parent.left
                 width: parent.width
-                height: theme_listBackgroundPixelHeightTwo / 2
+                height: theme.listBackgroundPixelHeightTwo / 2
 
                 Text {
                     id: senderText
@@ -299,7 +300,7 @@ Item {
                     width: (parent.width * 2) / 3
                     text: senderDisplayName != "" ? senderDisplayName : senderEmailAddress
                     font.bold: readStatus ? false : true
-                    font.pixelSize: theme_fontPixelSizeNormal
+                    font.pixelSize: theme.fontPixelSizeNormal
                     anchors.bottom: parent.bottom
                     anchors.bottomMargin: 4
                     elide: Text.ElideRight
@@ -307,7 +308,7 @@ Item {
                 Text {
                     anchors.right: parent.right
                     anchors.rightMargin: 5
-                    font.pixelSize: theme_fontPixelSizeSmall
+                    font.pixelSize: theme.fontPixelSizeSmall
                     anchors.bottom: parent.bottom
                     anchors.bottomMargin: 4
                     text: fuzzy.getFuzzy(qDateTime);
@@ -320,7 +321,7 @@ Item {
                 anchors.right: parent.right
                 anchors.leftMargin: 50
                 width: parent.width
-                height: theme_listBackgroundPixelHeightTwo / 2
+                height: theme.listBackgroundPixelHeightTwo / 2
 
                 Text {
                     id: subjectText
@@ -329,7 +330,7 @@ Item {
                     anchors.topMargin: 4
                     text: subject
                     width: (parent.width * 2) / 3
-                    font.pixelSize: theme_fontPixelSizeNormal
+                    font.pixelSize: theme.fontPixelSizeNormal
                     elide: Text.ElideRight
                 }
                 Image {
@@ -351,7 +352,7 @@ Item {
                         id: numberOfAttachmentLabel
                         anchors.verticalCenter: parent.verticalCenter
                         text: numberOfAttachments + " " // i18n ok
-                        font.pixelSize: theme_fontPixelSizeNormal
+                        font.pixelSize: theme.fontPixelSizeNormal
                     }
                     opacity: numberOfAttachments ? 1 : 0
                 }

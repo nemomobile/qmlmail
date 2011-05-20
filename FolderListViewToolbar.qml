@@ -6,7 +6,7 @@
  * http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import Qt 4.7
+import QtQuick 1.0
 import MeeGo.Components 0.1
 import MeeGo.App.Email 0.1
 
@@ -24,7 +24,7 @@ Item {
     BorderImage {
         id: navigationBarImage
         width: parent.width
-        source: "image://meegotheme/widgets/common/action-bar/action-bar-background"
+        source: "image://themedimage/widgets/common/action-bar/action-bar-background"
     }
     Item {
         anchors.fill: parent
@@ -85,7 +85,7 @@ Item {
                 id: refreshImage
                 anchors.centerIn: parent
                 opacity: window.refreshInProgress ? 0 : 1
-                source: "image://meegotheme/icons/actionbar/view-sync"
+                source: "image://themedimage/icons/actionbar/view-sync"
             }
 
             EmailSpinner {

@@ -6,7 +6,7 @@
  * http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import Qt 4.7
+import QtQuick 1.0
 import MeeGo.Components 0.1
 import MeeGo.App.Email 0.1
 
@@ -44,8 +44,8 @@ Item {
 
             Text {
                 text: qsTr ("Are you sure you want to delete this email?")
-                color:theme_fontColorNormal
-                font.pixelSize: theme_fontPixelSizeLarge
+                color:theme.fontColorNormal
+                font.pixelSize: theme.fontPixelSizeLarge
                 wrapMode: Text.Wrap
             }
         }
@@ -98,7 +98,7 @@ Item {
     BorderImage {
         id: navigationBar
         width: parent.width
-        source: "image://meegotheme/widgets/common/action-bar/action-bar-background"
+        source: "image://themedimage/widgets/common/action-bar/action-bar-background"
     }
     Item  {
         anchors.left: parent.left
@@ -123,7 +123,7 @@ Item {
         Image {
             id: separator1
             anchors.left: composeButton.right
-            source: "image://meegotheme/widgets/common/action-bar/action-bar-separator"
+            source: "image://themedimage/widgets/common/action-bar/action-bar-separator"
         }
 
         Item {
@@ -146,7 +146,7 @@ Item {
         Image {
             id: separator2
             anchors.left: replyButton.right
-            source: "image://meegotheme/widgets/common/action-bar/action-bar-separator"
+            source: "image://themedimage/widgets/common/action-bar/action-bar-separator"
         }
 
         Item {
@@ -169,7 +169,7 @@ Item {
         Image {
             id: separator3
             anchors.left: replyallButton.right
-            source: "image://meegotheme/widgets/common/action-bar/action-bar-separator"
+            source: "image://themedimage/widgets/common/action-bar/action-bar-separator"
         }
 
         Item {
@@ -195,7 +195,7 @@ Item {
         Image {
             id: separator4
             anchors.left: forwardButton.right
-            source: "image://meegotheme/widgets/common/action-bar/action-bar-separator"
+            source: "image://themedimage/widgets/common/action-bar/action-bar-separator"
         }
 
         Item {

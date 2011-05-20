@@ -6,7 +6,7 @@
  * http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import Qt 4.7
+import QtQuick 1.0
 import MeeGo.Labs.Components 0.1 as Labs
 import MeeGo.Components 0.1
 import MeeGo.App.Email 0.1
@@ -53,7 +53,7 @@ Item {
         delegate: Rectangle {
             id: accountItem
             width: container.width
-            height: theme_listBackgroundPixelHeightTwo
+            height: theme.listBackgroundPixelHeightTwo
 
             property string accountDisplayName;
             accountDisplayName: {
@@ -73,28 +73,27 @@ Item {
             accountImage: {
                 if (mailServer == "gmail")
                 {
-                    "image://meegotheme/icons/services/gmail"
+                    "image://themedimage/icons/services/gmail"
                 }
                 else if (mailServer == "msn" || mailServer == "hotmail")
                 {
-                    "image://meegotheme/icons/services/msmail"
+                    "image://themedimage/icons/services/msmail"
                 }
                 else if (mailServer == "facebook")
                 {
-                    "image://meegotheme/icons/services/facebook"
+                    "image://themedimage/icons/services/facebook"
                 }
                 else if (mailServer == "yahoo")
                 {
-                    //"image://meegotheme/icons/services/yahoo"
-                    "image://theme/email/icn_yahoo"
+                    "image://themedimage/icons/services/yahoo"
                 }
                 else if (mailServer == "aol")
                 {
-                    "image://meegotheme/icons/services/aim"
+                    "image://themedimage/icons/services/aim"
                 }
                 else
                 {
-                    "image://meegotheme/icons/services/generic"
+                    "image://themedimage/icons/services/generic"
                 }
             }
 
@@ -108,7 +107,7 @@ Item {
             Text {
                 id: accountName
                 height: parent.height
-                font.pixelSize: theme_fontPixelSizeLarge
+                font.pixelSize: theme.fontPixelSizeLarge
                 anchors.left: parent.left
                 anchors.leftMargin: 100
                 verticalAlignment: Text.AlignVCenter
@@ -122,7 +121,7 @@ Item {
                 anchors.verticalCenter: parent.verticalCenter
                 width: 50
                 fillMode: Image.Stretch
-                source: "image://meegotheme/widgets/apps/email/accounts-unread"
+                source: "image://themedimage/widgets/apps/email/accounts-unread"
 
                 Text {
                     id: text
@@ -130,8 +129,8 @@ Item {
                     anchors.horizontalCenter: parent.horizontalCenter
                     verticalAlignment: Text.AlignVCenter
                     text: unreadCount
-                    font.pixelSize: theme_fontPixelSizeMedium
-                    color: theme_fontColorNormal
+                    font.pixelSize: theme.fontPixelSizeMedium
+                    color: theme.fontColorNormal
                 }
             }
 

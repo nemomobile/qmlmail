@@ -6,7 +6,7 @@
  * http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import Qt 4.7
+import QtQuick 1.0
 import MeeGo.Components 0.1
 
 Item {
@@ -51,7 +51,7 @@ Item {
 
             TextField {
                 id: editPane
-                font.pixelSize: theme_fontPixelSizeLarge
+                font.pixelSize: theme.fontPixelSizeLarge
                 text : {
                     var sig = emailAgent.getSignatureForAccount(window.currentMailAccountId);
                     if (sig == "")
