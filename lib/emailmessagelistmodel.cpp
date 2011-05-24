@@ -629,11 +629,28 @@ void EmailMessageListModel::deSelectMessage (int idx )
     dataChanged(index(idx), index(idx));
 }
 
+void EmailMessageListModel::moveSelectedMessageIds(QVariant vFolderId)
+{
+    if (m_selectedMsgIds.empty())
+        return;
+
+    QMailFolderId const id(vFolderId.value<QMailFolderId>());
+
+    QMailMessage const msg(m_selectedMsgIds[0]);
+
+    m_storageAction->moveMessages(m_selectedMsgIds, id);
+    m_selectedMsgIds.clear();
+    m_retrievalAction->exportUpdates(msg.parentAccountId());
+}
+
+
 void EmailMessageListModel::deleteSelectedMessageIds()
 {
-    if (m_selectedMsgIds.size() == 0)
+    if (m_selectedMsgIds.empty())
         return;
-    QMailMessage msg (m_selectedMsgIds[0]);
+
+    QMailMessage const msg(m_selectedMsgIds[0]);
+
     m_storageAction->deleteMessages(m_selectedMsgIds);
     m_selectedMsgIds.clear();
     m_retrievalAction->exportUpdates(msg.parentAccountId());
