@@ -215,17 +215,17 @@ Item {
         }
 
         MessageAction {
-            id: moveAction
-            iconName: "mail-movetofolder"
-            action: messageMover
-        }
-
-        MessageAction {
             id: deleteAction
             iconName: "edit-delete"
             action: messageDeleter
+        }
 
-            anchors.left: moveAction.right
+        MessageAction {
+            id: moveAction
+            iconName: "mail-movetofolder"
+            action: messageMover
+
+            anchors.left: deleteAction.right
         }
 
         // Separator left of the exit button on the far right.

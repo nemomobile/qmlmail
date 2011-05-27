@@ -17,7 +17,6 @@ Item {
     anchors.fill: parent
 
     property string chooseFolder: qsTr("Choose folder:")
-    property string createNewFolder: qsTr("Create new folder")
     property string renameFolder: qsTr("Rename folder")
     property string deleteFolder: qsTr("Delete folder")
     property string attachments: qsTr("Attachments")
