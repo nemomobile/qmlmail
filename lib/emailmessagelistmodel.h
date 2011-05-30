@@ -89,6 +89,8 @@ public slots:
     Q_INVOKABLE void moveSelectedMessageIds(QVariant vFolderId);
     Q_INVOKABLE void deleteSelectedMessageIds();
 
+    void foldersAdded(const QMailFolderIdList &folderIds);
+
 private slots:
     void downloadActivityChanged(QMailServiceAction::Activity);
 
