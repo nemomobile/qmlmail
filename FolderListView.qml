@@ -91,6 +91,11 @@ Item {
         composer.subject = "Re: " + messageListModel.subject (messageID);  //i18n ok
     }
 
+    function isDraftFolder()
+    {
+        return folderListContainer.parent.pageTitle.indexOf( qsTr("Drafts") ) != -1 ;
+    }
+
     ModalDialog {
         id: verifyDelete
         acceptButtonText: qsTr ("Yes")
@@ -415,7 +420,14 @@ Item {
                             mailAttachmentModel.init();
                             emailAgent.markMessageAsRead (messageId);
                             window.mailReadFlag = true;
-                            window.addPage(reader);
+
+                            if ( isDraftFolder() )
+                            {   window.editableDraft= true
+				window.addPage(composer);
+                            }
+                            else
+                                window.addPage(reader);
+
                         }
                         window.folderListViewClickCount = 0;
                         return;

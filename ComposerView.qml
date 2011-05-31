@@ -15,6 +15,7 @@ Item {
     id: composerViewContainer
 
     property alias composer: composer
+
     parent: composerPage
     width: parent.width
     height: parent.height
@@ -68,8 +69,6 @@ Item {
                 var i;
                 var message;
 
-                console.log ("Send email");
-
                 composer.completeEmailAddresses ();
 
                 message = messageComponent.createObject (composer);
@@ -107,7 +106,7 @@ Item {
                 window.popPage ();
             }
         }
-
+63
         ToolbarDivider {
             id: division1
             anchors.left: sendButton.right
@@ -129,6 +128,9 @@ Item {
 
                 composer.completeEmailAddresses ();
 
+                //if this is a draft e-mail, the old draft needs to be deleted
+                emailAgent.deleteMessage (window.mailId)
+
                 message = messageComponent.createObject (composer);
                 message.setFrom (mailAccountListModel.getEmailAddressByIndex(composer.fromEmail));
 
@@ -136,6 +138,8 @@ Item {
                 for (i = 0; i < composer.toModel.count; i++) {
                     to[i] = composer.toModel.get (i).email;
                 }
+
+
                 message.setTo (to);
 
                 var cc = new Array ();
@@ -244,3 +248,4 @@ Item {
 
 
 }
+
