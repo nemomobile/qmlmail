@@ -8,13 +8,15 @@
 
 import QtQuick 1.0
 import MeeGo.Components 0.1
+import MeeGo.App.Email 0.1
+
 
 Item {
     id: composer
 
     property string quotedBody: "";
 
-    property alias body: editPane.text;
+    property alias body: editPane.html;
     property alias toModel: header.toModel
     property alias ccModel: header.ccModel
     property alias bccModel: header.bccModel
@@ -25,46 +27,43 @@ Item {
     property alias fromEmail: header.fromEmail
     property alias header: header
 
+
     function completeEmailAddresses () {
         header.completeEmailAddresses ();
     }
 
-    Column {
-        anchors.fill: parent
-        anchors.topMargin: 10
-        spacing: 5
 
-        EmailHeader {
-            id: header
+    EmailHeader {
+        id: header
+        anchors.top: parent.top
+        anchors.topMargin:  10
+        width: parent.width
+        x: 10
+        z: 1000
+    }
 
-            width: parent.width
-            x: 10
-            z: 1000
-        }
+    Image {
+        width: parent.width
+        anchors.top:  header.bottom
+        anchors.topMargin: 5
+        anchors.bottom:parent.bottom
 
-        Image {
-            width: parent.width
-            anchors.top:  header.bottom
-            anchors.bottom:parent.bottom
+        source: "image://theme/email/bg_reademail_l"
 
-            source: "image://theme/email/bg_reademail_l"
+        HtmlField {
+            id: editPane
+            html : {
+                var sig = emailAgent.getSignatureForAccount(window.currentMailAccountId);
+                if (sig == "")
+                    return composer.quotedBody;
+                else
+                    return (composer.quotedBody + "\n-- \n" + sig + "\n");
+            }
 
-            TextField {
-                id: editPane
-                font.pixelSize: theme.fontPixelSizeLarge
-                text : {
-                    var sig = emailAgent.getSignatureForAccount(window.currentMailAccountId);
-                    if (sig == "")
-                        return composer.quotedBody;
-                    else
-                        return (composer.quotedBody + "\n-- \n" + sig + "\n");
-                }
+            anchors.fill: parent
 
-                anchors.fill: parent
-
-                onFocusChanged: {
-                    console.log ("Focus changed " + focus);
-                }
+            onFocusChanged: {
+                console.log ("Focus changed " + focus);
             }
         }
     }

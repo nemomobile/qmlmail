@@ -61,7 +61,26 @@ Item {
     function setMessageDetails (composer, messageID, replyToAll) {
         var dateline = qsTr ("On %1 %2 wrote:").arg(messageListModel.timeStamp (messageID)).arg(messageListModel.mailSender (messageID));
 
-        composer.quotedBody = "\n" + dateline + "\n" +  messageListModel.quotedBody (messageID); //i18n ok
+        // TO DO:
+        //   1) The following defaults to HTML editing for now but should be changed to do
+        //      plain text edting, and quotation style, if the message has no html content.
+        //
+        //   2) The following logic occurs in more than one place and should be moved to a single
+        //      location. Maybe this should be pushed down into messageListModel.quotedBody?
+        //
+        // if (messageListModel.hasHtml(messageID))
+        if (true)
+        {
+            composer.quotedBody = "<DIV CONTENTEDITABLE><br><br></DIV>"
+            composer.quotedBody += "<p>" + dateline + "</p>\n";
+            composer.quotedBody += "<blockquote style=\"margin: 0pt 0pt 0pt 0.8ex; border-left: 1px solid rgb(204, 204, 204); padding-left: 1ex;\">\n";
+            composer.quotedBody += messageListModel.htmlBody(window.currentMessageIndex) + "\n</blockquote>\n";
+        }
+        else
+        {
+            composer.quotedBody = "\n" + dateline + "\n" + messageListModel.quotedBody (messageID); //i18n ok
+        }
+
         attachmentsModel.clear();
         composer.attachmentsModel = attachmentsModel;
         toModel.clear();
@@ -131,7 +150,26 @@ Item {
                     window.addPage (composer);
                     newPage = window.pageStack.currentPage;
 
-                    newPage.composer.quotedBody = "\n" + qsTr("-------- Forwarded Message --------") + messageListModel.quotedBody (window.currentMessageIndex);
+                    // TO DO:
+                    //   1) The following defaults to HTML editing for now but should be changed to do
+                    //      plain text edting, and quotation style, if the message has no html content.
+                    //
+                    //   2) The following logic occurs in more than one place and should be moved to a single
+                    //      location. Maybe this should be pushed down into messageListModel.quotedBody?
+                    //
+                    // if (messageListModel.hasHtml(messageID))
+                    if (true)
+                    {
+                        newPage.composer.quotedBody = "<DIV CONTENTEDITABLE><br><br></DIV>"
+                        newPage.composer.quotedBody += "<p>" + qsTr("-------- Forwarded Message --------") + "</p>\n";
+                        newPage.composer.quotedBody += "<blockquote style=\"margin: 0pt 0pt 0pt 0.8ex; border-left: 1px solid rgb(204, 204, 204); padding-left: 1ex;\">\n";
+                        newPage.composer.quotedBody += messageListModel.htmlBody(window.currentMessageIndex) + "\n</blockquote>\n";
+                    }
+                    else
+                    {
+                        newPage.composer.quotedBody = "\n" + qsTr("-------- Forwarded Message --------") + messageListModel.quotedBody (window.currentMessageIndex);
+                    }
+
                     newPage.composer.subject = qsTr("[Fwd: %1]").arg(messageListModel.subject (window.currentMessageIndex));
                     window.mailAttachments = messageListModel.attachments(window.currentMessageIndex);
                     mailAttachmentModel.init();
