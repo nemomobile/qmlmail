@@ -23,8 +23,10 @@ Item {
     property bool gettingMoreMessages: false
     property bool inSelectMode: false
     property int numOfSelectedMessages: 0
+    property int folderServerCount: 0
 
     Component.onCompleted: { 
+        folderServerCount = mailFolderListModel.folderServerCount(window.currentFolderId);
         window.folderListViewClickCount = 0;
         gettingMoreMessages = false;
     }
@@ -174,7 +176,7 @@ Item {
         anchors.top: parent.top
         opacity: messageListView.count > 0 ? 0 : 1
         Text {
-            id:confirmMsg
+            id: noMessageText
             text: qsTr ("There are no messages in this folder.")
             anchors.centerIn: emptyMailboxView
             color:theme.fontColorNormal
@@ -201,7 +203,6 @@ Item {
             height: 90
             width: parent.width
             visible: {
-                var folderServerCount = mailFolderListModel.folderServerCount(window.currentFolderId);
                 if (messageListView.count < folderServerCount)
                     return true;
                 else

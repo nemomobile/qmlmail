@@ -164,8 +164,8 @@ Item {
                     window.folderListViewTitle = currentAccountDisplayName + " " + folderName;
                     folderListView.closeMenu();
                     messageListModel.setFolderKey(folderId);
-                    window.popPage();
-                    window.addPage(folderList);
+                    folderList=null;
+                    window.switchBook(folderList);
                 }
             }
         }
@@ -183,8 +183,6 @@ Item {
         height: 50
         anchors.left: parent.left
         anchors.leftMargin: 10
-
-//        anchors.right: createButton.left
         anchors.bottom: folderListMenu.bottom
         text: createNewFolder
         verticalAlignment: Text.AlignVCenter
