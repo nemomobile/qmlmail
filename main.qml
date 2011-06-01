@@ -79,13 +79,13 @@ Window {
             acceptButtonText: qsTr("OK")
             title: qsTr("Error")
 
-            content: Column {
+            content: Item {
                 id:confirmMsg
                 anchors.fill: parent
                 anchors.margins: 10
-
                 Text {
                     text: window.errMsg;
+                    anchors.fill: parent
                     color:theme.fontColorNormal
                     font.pixelSize: theme.fontPixelSizeLarge
                     wrapMode: Text.Wrap
@@ -192,8 +192,6 @@ Window {
         // to prevent "Re: Re: Re: Re: " subjects.
         composer.subject = "Re: " + messageListModel.subject (messageID);  //i18n ok
     }
-
-
 
     FuzzyDateTime {
         id: fuzzy
