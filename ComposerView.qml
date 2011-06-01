@@ -106,7 +106,7 @@ Item {
                 window.popPage ();
             }
         }
-63
+
         ToolbarDivider {
             id: division1
             anchors.left: sendButton.right
