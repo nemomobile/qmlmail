@@ -418,15 +418,38 @@ void EmailMessageListModel::setAccountKey (QVariant id)
     QMailMessageKey accountKey = QMailMessageKey::parentAccountId(ids);
     QMailMessageListModel::setKey(accountKey);
 
-    // default to INBOX for now
-    QMailMessageKey folderKey = QMailMessageKey::parentFolderId(folderIdList);
-    QMailMessageListModel::setKey(folderKey);//!FIXME: should this be folderKey&accountKey?
+    if(folderIdList.count() != 0) {
+        // default to INBOX for now
+        QMailMessageKey folderKey = QMailMessageKey::parentFolderId(folderIdList);
+        QMailMessageListModel::setKey(folderKey);//!FIXME: should this be folderKey&accountKey?
+    } else {
+        connect(QMailStore::instance(), SIGNAL(foldersAdded ( const QMailFolderIdList &)), this, SLOT(foldersAdded( const QMailFolderIdList &)));
+    }
 
     QMailMessageSortKey sortKey = QMailMessageSortKey::timeStamp(Qt::DescendingOrder);
     QMailMessageListModel::setSortKey(sortKey);
 
     m_key= key();
     
+}
+
+void EmailMessageListModel::foldersAdded(const QMailFolderIdList &folderIds)
+{
+    QMailFolderIdList folderIdList;
+    foreach (QMailFolderId folderId, folderIds) {
+        QMailFolder folder(folderId);
+        if (QString::compare(folder.displayName(), "INBOX", Qt::CaseInsensitive) == 0) {
+            folderIdList << folderId;
+            break;
+        }
+    }
+    if(folderIdList.count() != 0) {
+        // default to INBOX for now
+        QMailMessageKey folderKey = QMailMessageKey::parentFolderId(folderIdList);
+        QMailMessageListModel::setKey(folderKey);//!FIXME: should this be folderKey&accountKey?
+        disconnect(QMailStore::instance(), SIGNAL(foldersAdded ( const QMailFolderIdList &)), this, SLOT(foldersAdded( const QMailFolderIdList &)));
+        m_key = key();
+    }
 }
 
 void EmailMessageListModel::sortBySender(int key)
