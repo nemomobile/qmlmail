@@ -1,5 +1,4 @@
-/*
- * Copyright 2011 Intel Corporation.
+opyright 2011 Intel Corporation.
  *
  * This program is licensed under the terms and conditions of the
  * Apache License, version 2.0.  The full text of the Apache License is at
@@ -17,7 +16,7 @@ Item {
     property int mX: 0
     property int mY: 0
 
-    signal longPress (string uri, int mouseX, int mouseY);
+    signal longPress (string uri, int mouseX, int mouseY, int mIndex);
 
     width: leftImage.width + centreImage.width + rightImage.width
     height: centreImage.height
@@ -63,7 +62,8 @@ Item {
             var map = mapToItem(topItem.topItem , mouseX, mouseY);
             mX = map.x;
             mY = map.y;
-            pill.longPress (uri, mX, mY);
+            pill.longPress (uri, mX, mY, index);
         }
     }
 }
+
