@@ -51,6 +51,7 @@ Window {
     property bool refreshInProgress: false
     property bool callFromRemote: false
     property bool composerIsCurrentPage: false
+    property bool composeInTextMode: true
     property string errMsg: "";
     property variant argv: [] 
     property variant accountFilterModel: []

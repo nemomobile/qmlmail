@@ -212,7 +212,6 @@ Item {
             onAttachmentSelected: {
                 container.uri = uri;
                 attachmentContextMenu.model = [openLabel, saveLabel];
-console.log ("===========>  " + mX + " - " + mY);
                 attachmentContextMenu.setPosition(mX, mY);
                 attachmentContextMenu.show();
             }
@@ -313,15 +312,12 @@ console.log ("===========>  " + mX + " - " + mY);
                 transformOrigin: Item.TopLeft
                 anchors.left: parent.left
                 anchors.topMargin: 2
-//                preferredWidth: flick.width
-//                preferredHeight: flick.height
-//                settings.autoLoadImages: true
                 contentsScale: 1
                 focus: true
                 clip: true
                 visible: (window.mailHtmlBody != "")
                 onLinkClicked: {
-                    console.log("\n==============>linkClicked( " + url + " )")
+                    emailAgent.openBrowser(url);
                 }
             }
 
@@ -339,7 +335,6 @@ console.log ("===========>  " + mX + " - " + mY);
                 onCursorRectangleChanged: flick.ensureVisible(cursorRectangle)
                 text: window.mailBody
                 visible:  (window.mailHtmlBody == "")
-//                opacity:  (window.mailHtmlBody == "") ? 1 : 0
             }
 
         }

@@ -29,7 +29,7 @@ public:
     Q_INVOKABLE void setCc (const QStringList &ccList);
     Q_INVOKABLE void setBcc(const QStringList &bccList);
     Q_INVOKABLE void setSubject (const QString &subject);
-    Q_INVOKABLE void setBody (const QString &body);
+    Q_INVOKABLE void setBody (const QString &body, bool textOnly);
     Q_INVOKABLE void setAttachments (const QStringList &uris);
     Q_INVOKABLE void setPriority (Priority priority);
     Q_INVOKABLE void send();
@@ -48,6 +48,7 @@ private:
     QMailAccount m_account;
     QString m_bodyText;
     QStringList m_attachments;
+    bool m_textOnly;
 };
 
 #endif

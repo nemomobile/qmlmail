@@ -21,6 +21,7 @@ EmailMessage::EmailMessage (QDeclarativeItem *parent)
     // set the default priority to normal
     m_msg.appendHeaderField("X-Priority", "3");
     m_msg.appendHeaderField("X-MSMail-Priority", "Normal");
+    m_textOnly = true;   // body type is text by default
 }
 
 EmailMessage::~EmailMessage ()
@@ -67,8 +68,9 @@ void EmailMessage::setSubject (const QString &subject)
     m_msg.setSubject(subject);
 }
 
-void EmailMessage::setBody (const QString &body)
+void EmailMessage::setBody (const QString &body, bool textOnly)
 {
+    m_textOnly = textOnly;
     m_bodyText = body;
 }
 
@@ -98,7 +100,11 @@ void EmailMessage::setPriority (EmailMessage::Priority priority)
 
 void EmailMessage::send()
 {
-    QMailMessageContentType type("text/plain; charset=UTF-8");
+    QMailMessageContentType type;
+    if (m_textOnly)
+        type.setType("text/plain; charset=UTF-8");
+    else
+        type.setType("text/html; charset=UTF-8");
 
     if (m_attachments.size() == 0)
         m_msg.setBody(QMailMessageBody::fromData(m_bodyText, type, QMailMessageBody::Base64));
@@ -146,7 +152,11 @@ void EmailMessage::send()
 
 void EmailMessage::saveDraft()
 {
-    QMailMessageContentType type("text/plain; charset=UTF-8");
+    QMailMessageContentType type;
+    if (m_textOnly)
+        type.setType("text/plain; charset=UTF-8");
+    else
+        type.setType("text/html; charset=UTF-8");
 
     if (m_attachments.size() == 0)
         m_msg.setBody(QMailMessageBody::fromData(m_bodyText, type, QMailMessageBody::Base64));

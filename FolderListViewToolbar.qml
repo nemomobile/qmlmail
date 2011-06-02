@@ -38,6 +38,7 @@ Item {
         iconName: "mail-compose"
             onClicked: {
                 mailAttachmentModel.clear();
+                window.composeInTextMode = true;
                 window.addPage(composer);
             }
         }

@@ -100,7 +100,10 @@ Item {
 
                 message.setSubject (composer.subject);
                 message.setPriority (composer.priority);
-                message.setBody (composer.body);
+                if (window.composeInTextMode)
+                    message.setBody (composer.textBody, true);
+                else
+                    message.setBody (composer.htmlBody, false);
 
                 message.send ();
                 window.popPage ();
@@ -162,7 +165,11 @@ Item {
 
                 message.setSubject (composer.subject);
                 message.setPriority (composer.priority);
-                message.setBody (composer.body);
+                if (window.composeInTextMode)
+                    message.setBody (composer.textBody, true);
+                else
+                    message.setBody (composer.htmlBody, false);
+
 
                 message.saveDraft ();
                 window.popPage ();
