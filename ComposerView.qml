@@ -240,19 +240,13 @@ Item {
         }
     }
 
-    ModalDialog {
+    ModalMessageBox {
         id: verifyCancel
         acceptButtonText: qsTr ("Yes")
         cancelButtonText: qsTr ("Cancel")
         title: qsTr ("Discard Email")
-        content: Text {
-            anchors.leftMargin: 10
-            text: qsTr ("Are you sure you want to discard this unsent email?")
-        }
-
+        text: qsTr ("Are you sure you want to discard this unsent email?")
         onAccepted: { window.popPage () }
     }
-
-
 }
 
