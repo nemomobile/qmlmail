@@ -68,10 +68,7 @@ Item {
         {
             // set the composer to edit in html mode
             window.composeInTextMode = false;
-            composer.quotedBody = "<DIV CONTENTEDITABLE><br><br></DIV>"
-            composer.quotedBody += "<p>" + dateline + "</p>\n";
-            composer.quotedBody += "<blockquote style=\"margin: 0pt 0pt 0pt 0.8ex; border-left: 1px solid rgb(204, 204, 204); padding-left: 1ex;\">\n";
-            composer.quotedBody += htmlBodyText + "\n</blockquote>\n";
+            composer.setQuotedHtmlBody(dateline,htmlBodyText)
         }
         else
         {
@@ -157,10 +154,8 @@ Item {
                     if (htmlBodyText != "")
                     {
                         window.composeInTextMode = false;
-                        newPage.composer.quotedBody = "<DIV CONTENTEDITABLE><br><br></DIV>"
-                        newPage.composer.quotedBody += "<p>" + qsTr("-------- Forwarded Message --------") + "</p>\n";
-                        newPage.composer.quotedBody += "<blockquote style=\"margin: 0pt 0pt 0pt 0.8ex; border-left: 1px solid rgb(204, 204, 204); padding-left: 1ex;\">\n";
-                        newPage.composer.quotedBody += htmlBodyText + "\n</blockquote>\n";
+                        newPage.composer.setQuotedHtmlBody(qsTr("-------- Forwarded Message --------"), htmlBodyText)
+
                     }
                     else
                     {

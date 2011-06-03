@@ -24,10 +24,13 @@ void HtmlField::init()
     QWebPage* page = new QWebPage(this);
     m_gwv->setPage(page);
     connect(page,SIGNAL(contentsChanged()),this,SIGNAL(modifiedChanged()));
+    connect(page,SIGNAL(contentsChanged()),this,SIGNAL(htmlChanged()));
 
     setDelegateLinks(true);
     m_gwv->setAcceptTouchEvents(false);
     m_gwv->setAcceptedMouseButtons(Qt::LeftButton);
+
+    setFocusProxy(m_gwv);
 
     page->mainFrame()->setScrollBarPolicy(Qt::Horizontal, Qt::ScrollBarAlwaysOff);
     page->mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAlwaysOff);
