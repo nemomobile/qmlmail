@@ -67,10 +67,7 @@ Item {
         if (window.mailHtmlBody != "")
         {
             window.composeInTextMode = false;
-            composer.quotedBody = "<DIV CONTENTEDITABLE><br><br></DIV>"
-            composer.quotedBody += "<p>" + dateline + "</p>\n";
-            composer.quotedBody += "<blockquote style=\"margin: 0pt 0pt 0pt 0.8ex; border-left: 1px solid rgb(204, 204, 204); padding-left: 1ex;\">\n";
-            composer.quotedBody += messageListModel.htmlBody(messageID) + "\n</blockquote>\n";
+            composer.setQuotedHtmlBody(dateline, messageListModel.htmlBody(messageID))
         }
         else
         {
@@ -204,10 +201,7 @@ Item {
                     if (window.mailHtmlBody != "")
                     {
                         window.composeInTextMode = false;
-                        newPage.composer.quotedBody = "<DIV CONTENTEDITABLE><br><br></DIV>"
-                        newPage.composer.quotedBody += "<p>" + qsTr("-------- Forwarded Message --------") + "</p>\n";
-                        newPage.composer.quotedBody += "<blockquote style=\"margin: 0pt 0pt 0pt 0.8ex; border-left: 1px solid rgb(204, 204, 204); padding-left: 1ex;\">\n";
-                        newPage.composer.quotedBody += window.mailHtmlBody + "\n</blockquote>\n";
+                        newPage.composer.setQuotedHtmlBody(qsTr("-------- Forwarded Message --------"), window.mailHtmlBody)
                     }
                     else
                     {

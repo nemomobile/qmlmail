@@ -33,6 +33,15 @@ Item {
         header.completeEmailAddresses ();
     }
 
+    function setQuotedHtmlBody(header,quotedHtml) {
+        var newBody;
+        newBody = "<DIV style=\"background-color:#ffffff\"><DIV CONTENTEDITABLE=\"true\"></DIV>" + header + "</DIV>";
+        newBody += "<p>" + qsTr("-------- Forwarded Message --------") + "</p>\n";
+        newBody += "<blockquote style=\"margin: 0pt 0pt 0pt 0.8ex; border-left: 1px solid rgb(204, 204, 204); padding-left: 1ex;\">\n";
+        newBody += quotedHtml + "\n</blockquote>\n";
+        quotedBody = newBody;
+    }
+
     EmailHeader {
         id: header
         anchors.top: parent.top
@@ -52,6 +61,7 @@ Item {
 
         HtmlField {
             id: htmlEditPane
+            anchors.fill: parent
             visible: window.composeInTextMode ? false : true
             html : {
                 var sig = emailAgent.getSignatureForAccount(window.currentMailAccountId);
@@ -59,12 +69,6 @@ Item {
                     return composer.quotedBody;
                 else
                     return (composer.quotedBody + "\n-- \n" + sig + "\n");
-            }
-
-            anchors.fill: parent
-
-            onFocusChanged: {
-                console.log ("Focus changed " + focus);
             }
         }
 
