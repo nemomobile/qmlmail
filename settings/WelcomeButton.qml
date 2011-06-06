@@ -18,6 +18,10 @@ Rectangle {
     height: 80
     color: mousearea.pressed ? "lightgrey" : "white"
 
+    Theme {
+        id: theme
+    }
+
     signal clicked()
 
     Image {
