@@ -4,6 +4,8 @@
 #include <QtDeclarative/QDeclarativeItem>
 #include <QGraphicsWebView>
 
+class HFWebView;
+
 class HtmlField : public QDeclarativeItem {
     Q_OBJECT
 
@@ -65,11 +67,18 @@ private slots:
                                  const QRectF &oldGeometry);
 
 private:
-    QGraphicsWebView *m_gwv;
+    HFWebView *m_gwv;
     void init();
     virtual void componentComplete();
     Q_DISABLE_COPY(HtmlField)
 };
 
+class HFWebView: public QGraphicsWebView
+{
+    Q_OBJECT
+public:
+    HFWebView(QGraphicsItem *parent);
+    void keyPressEvent(QKeyEvent *);
+};
 
 #endif
