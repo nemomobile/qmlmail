@@ -209,7 +209,6 @@ Expandobox {
             Button {
                 anchors.horizontalCenter: parent.horizontalCenter
                 height: 45
-                width: 300
                 text: qsTr("Delete Account")
                 bgSourceUp: "image://theme/btn_red_up"
                 bgSourceDn: "image://theme/btn_red_dn"
