@@ -155,6 +155,7 @@ Item {
                         mailFolderListModel.setAccountKey(mailAccountId);
                         window.folderListViewTitle = window.currentAccountDisplayName + " " + mailFolderListModel.inboxFolderName();
                         window.currentFolderId = mailFolderListModel.inboxFolderId();
+                        window.currentFolderName = mailFolderListModel.inboxFolderName();
                         window.switchBook (folderList);
                     }
                     window.accountPageClickCount++;
