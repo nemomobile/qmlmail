@@ -27,16 +27,27 @@ AppPage {
     }
     Loader {
         id: loader
-//        parent: settingsPage.content
         anchors.fill: parent
     }
     function getHomescreen() {
-        if (accountSettingsModel.rowCount() > 0) {
+        if(mainSaveRestoreState.restoreRequired) {
+            return mainSaveRestoreState.value("emailPageState");
+        }
+        else if (accountSettingsModel.rowCount() > 0) {
             return "SettingsScreen";
         } else {
             return "WelcomeScreen";
         }
     }
+
+    SaveRestoreState {
+        id: mainSaveRestoreState
+        onSaveRequired: {
+            setValue("emailPageState",settingsPage.state);
+        }
+    }
+
+
     state: getHomescreen()
     states: [
         State {
