@@ -89,7 +89,6 @@ Item {
         Button {
             anchors.left: parent.left
             anchors.verticalCenter: parent.verticalCenter
-            width: 200
             height: 45
             anchors.margins: 10
             //color: "white"
@@ -144,7 +143,6 @@ Item {
         Button {
             anchors.right: parent.right
             anchors.verticalCenter: parent.verticalCenter
-            width: 200
             height: 45
             anchors.margins: 10
             //color: "white"
