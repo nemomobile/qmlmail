@@ -22,9 +22,9 @@ class HtmlField : public QDeclarativeItem {
     Q_PROPERTY(bool delegateLinks READ delegateLinks WRITE setDelegateLinks NOTIFY delegateLinksChanged);
 
 public:
-
     Q_INVOKABLE void startZooming();
     Q_INVOKABLE void stopZooming();
+    Q_INVOKABLE bool setFocusElement(const QString& elementName);
 
     HtmlField(QDeclarativeItem *parent = 0);
     ~HtmlField();
