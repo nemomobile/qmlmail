@@ -18,7 +18,7 @@ void HtmlField::init()
     setFlag(QGraphicsItem::ItemHasNoContents, true);
     setClip(true);
 
-    m_gwv = new QGraphicsWebView(this);
+    m_gwv = new HFWebView(this);
     m_gwv->setResizesToContents(true);
 
     QWebPage* page = new QWebPage(this);
@@ -164,4 +164,20 @@ void HtmlField::setContentsScale(qreal scale)
     }
 }
 
+HFWebView::HFWebView(QGraphicsItem *parent)
+    : QGraphicsWebView(parent)
+{
+}
 
+void HFWebView::keyPressEvent(QKeyEvent *event)
+{
+    if (event->key() == Qt::Key_Return) {
+        // Hack Alert. On Meego the QGraphicsWebView is sensitive to the contents of the event()->text() and
+        // for <Return> to work correctly while editing we need to set it to ""
+        QKeyEvent dummyEvent(QEvent::KeyPress,Qt::Key_Return,event->modifiers(),"",event->isAutoRepeat(),event->count());
+        QGraphicsWebView::keyPressEvent(&dummyEvent);
+    } else {
+        // Regular handling
+        QGraphicsWebView::keyPressEvent(event);
+    }
+}

@@ -48,7 +48,6 @@ Item {
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.horizontalCenter: parent.horizontalCenter
                     height: 45
-                    width: 300
                     //font: "Droid Sans"
                     //color: "white"
                     text: qsTr("Done")

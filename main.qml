@@ -25,6 +25,7 @@ Window {
     property variant currentMailAccountId: 0;   // holds the actual QMailAccountId object
     property int currentMailAccountIndex: -1;    // holds the current account index to account list model
     property variant currentFolderId: 0;
+    property string currentFolderName
     property string currentAccountDisplayName;
 
     property string subjectLabel: qsTr("Subject:")
@@ -369,6 +370,7 @@ Window {
             window.folderListViewTitle = currentAccountDisplayName + " " + mailFolderListModel.inboxFolderName();
             window.folderListViewClickCount = 0;
             window.currentFolderId = mailFolderListModel.inboxFolderId();
+            window.currentFolderName = mailFolderListModel.inboxFolderName();
             window.switchBook(folderList);
         }
     }

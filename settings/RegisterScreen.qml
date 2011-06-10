@@ -81,7 +81,7 @@ Item {
         acceptButtonText: qsTr ("Yes")
         cancelButtonText: qsTr ("No")
         title: qsTr ("Discard changes")
-        text: qsTr ("You have made changes to your settings, are you sure you want to cancel?")
+        text: qsTr ("You have made changes to your settings. Are you sure you want to cancel?")
         onAccepted: {
             settingsPage.state = settingsPage.getHomescreen();
         }
@@ -102,7 +102,6 @@ Item {
         Button {
             anchors.left: parent.left
             anchors.verticalCenter: parent.verticalCenter
-            width: 200
             height: 45
             anchors.margins: 10
             //color: "white"
@@ -157,7 +156,6 @@ Item {
         Button {
             anchors.right: parent.right
             anchors.verticalCenter: parent.verticalCenter
-            width: 200
             height: 45
             anchors.margins: 10
             //color: "white"

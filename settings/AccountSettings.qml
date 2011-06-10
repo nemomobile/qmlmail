@@ -2,7 +2,7 @@
  * Copyright 2011 Intel Corporation.
  *
  * This program is licensed under the terms and conditions of the
- * Apache License, version 2.0.  The full text of the Apache License is at 	
+ * Apache License, version 2.0.  The full text of the Apache License is at
  * http://www.apache.org/licenses/LICENSE-2.0
  */
 
@@ -130,7 +130,7 @@ Item {
                             font.pixelSize: theme.fontPixelSizeMedium
                             color: "#2fa7d4"
                             elide: Text.ElideRight
-                            text: qsTr("\"%1\"").arg(accountSettingsModel.signature())
+                            text: (accountSettingsModel.signature()=="")? qsTr("Enter your signature."): qsTr("\"%1\"").arg(accountSettingsModel.signature())
                         }
                     }
                 }
@@ -144,7 +144,7 @@ Item {
                             id: signature
                             anchors.fill: parent
                             anchors.margins: 10
-                            text: accountSettingsModel.signature()
+                            text: (accountSettingsModel.signature()=="")? qsTr("Enter your signature."): qsTr("\"%1\"").arg(accountSettingsModel.signature())
                             onTextChanged: accountSettingsModel.setSignature(text)
                         }
                     }
@@ -198,7 +198,7 @@ Item {
         acceptButtonText: qsTr ("Yes")
         cancelButtonText: qsTr ("No")
         title: qsTr ("Discard changes")
-        text: qsTr ("You have made changes to your settings, are you sure you want to cancel?")
+        text: qsTr ("You have made changes to your settings. Are you sure you want to cancel?")
         onAccepted: { settingsPage.returnToEmail(); }
     }
     ModalMessageBox {
