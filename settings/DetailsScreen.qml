@@ -22,6 +22,7 @@ Item {
         color: "#eaf6fb"
     }
     Flickable {
+        id: detailFlick
         clip: true
         anchors.top: parent.top
         anchors.left: parent.left
@@ -96,6 +97,11 @@ Item {
                     text: qsTr("Username: %1").arg(emailAccount.sendUsername)
                 }
             }
+        }
+
+        Component.onCompleted: {
+            contentY = detailsSaveRestoreState.restoreRequired ?
+                        detailsSaveRestoreState.value("email-details-detailFlick-contentY") : 0;
         }
     }
     ModalMessageBox {
@@ -175,6 +181,26 @@ Item {
             text: qsTr("Cancel")
             onClicked: {
                 verifyCancel.show();
+            }
+        }
+    }
+
+    SaveRestoreState {
+        id: detailsSaveRestoreState
+        onSaveRequired: {
+            setValue("email-details-detailFlick-contentY",detailFlick.contentY);
+            setValue("email-details-verifyCancel-visible",verifyCancel.visible);
+            setValue("email-details-errorDialog-visible",errorDialog.visible);
+            sync();
+        }
+    }
+
+    Component.onCompleted: {
+        if(detailsSaveRestoreState.restoreRequired) {
+            if(detailsSaveRestoreState.value("email-details-verifyCancel-visible") == "true") {
+                verifyCancel.show();
+            } else if(detailsSaveRestoreState.value("email-details-errorDialog-visible") == "true") {
+                errorDialog.show();
             }
         }
     }

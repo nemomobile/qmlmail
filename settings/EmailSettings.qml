@@ -29,11 +29,43 @@ AppPage {
         id: loader
         anchors.fill: parent
     }
-    function getHomescreen() {
+    function getRestoredHomescreen() {
         if(mainSaveRestoreState.restoreRequired) {
-            return mainSaveRestoreState.value("emailPageState");
+            if((mainSaveRestoreState.value("email-PageState") == "RegisterScreen") &&
+                    (mainSaveRestoreState.value("email-PageState") != undefined) ) {
+                emailAccount.clear();
+                if(mainSaveRestoreState.value("email-account-preset") == "-1") {
+                    emailAccount.recvSecurity = mainSaveRestoreState.value("email-account-recvSecurity");
+                    emailAccount.sendAuth =  mainSaveRestoreState.value("email-account-sendAuth");
+                    emailAccount.sendSecurity =  mainSaveRestoreState.value("email-account-sendSecurity");
+                } else {
+                    emailAccount.preset = mainSaveRestoreState.value("email-account-preset");
+                    emailAccount.description= mainSaveRestoreState.value("email-account-description");
+                }
+                emailAccount.name = mainSaveRestoreState.value("email-account-name");
+                emailAccount.address = mainSaveRestoreState.value("email-account-address");
+                emailAccount.password = mainSaveRestoreState.value("email-account-password");
+                emailAccount.recvType = mainSaveRestoreState.value("email-account-recvType");
+                emailAccount.recvServer = mainSaveRestoreState.value("email-account-recvServer");
+                emailAccount.recvPort = mainSaveRestoreState.value("email-account-recvPort");
+                emailAccount.recvSecurity = mainSaveRestoreState.value("email-account-recvSecurity");
+                emailAccount.recvUsername = mainSaveRestoreState.value("email-account-recvUsername");
+                emailAccount.recvPassword = mainSaveRestoreState.value("email-account-recvPassword");
+                emailAccount.sendServer = mainSaveRestoreState.value("email-account-sendServer");
+                emailAccount.sendPort = mainSaveRestoreState.value("email-account-sendPort");
+                emailAccount.sendAuth = mainSaveRestoreState.value("email-account-sendAuth");
+                emailAccount.sendSecurity = mainSaveRestoreState.value("email-account-sendSecurity");
+                emailAccount.sendUsername = mainSaveRestoreState.value("email-account-sendUsername");
+                emailAccount.sendPassword = mainSaveRestoreState.value("email-account-sendPassword");
+            }
+            return mainSaveRestoreState.value("email-PageState");
+        } else {
+            return getHomescreen(); //by default
         }
-        else if (accountSettingsModel.rowCount() > 0) {
+    }
+
+    function getHomescreen() {
+        if (accountSettingsModel.rowCount() > 0) {
             return "SettingsScreen";
         } else {
             return "WelcomeScreen";
@@ -43,12 +75,29 @@ AppPage {
     SaveRestoreState {
         id: mainSaveRestoreState
         onSaveRequired: {
-            setValue("emailPageState",settingsPage.state);
+            setValue("email-PageState",settingsPage.state);
+
+            setValue("email-account-name",emailAccount.name);
+            setValue("email-account-address",emailAccount.address);
+            setValue("email-account-password",emailAccount.password);
+            setValue("email-account-recvType",emailAccount.recvType)
+            setValue("email-account-recvServer",emailAccount.recvServer)
+            setValue("email-account-recvPort",emailAccount.recvPort)
+            setValue("email-account-recvSecurity",emailAccount.recvSecurity)
+            setValue("email-account-recvUsername",emailAccount.recvUsername)
+            setValue("email-account-recvPassword",emailAccount.recvPassword)
+            setValue("email-account-sendServer",emailAccount.sendServer)
+            setValue("email-account-sendPort",emailAccount.sendPort)
+            setValue("email-account-sendAuth",emailAccount.sendAuth)
+            setValue("email-account-sendSecurity",emailAccount.sendSecurity)
+            setValue("email-account-sendUsername",emailAccount.sendUsername)
+            setValue("email-account-sendPassword",emailAccount.sendPassword)
+
+            sync();
         }
     }
 
-
-    state: getHomescreen()
+    state: getRestoredHomescreen()
     states: [
         State {
             name: "WelcomeScreen"

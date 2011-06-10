@@ -20,6 +20,7 @@ Item {
         color: "#eaf6fb"
     }
     Flickable {
+        id: manualFlick
         clip: true
         anchors.top: parent.top
         anchors.left: parent.left
@@ -138,6 +139,11 @@ Item {
                 }
             }
         }
+        Component.onCompleted: {
+            if(manualSaveRestoreState.restoreRequired) {
+                manualFlick.contentY = manualSaveRestoreState.value("email-manual-manualFlick-contentY");
+            }
+        }
     }
     ModalMessageBox {
         id: verifyCancel
@@ -235,5 +241,18 @@ Item {
                 verifyCancel.show();
             }
         }
+    }
+    SaveRestoreState {
+        id: manualSaveRestoreState
+        onSaveRequired: {
+            //flickable
+            setValue("email-manual-manualFlick-contentY",manualFlick.contentY);
+
+            //form data
+
+
+            //dialogs
+        }
+
     }
 }
