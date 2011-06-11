@@ -93,6 +93,10 @@ AppPage {
             setValue("email-account-sendUsername",emailAccount.sendUsername)
             setValue("email-account-sendPassword",emailAccount.sendPassword)
 
+            setValue("email-sendPassword",emailAccount.sendPassword)
+
+
+
             sync();
         }
     }

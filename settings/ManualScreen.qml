@@ -139,18 +139,20 @@ Item {
                 }
             }
         }
+
         Component.onCompleted: {
             if(manualSaveRestoreState.restoreRequired) {
                 manualFlick.contentY = manualSaveRestoreState.value("email-manual-manualFlick-contentY");
             }
         }
     }
+
     ModalMessageBox {
         id: verifyCancel
         acceptButtonText: qsTr ("Yes")
         cancelButtonText: qsTr ("No")
         title: qsTr ("Discard changes")
-        text: qsTr ("You have made changes to your settings. Are you sure you want to cancel?")
+        text: qsTr ("You have made changes to your settings, are you sure you want to cancel?")
         onAccepted: {
             settingsPage.state = settingsPage.getHomescreen()
         }
@@ -242,6 +244,7 @@ Item {
             }
         }
     }
+
     SaveRestoreState {
         id: manualSaveRestoreState
         onSaveRequired: {
@@ -249,10 +252,24 @@ Item {
             setValue("email-manual-manualFlick-contentY",manualFlick.contentY);
 
             //form data
-
+            setValue("email-manual-recvServerField-errorText",recvServerField.errorText);
+            setValue("email-manual-recvPortField-errorText",recvPortField.errorText);
+            setValue("email-manual-recvUsernameField-errorText",recvUsernameField.errorText);
+            setValue("email-manual-recvPasswordField-errorText",recvPasswordField.errorText);
+            setValue("email-manual-sendServerField-errorText",sendServerField.errorText);
+            setValue("email-manual-sendPortField-errorText",sendPortField.errorText);
+            setValue("email-manual-sendUsernameField-errorText",sendUsernameField.errorText);
+            setValue("email-manual-sendPasswordField-errorText",sendPasswordField.errorText);
 
             //dialogs
+            setValue("email-manual-verifyCancel-verify",verifyCancel.visible);
+
+            sync();
         }
+
+    }
+
+    Component.onCompleted: {
 
     }
 }
