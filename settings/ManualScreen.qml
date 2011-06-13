@@ -270,6 +270,15 @@ Item {
     }
 
     Component.onCompleted: {
-
+        if(manualSaveRestoreState.restoreRequired) {
+            recvServerField.errorText = manualSaveRestoreState.value("email-manual-recvServerField-errorText");
+            recvPortField.errorText = manualSaveRestoreState.value("email-manual-recvPortField-errorText");
+            recvUsernameField.errorText = manualSaveRestoreState.value("email-manual-recvUsernameField-errorText");
+            recvPasswordField.errorText = manualSaveRestoreState.value("email-manual-recvPasswordField-errorText");
+            sendServerField.errorText = manualSaveRestoreState.value("email-manual-sendServerField-errorText");
+            sendPortField.errorText = manualSaveRestoreState.value("email-manual-sendPortField-errorText");
+            sendUsernameField.errorText = manualSaveRestoreState.value("email-manual-sendUsernameField-errorText");
+            sendPasswordField.errorText = manualSaveRestoreState.value("email-manual-sendPasswordField-errorText");
+        }
     }
 }
