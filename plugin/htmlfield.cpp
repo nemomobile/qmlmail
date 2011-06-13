@@ -19,6 +19,7 @@ void HtmlField::init()
     setFlag(QGraphicsItem::ItemHasNoContents, true);
     setClip(true);
 
+
     m_gwv = new HFWebView(this);
     m_gwv->setResizesToContents(true);
 
@@ -38,11 +39,20 @@ void HtmlField::init()
     page->settings()->setAttribute(QWebSettings::TiledBackingStoreEnabled, true);
 
     connect(page->mainFrame(), SIGNAL(contentsSizeChanged(QSize)), this, SIGNAL(contentsSizeChanged(QSize)));
-    connect(page,SIGNAL(microFocusChanged()),m_gwv,SLOT(onMicroFocusChanged()));
 
     connect(m_gwv,  SIGNAL(geometryChanged()),       this, SLOT(webViewUpdateImplicitSize()));
     connect(m_gwv,  SIGNAL(scaleChanged()),          this, SIGNAL(contentsScaleChanged()));
     connect(m_gwv,  SIGNAL(linkClicked(QUrl)),       this, SIGNAL(linkClicked(QUrl)));
+
+    // Set the content loading timeout default.
+    m_loadTimer.setInterval(5000);
+    m_loadTimer.setSingleShot(true);
+    connect(&m_loadTimer, SIGNAL(timeout()),        this, SLOT(privateOnContentTimout()));
+    connect(m_gwv,  SIGNAL(loadStarted()),           this, SLOT(privateOnLoadStarted()));
+    connect(m_gwv,  SIGNAL(loadFinished(bool)),      this, SLOT(privateOnLoadFinished(bool)));
+    connect(m_gwv,  SIGNAL(loadProgress(int)),       this, SLOT(privateOnLoadProgress(int)));
+
+    connect(m_gwv,  SIGNAL(statusBarMessage(QString)),this, SIGNAL(statusBarMessage(QString)));
 }
 
 bool HtmlField::setFocusElement(const QString &elementName)
@@ -176,6 +186,41 @@ void HtmlField::setContentsScale(qreal scale)
         emit contentsScaleChanged();
     }
 }
+
+void HtmlField::privateOnLoadStarted()
+{
+    emit loadStarted();
+    m_loadTimer.start();
+}
+
+void HtmlField::privateOnLoadProgress(int progress)
+{
+    emit loadProgress(progress);
+    m_loadTimer.start();
+}
+
+void HtmlField::privateOnLoadFinished(bool ok)
+{
+    m_loadTimer.stop();
+    emit loadFinished(ok);
+}
+
+void HtmlField::privateOnContentTimout()
+{
+    emit loadFinished(false);
+}
+
+int HtmlField::contentsTimeoutMs() const
+{
+    return m_loadTimer.interval();
+}
+
+void HtmlField::setContentsTimeoutMs(int msec)
+{
+    m_loadTimer.setInterval(msec);
+    emit contentsTimeoutMsChanged();
+}
+
 
 HFWebView::HFWebView(QGraphicsItem *parent)
     : QGraphicsWebView(parent)
