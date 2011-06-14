@@ -134,6 +134,7 @@ Item {
                     window.addPage (composer);
                     newPage = window.pageStack.currentPage;
                     setMessageDetails (newPage.composer, window.currentMessageIndex, false);
+                    newPage.composer.setReplyFocus();
                 }
                 else if (index == 1)   // Reply to all
                 {
@@ -141,6 +142,7 @@ Item {
                     window.addPage (composer);
                     newPage = window.pageStack.currentPage;
                     setMessageDetails (newPage.composer, window.currentMessageIndex, true);
+                    newPage.composer.setReplyFocus();
                 }
                 else if (index == 2)   // Forward
                 {
@@ -165,6 +167,7 @@ Item {
                     window.mailAttachments = messageListModel.attachments(window.currentMessageIndex);
                     mailAttachmentModel.init();
                     newPage.composer.attachmentsModel = mailAttachmentModel;
+                    newPage.composer.setReplyFocus();
                 }
                 else if (index == 3)   // Delete
                 {

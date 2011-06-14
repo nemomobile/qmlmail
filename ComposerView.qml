@@ -11,8 +11,9 @@ import MeeGo.Components 0.1
 import MeeGo.Labs.Components 0.1 as Labs
 import MeeGo.App.Email 0.1
 
-Item {
+FocusScope {
     id: composerViewContainer
+    focus: true
 
     property alias composer: composer
 
@@ -38,6 +39,7 @@ Item {
 
     Composer {
         id: composer
+        focus: true
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.top: parent.top

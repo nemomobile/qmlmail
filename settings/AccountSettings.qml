@@ -130,7 +130,9 @@ Item {
                             font.pixelSize: theme.fontPixelSizeMedium
                             color: "#2fa7d4"
                             elide: Text.ElideRight
-                            text: (accountSettingsModel.signature()=="")? qsTr("Enter your signature."): qsTr("\"%1\"").arg(accountSettingsModel.signature())
+                            text: (accountSettingsModel.signature()=="") ? 
+                                          qsTr("Enter your signature."): 
+                                          ('"' + accountSettingsModel.signature() + '"') //i18n ok
                         }
                     }
                 }
@@ -144,7 +146,8 @@ Item {
                             id: signature
                             anchors.fill: parent
                             anchors.margins: 10
-                            text: (accountSettingsModel.signature()=="")? qsTr("Enter your signature."): qsTr("\"%1\"").arg(accountSettingsModel.signature())
+                            text: (accountSettingsModel.signature()=="")? qsTr("Enter your signature.") : 
+                                          accountSettingsModel.signature()
                             onTextChanged: accountSettingsModel.setSignature(text)
                         }
                     }

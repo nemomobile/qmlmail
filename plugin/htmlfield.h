@@ -3,6 +3,7 @@
 
 #include <QtDeclarative/QDeclarativeItem>
 #include <QGraphicsWebView>
+#include <QTimer>
 
 class HFWebView;
 
@@ -20,11 +21,15 @@ class HtmlField : public QDeclarativeItem {
     Q_PROPERTY(bool tiledBackingStoreFrozen READ tiledBackingStoreFrozen WRITE setTiledBackingStoreFrozen NOTIFY tiledBackingStoreFrozenChanged)
     Q_PROPERTY(qreal contentsScale READ contentsScale WRITE setContentsScale NOTIFY contentsScaleChanged)
     Q_PROPERTY(bool delegateLinks READ delegateLinks WRITE setDelegateLinks NOTIFY delegateLinksChanged);
+    Q_PROPERTY(QFont font READ font WRITE setFont NOTIFY fontChanged)
+
+
+    Q_PROPERTY(int contentsTimeoutMs READ contentsTimeoutMs WRITE setContentsTimeoutMs NOTIFY contentsTimeoutMsChanged);
 
 public:
-
     Q_INVOKABLE void startZooming();
     Q_INVOKABLE void stopZooming();
+    Q_INVOKABLE bool setFocusElement(const QString& elementName);
 
     HtmlField(QDeclarativeItem *parent = 0);
     ~HtmlField();
@@ -42,11 +47,17 @@ public:
     bool tiledBackingStoreFrozen() const;
     void setTiledBackingStoreFrozen(bool f);
 
+    int contentsTimeoutMs() const;
+    void setContentsTimeoutMs(int msec);
+
 public:
 
     QSize contentsSize() const;
     void setContentsScale(qreal scale);
     qreal contentsScale() const;
+
+    void setFont(const QFont & scale);
+    QFont font() const;
 
 signals:
     void linkClicked ( const QUrl & url );
@@ -57,7 +68,15 @@ signals:
     void htmlChanged();
     void contentsSizeChanged(const QSize&);
     void contentsScaleChanged();
+    void fontChanged();
     void delegateLinksChanged();
+    void contentsTimeoutMsChanged();
+
+    void loadFinished(bool ok);
+    void loadProgress(int progress);
+    void loadStarted();
+    void statusBarMessage(const QString & message);
+
 
 private slots:
     void webViewUpdateImplicitSize();
@@ -66,11 +85,20 @@ private slots:
     virtual void geometryChanged(const QRectF &newGeometry,
                                  const QRectF &oldGeometry);
 
+    void privateOnLoadProgress(int progress);
+    void privateOnLoadFinished(bool ok);
+    void privateOnLoadStarted();
+
+    void privateOnContentTimout();
+
 private:
     HFWebView *m_gwv;
+    QTimer m_loadTimer;
+
     void init();
     virtual void componentComplete();
     Q_DISABLE_COPY(HtmlField)
+
 };
 
 class HFWebView: public QGraphicsWebView

@@ -468,9 +468,10 @@ Window {
             TopItem { id: composerTopItem }
 
             Component.onCompleted: {
+
                 if (window.editableDraft)
-                {
-                    composerView.composer.body= window.mailBody
+                {                    
+                    composerView.composer.textBody= window.mailBody
                     composerView.composer.subject= window.mailSubject
 
                     var idx;
@@ -489,7 +490,6 @@ Window {
                     composerView.composer.attachmentsModel.clear();
                     for (idx = 0; idx < window.mailAttachments.length; idx ++)
                         composerView.composer.attachmentsModel.append({"uri": window.mailAttachments[idx]});
-
                 }
 
                 window.editableDraft= false
