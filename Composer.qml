@@ -76,6 +76,7 @@ FocusScope {
             id: htmlEditPane
             anchors.fill: parent
             focus: true
+            font.pixelSize: theme.fontPixelSizeLarge
             visible: window.composeInTextMode ? false : true
             html : {
                 var sig = emailAgent.getSignatureForAccount(window.currentMailAccountId);
