@@ -326,6 +326,7 @@ Item {
                 contentsScale: 1
                 focus: true
                 clip: true
+                font.pixelSize: theme.fontPixelSizeLarge
                 visible: (window.mailHtmlBody != "")
                 onLinkClicked: {
                     emailAgent.openBrowser(url);
@@ -375,7 +376,7 @@ Item {
         anchors.right: parent.right
         anchors.bottom: previousNextEmailRect.top
         visible: false
-        height: 45
+        height: theme.fontPixelSizeLarge + 4
         source: "image://theme/navigationBar_l"
 
         ProgressBar {

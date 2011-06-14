@@ -187,6 +187,21 @@ void HtmlField::setContentsScale(qreal scale)
     }
 }
 
+
+QFont HtmlField::font() const
+{
+    return m_gwv->font();
+}
+
+void HtmlField::setFont(const QFont &f)
+{
+    if (f != m_gwv->font()) {
+        m_gwv->setFont(f);
+        emit fontChanged();
+    }
+}
+
+
 void HtmlField::privateOnLoadStarted()
 {
     emit loadStarted();

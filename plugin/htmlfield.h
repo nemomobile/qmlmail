@@ -21,6 +21,8 @@ class HtmlField : public QDeclarativeItem {
     Q_PROPERTY(bool tiledBackingStoreFrozen READ tiledBackingStoreFrozen WRITE setTiledBackingStoreFrozen NOTIFY tiledBackingStoreFrozenChanged)
     Q_PROPERTY(qreal contentsScale READ contentsScale WRITE setContentsScale NOTIFY contentsScaleChanged)
     Q_PROPERTY(bool delegateLinks READ delegateLinks WRITE setDelegateLinks NOTIFY delegateLinksChanged);
+    Q_PROPERTY(QFont font READ font WRITE setFont NOTIFY fontChanged)
+
 
     Q_PROPERTY(int contentsTimeoutMs READ contentsTimeoutMs WRITE setContentsTimeoutMs NOTIFY contentsTimeoutMsChanged);
 
@@ -54,6 +56,9 @@ public:
     void setContentsScale(qreal scale);
     qreal contentsScale() const;
 
+    void setFont(const QFont & scale);
+    QFont font() const;
+
 signals:
     void linkClicked ( const QUrl & url );
 
@@ -63,6 +68,7 @@ signals:
     void htmlChanged();
     void contentsSizeChanged(const QSize&);
     void contentsScaleChanged();
+    void fontChanged();
     void delegateLinksChanged();
     void contentsTimeoutMsChanged();
 
