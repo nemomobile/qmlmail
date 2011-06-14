@@ -27,7 +27,7 @@ Item {
     property string videoLabel: qsTr("Video")
     property string pictureLabel: qsTr("Picture")
     property string attachmentSavedLabel: qsTr("Attachment saved.")
-    property string downloadingAttachmentLabel: qsTr("Downloading Attachement...")
+    property string downloadingAttachmentLabel: qsTr("Downloading Attachment...")
     property string downloadingContentLabel: qsTr("Downloading Content...")
 
     Connections {
