@@ -206,12 +206,24 @@ Item {
             }
         }
 
+        ModalMessageBox {
+            id: deleteConfirm
+            acceptButtonText: qsTr("Yes")
+            cancelButtonText: qsTr("No")
+            title: qsTr("Confirm Email Delete")
+            text: qsTr("Are you sure you want to delete these mails?")
+            onAccepted: {
+                messageListModel.deleteSelectedMessageIds();
+                folderListContainer.numOfSelectedMessages = 0;
+            }
+        }
+
+
         QtObject {
             id: messageDeleter
 
             function run() {
-                messageListModel.deleteSelectedMessageIds();
-                folderListContainer.numOfSelectedMessages = 0;
+                deleteConfirm.show()
             }
         }
 
