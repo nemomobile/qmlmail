@@ -75,8 +75,9 @@ AppPage {
     SaveRestoreState {
         id: mainSaveRestoreState
         onSaveRequired: {
-            setValue("email-PageState",settingsPage.state);
+            setValue("email-PageState",settingsPage.state); //which page the user is currently on
 
+            //The emailAccount that the user is setting up
             setValue("email-account-name",emailAccount.name);
             setValue("email-account-address",emailAccount.address);
             setValue("email-account-password",emailAccount.password);
@@ -93,8 +94,14 @@ AppPage {
             setValue("email-account-sendUsername",emailAccount.sendUsername)
             setValue("email-account-sendPassword",emailAccount.sendPassword)
 
-            setValue("email-sendPassword",emailAccount.sendPassword)
+            //The accountSettingsModel which holds all the different accounts that the user has
 
+            for (var i = 0; i < accountSettingsModel.rowCount(); i++) { //for each row in the settings model
+                console.debug("------------------------ i is: " + i);
+                /*for(var role=0; role< 100; role++) { //for each role in the row
+
+                }*/
+            }
 
 
             sync();
