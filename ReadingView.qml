@@ -27,6 +27,8 @@ Item {
     property string videoLabel: qsTr("Video")
     property string pictureLabel: qsTr("Picture")
     property string attachmentSavedLabel: qsTr("Attachment saved.")
+    property string downloadingAttachmentLabel: qsTr("Downloading Attachement...")
+    property string downloadingContentLabel: qsTr("Downloading Content...")
 
     Connections {
         target: messageListModel
@@ -79,8 +81,16 @@ Item {
             target: emailAgent
             onAttachmentDownloadStarted: {
                 downloadInProgress = true;
+                progressBar.text = downloadingAttachmentLabel;
+                progressBar.visible = true;
             }
+
+            onProgressUpdate: {
+                progressBar.percentage = percent;
+            }
+
             onAttachmentDownloadCompleted: {
+                progressBar.visible = false;
                 downloadInProgress = false;
                 if (openFlag == true)
                 {
@@ -91,6 +101,7 @@ Item {
                    }
                 }
             }
+
         }
         }
     }  // end of attachmentContextMenu
@@ -217,13 +228,13 @@ Item {
             }
         }
     }
+
     Rectangle {
         id: bodyTextArea
         anchors.top: (window.numberOfMailAttachments > 0) ? attachmentRect.bottom : subjectRect.bottom
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.bottom: downloadInProgress ? progressBarRect.top : previousNextEmailRect.top
-        width: parent.width
+        anchors.bottom: progressBar.visible ? progressBar.top : previousNextEmailRect.top
         border.width: 1
         border.color: "black"
         color: "white"
@@ -319,6 +330,20 @@ Item {
                 onLinkClicked: {
                     emailAgent.openBrowser(url);
                 }
+
+                onLoadStarted: {
+                    progressBar.text = downloadingContentLabel;
+                    progressBar.visible = true;
+                }
+
+                onLoadFinished: {
+                    progressBar.visible = false;
+                }
+
+                onLoadProgress: {
+                    progressBar.percentage=progress;
+                }
+
             }
 
             TextEdit {
@@ -340,72 +365,31 @@ Item {
         }
     }
 
+
     BorderImage {
-        id: progressBarRect
+        id: progressBar
+        property alias text: progressText.text
+        property alias percentage: progressBarPrivate.percentage
+
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: previousNextEmailRect.top
-        opacity: downloadInProgress ? 1 : 0
+        visible: false
         height: 45
         source: "image://theme/navigationBar_l"
 
-        Item {
+        ProgressBar {
+            id: progressBarPrivate
             anchors.left: parent.left
-            anchors.leftMargin: 20
-            anchors.right: downloadLabel.left
+            anchors.right: progressText.left
             anchors.bottom: parent.bottom
-            height:parent.height
-            Image {
-                id: progressBar
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.rightMargin: 20
-                anchors.verticalCenter:parent.verticalCenter
-                fillMode: Image.Stretch
-                source: "image://theme/playhead_bg"
-            }
-            Image {
-                id: progressBarSlider
-                anchors.verticalCenter:progressBar.verticalCenter
-                source:"image://theme/scrub_head_sm"
-                x: -width/2
-                z:10
-            }
-            Image {
-                id: elapsedHead
-                source: "image://theme/media/progress_fill_1"
-                anchors.left: progressBar.left
-                anchors.verticalCenter:progressBar.verticalCenter
-                z:1
-            }
-            BorderImage {
-                id: elapsedBody
-                source: "image://theme/media/progress_fill_2"
-                anchors.left: elapsedHead.right
-                anchors.right: elapsedTail.left
-                anchors.verticalCenter:progressBar.verticalCenter
-                border.left: 1; border.top: 1
-                border.right: 1; border.bottom: 1
-                z:1
-            }
-            Image {
-                id: elapsedTail
-                source: "image://theme/media/progress_fill_3"
-                anchors.right: progressBarSlider.right
-                anchors.rightMargin: progressBarSlider.width/2
-                anchors.verticalCenter:progressBar.verticalCenter
-                z:1
-            }
-            Connections {
-                id: progressBarConnection
-                target: emailAgent
-                onProgressUpdate: {
-                    progressBarSlider.x = percent * (progressBar.width - progressBarSlider.width) / 100 - progressBarSlider.width/2;
-                }
-            }
+            height: parent.height
+            fontColor: "white"
+            fontColorFilled: "white"
         }
+
         Text {
-            id: downloadLabel
+            id: progressText
             anchors.right: parent.right
             anchors.rightMargin: 10
             anchors.bottom: parent.bottom
@@ -414,9 +398,9 @@ Item {
             verticalAlignment:Text.AlignVCenter
             font.pixelSize: theme.fontPixelSizeLarge
             color: theme.fontColorMediaHighlight
-            text: qsTr("Downloading...")
         }
     }
+
     Item {
         id: previousNextEmailRect
         anchors.bottom: readingViewToolbar.top
