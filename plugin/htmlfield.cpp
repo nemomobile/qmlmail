@@ -1,6 +1,7 @@
 #include "htmlfield.h"
 #include <QDeclarativeEngine>
 #include <QWebFrame>
+#include <QWebElement>
 
 HtmlField::HtmlField(QDeclarativeItem *parent) : QDeclarativeItem(parent)
 {
@@ -37,9 +38,21 @@ void HtmlField::init()
     page->settings()->setAttribute(QWebSettings::TiledBackingStoreEnabled, true);
 
     connect(page->mainFrame(), SIGNAL(contentsSizeChanged(QSize)), this, SIGNAL(contentsSizeChanged(QSize)));
+    connect(page,SIGNAL(microFocusChanged()),m_gwv,SLOT(onMicroFocusChanged()));
+
     connect(m_gwv,  SIGNAL(geometryChanged()),       this, SLOT(webViewUpdateImplicitSize()));
     connect(m_gwv,  SIGNAL(scaleChanged()),          this, SIGNAL(contentsScaleChanged()));
     connect(m_gwv,  SIGNAL(linkClicked(QUrl)),       this, SIGNAL(linkClicked(QUrl)));
+}
+
+bool HtmlField::setFocusElement(const QString &elementName)
+{
+    QWebElement e = m_gwv->page()->mainFrame()->findFirstElement("#" + elementName);
+    if (!e.isNull()) {
+        e.evaluateJavaScript("this.focus();");
+        return true;
+    }
+    return false;
 }
 
 void HtmlField::startZooming()
@@ -181,3 +194,4 @@ void HFWebView::keyPressEvent(QKeyEvent *event)
         QGraphicsWebView::keyPressEvent(event);
     }
 }
+
