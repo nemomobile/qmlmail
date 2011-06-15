@@ -55,6 +55,9 @@ Item {
             width: container.width
             height: theme.listBackgroundPixelHeightTwo
 
+            //: Label that displays the number of unread e-mail messages.  Note plural handling.
+            property string unreadMessagesLabel: qsTr("%n unread message(s)", "", unreadCount)
+
             property string accountDisplayName;
             accountDisplayName: {
                 accountDisplayName = displayName;
