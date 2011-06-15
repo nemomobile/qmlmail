@@ -30,7 +30,8 @@ AppPage {
         anchors.fill: parent
     }
     function getRestoredHomescreen() {
-        if(mainSaveRestoreState.restoreRequired) {
+        if(mainSaveRestoreState.restoreRequired &&
+                (mainSaveRestoreState.value("currentBook").lastIndexOf("EmailSettings.qml") != -1 )) {
             if((mainSaveRestoreState.value("email-PageState") == "RegisterScreen") &&
                     (mainSaveRestoreState.value("email-PageState") != undefined) ) {
                 emailAccount.clear();
@@ -57,6 +58,16 @@ AppPage {
                 emailAccount.sendSecurity = mainSaveRestoreState.value("email-account-sendSecurity");
                 emailAccount.sendUsername = mainSaveRestoreState.value("email-account-sendUsername");
                 emailAccount.sendPassword = mainSaveRestoreState.value("email-account-sendPassword");
+
+                for(var row=0;row<100;row++) { //TODO: Use a keys() function when available; yes, this will break if the user has over 100 email accounts
+                    for(var role=0;role<100;role++) { //I can't believe I am writing this :(
+                        var data = mainSaveRestoreState.value("email-accounts-" + row + "-" + role);
+                        if(data != undefined) {
+                             accountSettingsModel.setDataWrapper(row, data, role);
+                        }
+                    }
+                }
+
             }
             return mainSaveRestoreState.value("email-PageState");
         } else {
@@ -95,14 +106,13 @@ AppPage {
             setValue("email-account-sendPassword",emailAccount.sendPassword)
 
             //The accountSettingsModel which holds all the different accounts that the user has
-
             for (var i = 0; i < accountSettingsModel.rowCount(); i++) { //for each row in the settings model
-                console.debug("------------------------ i is: " + i);
-                /*for(var role=0; role< 100; role++) { //for each role in the row
-
-                }*/
+                for(var role=0; role< 100; role++) { //for each role in the row (yes, I know the 100 is an abritary value, but I can't fix AccountExpandobox!)
+                    if(accountSettingsModel.dataWrapper(i,role) != undefined) { //save the value only if it is defined
+                        setValue("email-accounts-" + i + "-" + role,accountSettingsModel.dataWrapper(i,role));
+                    }
+                }
             }
-
 
             sync();
         }
