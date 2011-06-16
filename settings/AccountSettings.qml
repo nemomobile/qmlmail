@@ -16,6 +16,7 @@ Item {
     }
 
     Flickable {
+        id: accountSettingsFlickable
         clip: true
         anchors.top: parent.top
         anchors.left: parent.left
@@ -195,6 +196,13 @@ Item {
                 }
             }
         }
+
+        Component.onCompleted: {
+            if(accouSettingsSaveRestore.restoreRequired) {
+                accountSettingsFlickable.contentY =
+                        accouSettingsSaveRestore.value("email-AccoutSettingsPage-accountSettingsFlickable-contentY");
+            }
+        }
     }
     ModalMessageBox {
         id: verifyCancel
@@ -245,6 +253,14 @@ Item {
             onClicked: {
                 verifyCancel.show();
             }
+        }
+    }
+
+    SaveRestoreState {
+        id: accouSettingsSaveRestore
+        onSaveRequired: {
+            setValue("email-AccoutSettingsPage-accountSettingsFlickable-contentY",accountSettingsFlickable.contentY);
+            sync();
         }
     }
 }
