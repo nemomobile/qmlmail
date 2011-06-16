@@ -26,9 +26,19 @@ Item {
     property string musicLabel: qsTr("Music")
     property string videoLabel: qsTr("Video")
     property string pictureLabel: qsTr("Picture")
+
+    // @todo Remove if these are no longer relevant.
     property string attachmentSavedLabel: qsTr("Attachment saved.")
     property string downloadingAttachmentLabel: qsTr("Downloading Attachment...")
     property string downloadingContentLabel: qsTr("Downloading Content...")
+
+    // Placeholder strings for I18n purposes.
+
+    //: Message displayed when downloading an attachment.  Arg 1 is the name of the attachment.
+    property string savingAttachmentLabel: qsTr("Saving %1")
+
+    //: Attachment has been saved message, where arg 1 is the name of the attachment.
+    property string attachmentHasBeenSavedLabel: qsTr("%1 saved")
 
     Connections {
         target: messageListModel
