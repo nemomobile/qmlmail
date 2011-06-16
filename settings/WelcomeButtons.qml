@@ -87,15 +87,18 @@ Column {
 
     SaveRestoreState {
         id: welcomeButtonsSave
+        onSaveRequired: {
+            sync();
+        }
     }
 
-    function savePreset() {
+    function savePreset() { //Called by other items' signal
         welcomeButtonsSave.setValue("email-account-preset",emailAccount.preset);
         welcomeButtonsSave.setValue("email-account-description",emailAccount.description);
         welcomeButtonsSave.sync();
     }
 
-    function saveZero() {
+    function saveZero() { //Called by other items' signal
         welcomeButtonsSave.setValue("email-account-preset","-1");
         welcomeButtonsSave.setValue("email-account-recvSecurity",emailAccount.recvSecurity);
         welcomeButtonsSave.setValue("email-account-sendAuth",emailAccount.sendAuth);
