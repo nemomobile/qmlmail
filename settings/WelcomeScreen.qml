@@ -24,7 +24,8 @@ Flickable {
     SaveRestoreState {
         id: welcomeSaveRestoreState
         onSaveRequired: {
-            setValue("emailWelcomeScroll",welcomeFlick.contentY);
+            setValue("email-WelcomeScroll",welcomeFlick.contentY);
+            sync();
         }
     }
 
@@ -50,7 +51,7 @@ Flickable {
 
     Component.onCompleted: {
         if(welcomeSaveRestoreState.restoreRequired) {
-            welcomeFlick.contentY = welcomeSaveRestoreState.value("emailWelcomeScroll");
+            welcomeFlick.contentY = welcomeSaveRestoreState.value("email-WelcomeScroll");
         }
     }
 }

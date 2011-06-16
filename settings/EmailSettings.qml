@@ -86,7 +86,7 @@ AppPage {
     SaveRestoreState {
         id: mainSaveRestoreState
         onSaveRequired: {
-            setValue("email-PageState",settingsPage.state); //which page the user is currently on
+           setValue("email-PageState",settingsPage.state); //which page the user is currently on
 
             //The emailAccount that the user is setting up
             setValue("email-account-name",emailAccount.name);
