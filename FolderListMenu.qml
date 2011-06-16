@@ -349,7 +349,7 @@ Item {
             Text {
                 height: 50
                 font.pixelSize: theme.fontPixelSizeLarge
-                text: "(" + folderUnreadCount + ")"  //i18 ok
+		text: qsTr("(%1)").arg(folderUnreadCount)
                 anchors.left: folderLabel.right
                 anchors.leftMargin: 10
                 color:theme.fontColorNormal
