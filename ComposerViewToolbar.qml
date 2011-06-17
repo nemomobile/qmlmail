@@ -11,186 +11,197 @@ import QtQuick 1.0
 import MeeGo.Components 0.1
 import MeeGo.App.Email 0.1
 
-    BorderImage {
-        id: composerViewToolbar
+BorderImage {
+    id: composerViewToolbar
 
-        width: parent.width
-        anchors.bottom: parent.bottom
-        source: "image://theme/navigationBar_l"
+    width: parent.width
+    height: sendButton.height
+    anchors.bottom: parent.bottom
+    source: "image://theme/navigationBar_l"
 
-        ToolbarButton {
-            id: sendButton
+    ToolbarButton {
+        id: sendButton
 
-            anchors.left: parent.left
-            anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.top: parent.top
 
-            iconName: "mail-send"
+        iconName: "mail-send"
 
-            onClicked: {
-                var i;
-                var message;
+        onClicked: {
+            var i;
+            var message;
 
-                composer.completeEmailAddresses ();
+            composer.completeEmailAddresses ();
 
-                message = messageComponent.createObject (composer);
-                message.setFrom (mailAccountListModel.getEmailAddressByIndex(composer.fromEmail));
+            message = messageComponent.createObject (composer);
+            message.setFrom (mailAccountListModel.getEmailAddressByIndex(composer.fromEmail));
 
-                var to = new Array ();
-                for (i = 0; i < composer.toModel.count; i++) {
-                    to[i] = composer.toModel.get (i).email;
-                }
-                message.setTo (to);
-
-                var cc = new Array ();
-                for (i = 0; i < composer.ccModel.count; i++) {
-                    cc[i] = composer.ccModel.get (i).email;
-                }
-                message.setCc (cc);
-
-                var bcc = new Array ();
-                for (i = 0; i < composer.bccModel.count; i++) {
-                    bcc[i] = composer.bccModel.get (i).email;
-                }
-                message.setBcc (bcc);
-
-                var att = new Array ();
-                for (i = 0; i < composer.attachmentsModel.count; i++) {
-                    att[i] = composer.attachmentsModel.get (i).uri;
-                }
-                message.setAttachments (att);
-
-                message.setSubject (composer.subject);
-                message.setPriority (composer.priority);
-                if (window.composeInTextMode)
-                    message.setBody (composer.textBody, true);
-                else
-                    message.setBody (composer.htmlBody, false);
-
-                message.send ();
-                window.popPage ();
+            var to = new Array ();
+            for (i = 0; i < composer.toModel.count; i++) {
+                to[i] = composer.toModel.get (i).email;
             }
-        }
+            message.setTo (to);
 
-        ToolbarDivider {
-            id: division1
-            anchors.left: sendButton.right
-            height: parent.height
-        }
-
-        ToolbarButton {
-            id: saveButton
-
-            anchors.left: division1.right
-            anchors.top: parent.top
-
-            iconName: "document-save"
-
-            onClicked: {
-
-                var i;
-                var message;
-
-                composer.completeEmailAddresses ();
-
-                //if this is a draft e-mail, the old draft needs to be deleted
-                emailAgent.deleteMessage (window.mailId)
-
-                message = messageComponent.createObject (composer);
-                message.setFrom (mailAccountListModel.getEmailAddressByIndex(composer.fromEmail));
-
-                var to = new Array ();
-                for (i = 0; i < composer.toModel.count; i++) {
-                    to[i] = composer.toModel.get (i).email;
-                }
-
-
-                message.setTo (to);
-
-                var cc = new Array ();
-                for (i = 0; i < composer.ccModel.count; i++) {
-                    cc[i] = composer.ccModel.get (i).email;
-                }
-                message.setCc (cc);
-
-                var bcc = new Array ();
-                for (i = 0; i < composer.bccModel.count; i++) {
-                    bcc[i] = composer.bccModel.get (i).email;
-                }
-                message.setBcc (bcc);
-
-                var att = new Array ();
-                for (i = 0; i < composer.attachmentsModel.count; i++) {
-                    att[i] = composer.attachmentsModel.get (i).uri;
-                }
-                message.setAttachments (att);
-
-                message.setSubject (composer.subject);
-                message.setPriority (composer.priority);
-                if (window.composeInTextMode)
-                    message.setBody (composer.textBody, true);
-                else
-                    message.setBody (composer.htmlBody, false);
-
-
-                message.saveDraft ();
-                window.popPage ();
+            var cc = new Array ();
+            for (i = 0; i < composer.ccModel.count; i++) {
+                cc[i] = composer.ccModel.get (i).email;
             }
+            message.setCc (cc);
+
+            var bcc = new Array ();
+            for (i = 0; i < composer.bccModel.count; i++) {
+                bcc[i] = composer.bccModel.get (i).email;
+            }
+            message.setBcc (bcc);
+
+            var att = new Array ();
+            for (i = 0; i < composer.attachmentsModel.count; i++) {
+                att[i] = composer.attachmentsModel.get (i).uri;
+            }
+            message.setAttachments (att);
+
+            message.setSubject (composer.subject);
+            message.setPriority (composer.priority);
+            if (window.composeInTextMode)
+                message.setBody (composer.textBody, true);
+            else
+                message.setBody (composer.htmlBody, false);
+
+            message.send ();
+            window.popPage ();
         }
+    }
 
-        ToolbarDivider {
-            id: division2
-            anchors.left: saveButton.right
-            height: parent.height
+    ToolbarDivider {
+        id: division1
+        anchors.left: sendButton.right
+        height: parent.height
+    }
+
+    ToolbarButton {
+        id: saveButton
+
+        anchors.left: division1.right
+        anchors.top: parent.top
+
+        iconName: "document-save"
+
+        onClicked: {
+
+            var i;
+            var message;
+
+            composer.completeEmailAddresses ();
+
+            //if this is a draft e-mail, the old draft needs to be deleted
+            emailAgent.deleteMessage (window.mailId)
+
+            message = messageComponent.createObject (composer);
+            message.setFrom (mailAccountListModel.getEmailAddressByIndex(composer.fromEmail));
+
+            var to = new Array ();
+            for (i = 0; i < composer.toModel.count; i++) {
+                to[i] = composer.toModel.get (i).email;
+            }
+
+
+            message.setTo (to);
+
+            var cc = new Array ();
+            for (i = 0; i < composer.ccModel.count; i++) {
+                cc[i] = composer.ccModel.get (i).email;
+            }
+            message.setCc (cc);
+
+            var bcc = new Array ();
+            for (i = 0; i < composer.bccModel.count; i++) {
+                bcc[i] = composer.bccModel.get (i).email;
+            }
+            message.setBcc (bcc);
+
+            var att = new Array ();
+            for (i = 0; i < composer.attachmentsModel.count; i++) {
+                att[i] = composer.attachmentsModel.get (i).uri;
+            }
+            message.setAttachments (att);
+
+            message.setSubject (composer.subject);
+            message.setPriority (composer.priority);
+            if (window.composeInTextMode)
+                message.setBody (composer.textBody, true);
+            else
+                message.setBody (composer.htmlBody, false);
+
+
+            message.saveDraft ();
+            window.popPage ();
         }
+    }
 
-        ToolbarButton {
-            id: addAttachmentButton
-            anchors.left: division2.right
-            iconName: "mail-addattachment"
+    ToolbarDivider {
+        id: division2
+        anchors.left: saveButton.right
+        height: parent.height
+    }
 
-            Component {
-                id: addAttachment
+    ToolbarButton {
+        id: addAttachmentButton
+        anchors.left: division2.right
+        iconName: "mail-addattachment"
 
-                AppPage {
-                    id: addAttachmentPage
-                    //: Attach a file (e.g. music, video, photo) to the document being composed.
-                    pageTitle: qsTr("Attach a file")
+        Component {
+            id: addAttachment
 
-                    AddAttachmentView {
+            AppPage {
+                id: addAttachmentPage
+                //: Attach a file (e.g. music, video, photo) to the document being composed.
+                pageTitle: qsTr("Attach a file")
+
+                PageBackground {
+                    contents: AddAttachmentView {
                         attachments: composer.attachmentsModel
+                    }
+                    toolbar: AddAttachmentToolbar {
+                        id: toolbar
+                        width: parent.width
+                        anchors.bottom: parent.bottom
+                        onOkay: {
+                            window.popPage ();
+                        }
                     }
                 }
             }
-
-            onClicked: {
-                window.addPage(addAttachment)
-            }
         }
 
-        ToolbarDivider {
-            id: division3
-            anchors.left: addAttachmentButton.right
-            height: parent.height
+        onClicked: {
+            window.addPage(addAttachment)
         }
+    }
 
-        ToolbarDivider {
-            id: division4
-            anchors.right: cancelButton.left
-            height: parent.height
+    ToolbarDivider {
+        id: division3
+        anchors.left: addAttachmentButton.right
+        height: parent.height
+    }
+
+    ToolbarDivider {
+        id: division4
+        anchors.right: cancelButton.left
+        height: parent.height
+    }
+
+    ToolbarButton {
+        id: cancelButton
+
+        anchors.right: parent.right
+        anchors.top: parent.top
+
+        iconName: "edit-delete"
+
+        onClicked: {
+            verifyCancel.show();
         }
-
-        ToolbarButton {
-            id: cancelButton
-
-            anchors.right: parent.right
-            anchors.top: parent.top
-
-            iconName: "edit-delete"
-
-            onClicked: {
-                verifyCancel.show();
-            }
-        }
+    }
     Component {
         id: messageComponent
 
@@ -207,4 +218,4 @@ import MeeGo.App.Email 0.1
         text: qsTr ("Are you sure you want to discard this unsent email?")
         onAccepted: { window.popPage () }
     }
-    }
+}

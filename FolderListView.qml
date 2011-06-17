@@ -214,7 +214,7 @@ Item {
 
         model: messageListModel
 
-        footer: Rectangle {
+        footer: Item {
             id: getMoreMessageRect
             height: 90
             width: parent.width
@@ -223,6 +223,9 @@ Item {
                     return true;
                 else
                     return false;
+            }
+            ListSeparator {
+                id: separator
             }
             Button {
                 anchors.verticalCenter: parent.verticalCenter
@@ -242,23 +245,22 @@ Item {
             }
         }
 
-        delegate: Rectangle {
+        delegate: Item {
             id: dinstance
             height: theme.listBackgroundPixelHeightTwo
             width: parent.width
-            Image {
+            ListSeparator {
+                id: separator
+                visible: index > 0
+            }
+            Rectangle {
                 id: itemBackground
-                anchors.fill: parent
-                source: {
-                    if (inSelectMode)
-                    {
-                        return selected ? "image://theme/email/bg_unreademail_l" : "image://theme/email/bg_reademail_l";
-                    }
-                    else
-                    {
-                        return readStatus ? "image://theme/email/bg_reademail_l" : "image://theme/email/bg_unreademail_l";
-                    }
-                }
+                anchors.top: separator.visible ? separator.bottom : parent.top
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.bottom: parent.bottom
+                opacity: ((inSelectMode && !selected) || (!inSelectMode && readStatus)) ? 0 : 1
+                color: theme_highlightColor
             }
 
             Image {

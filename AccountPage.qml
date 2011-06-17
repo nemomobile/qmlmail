@@ -44,7 +44,7 @@ Item {
 
         onCurrentIndexChanged: container.topicTriggered(currentIndex)
 
-        delegate: Rectangle {
+        delegate: Item {
             id: accountItem
             width: parent.width
             height: theme.listBackgroundPixelHeightTwo
@@ -60,9 +60,9 @@ Item {
                     window.currentMailAccountId = mailAccountId;
             }
 
-            Image {
-                anchors.fill: parent
-                source: "image://theme/email/bg_email details_p"
+            ListSeparator {
+                id: separator
+                visible: index > 0
             }
 
             property string accountImage
@@ -111,14 +111,17 @@ Item {
                 text: emailAddress + " - " + displayName  //i18n ok
             }
 
-            Image {
+            BorderImage {
                 id: unreadImage
                 anchors.right: goToFolderListIcon.left 
                 anchors.rightMargin:10 
                 anchors.verticalCenter: parent.verticalCenter
-                width: 50
-                fillMode: Image.Stretch
+                width: text.paintedWidth + 20
                 source: "image://themedimage/widgets/apps/email/accounts-unread"
+                border.top: 5
+                border.bottom: 5
+                border.left: 5
+                border.right: 5
 
                 Text {
                     id: text
@@ -126,8 +129,8 @@ Item {
                     anchors.horizontalCenter: parent.horizontalCenter
                     verticalAlignment: Text.AlignVCenter
                     text: unreadCount
-                    font.pixelSize: theme.fontPixelSizeMedium
-                    color: theme.fontColorNormal
+                    font.pixelSize: theme.fontPixelSizeLarge
+                    color: theme.buttonFontColor
                 }
             }
 
