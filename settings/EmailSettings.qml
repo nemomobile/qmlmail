@@ -30,45 +30,42 @@ AppPage {
         anchors.fill: parent
     }
     function getRestoredHomescreen() {
-        if(mainSaveRestoreState.restoreRequired &&
-                (mainSaveRestoreState.value("currentBook").lastIndexOf("EmailSettings.qml") != -1 )) {
-            if((mainSaveRestoreState.value("email-PageState") == "RegisterScreen") &&
-                    (mainSaveRestoreState.value("email-PageState") != undefined) ) {
-                emailAccount.clear();
-                if(mainSaveRestoreState.value("email-account-preset") == "-1") {
-                    emailAccount.recvSecurity = mainSaveRestoreState.value("email-account-recvSecurity");
-                    emailAccount.sendAuth =  mainSaveRestoreState.value("email-account-sendAuth");
-                    emailAccount.sendSecurity =  mainSaveRestoreState.value("email-account-sendSecurity");
-                } else {
-                    emailAccount.preset = mainSaveRestoreState.value("email-account-preset");
-                    emailAccount.description= mainSaveRestoreState.value("email-account-description");
-                }
-                emailAccount.name = mainSaveRestoreState.value("email-account-name");
-                emailAccount.address = mainSaveRestoreState.value("email-account-address");
-                emailAccount.password = mainSaveRestoreState.value("email-account-password");
-                emailAccount.recvType = mainSaveRestoreState.value("email-account-recvType");
-                emailAccount.recvServer = mainSaveRestoreState.value("email-account-recvServer");
-                emailAccount.recvPort = mainSaveRestoreState.value("email-account-recvPort");
+        if(mainSaveRestoreState.restoreRequired) {
+            emailAccount.clear();
+            if(mainSaveRestoreState.value("email-account-preset") == "-1") {
                 emailAccount.recvSecurity = mainSaveRestoreState.value("email-account-recvSecurity");
-                emailAccount.recvUsername = mainSaveRestoreState.value("email-account-recvUsername");
-                emailAccount.recvPassword = mainSaveRestoreState.value("email-account-recvPassword");
-                emailAccount.sendServer = mainSaveRestoreState.value("email-account-sendServer");
-                emailAccount.sendPort = mainSaveRestoreState.value("email-account-sendPort");
-                emailAccount.sendAuth = mainSaveRestoreState.value("email-account-sendAuth");
-                emailAccount.sendSecurity = mainSaveRestoreState.value("email-account-sendSecurity");
-                emailAccount.sendUsername = mainSaveRestoreState.value("email-account-sendUsername");
-                emailAccount.sendPassword = mainSaveRestoreState.value("email-account-sendPassword");
+                emailAccount.sendAuth =  mainSaveRestoreState.value("email-account-sendAuth");
+                emailAccount.sendSecurity =  mainSaveRestoreState.value("email-account-sendSecurity");
+            } else {
+                emailAccount.preset = mainSaveRestoreState.value("email-account-preset");
+                emailAccount.description= mainSaveRestoreState.value("email-account-description");
+            }
 
-                for(var row=0;row<100;row++) { //TODO: Use a keys() function when available; yes, this will break if the user has over 100 email accounts
-                    for(var role=0;role<100;role++) { //I can't believe I am writing this :(
-                        var data = mainSaveRestoreState.value("email-accounts-" + row + "-" + role);
-                        if(data != undefined) {
-                             accountSettingsModel.setDataWrapper(row, data, role);
-                        }
+            emailAccount.name = mainSaveRestoreState.value("email-account-name");
+            emailAccount.address = mainSaveRestoreState.value("email-account-address");
+            emailAccount.password = mainSaveRestoreState.value("email-account-password");
+            emailAccount.recvType = mainSaveRestoreState.value("email-account-recvType");
+            emailAccount.recvServer = mainSaveRestoreState.value("email-account-recvServer");
+            emailAccount.recvPort = mainSaveRestoreState.value("email-account-recvPort");
+            emailAccount.recvSecurity = mainSaveRestoreState.value("email-account-recvSecurity");
+            emailAccount.recvUsername = mainSaveRestoreState.value("email-account-recvUsername");
+            emailAccount.recvPassword = mainSaveRestoreState.value("email-account-recvPassword");
+            emailAccount.sendServer = mainSaveRestoreState.value("email-account-sendServer");
+            emailAccount.sendPort = mainSaveRestoreState.value("email-account-sendPort");
+            emailAccount.sendAuth = mainSaveRestoreState.value("email-account-sendAuth");
+            emailAccount.sendSecurity = mainSaveRestoreState.value("email-account-sendSecurity");
+            emailAccount.sendUsername = mainSaveRestoreState.value("email-account-sendUsername");
+            emailAccount.sendPassword = mainSaveRestoreState.value("email-account-sendPassword");
+
+            for(var row=0;row<100;row++) { //TODO: Use a keys() function when available; yes, this will break if the user has over 100 email accounts
+                for(var role=0;role<100;role++) { //I can't believe I am writing this :(
+                    var data = mainSaveRestoreState.value("email-accounts-" + row + "-" + role);
+                    if(data != undefined) {
+                         accountSettingsModel.setDataWrapper(row, data, role);
                     }
                 }
-
             }
+
             return mainSaveRestoreState.value("email-PageState");
         } else {
             return getHomescreen(); //by default

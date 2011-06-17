@@ -270,7 +270,8 @@ Item {
     }
 
     Component.onCompleted: {
-        if(manualSaveRestoreState.restoreRequired) {
+        if((manualSaveRestoreState.restoreRequired) &&
+                (mainSaveRestoreState.value("email-PageState") == "ManualScreen") ){
             recvServerField.errorText = manualSaveRestoreState.value("email-manual-recvServerField-errorText");
             recvPortField.errorText = manualSaveRestoreState.value("email-manual-recvPortField-errorText");
             recvUsernameField.errorText = manualSaveRestoreState.value("email-manual-recvUsernameField-errorText");
