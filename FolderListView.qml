@@ -260,7 +260,7 @@ Item {
                 anchors.right: parent.right
                 anchors.bottom: parent.bottom
                 opacity: ((inSelectMode && !selected) || (!inSelectMode && readStatus)) ? 0 : 1
-                color: theme_highlightColor
+                color: theme_blockColorActive
             }
 
             Image {
