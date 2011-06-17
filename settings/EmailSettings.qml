@@ -61,6 +61,7 @@ AppPage {
                 for(var role=0;role<100;role++) { //I can't believe I am writing this :(
                     var data = mainSaveRestoreState.value("email-accounts-" + row + "-" + role);
                     if(data != undefined) {
+                        console.debug("Restore of role: " + role +" to be: " + data);
                          accountSettingsModel.setDataWrapper(row, data, role);
                     }
                 }
