@@ -117,7 +117,7 @@ Item {
                 anchors.rightMargin:10 
                 anchors.verticalCenter: parent.verticalCenter
                 width: text.paintedWidth + 20
-                source: "image://themedimage/widgets/apps/email/accounts-unread"
+                source: unreadCount > 0 ? "image://themedimage/widgets/apps/email/accounts-unread" : "image://themedimage/widgets/apps/email/accounts-empty"
                 border.top: 5
                 border.bottom: 5
                 border.left: 5
