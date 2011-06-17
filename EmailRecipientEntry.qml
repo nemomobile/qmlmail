@@ -116,6 +116,7 @@ BorderImage {
                     TextEntry {
                         id: input
                         visible: false
+			defaultText:background.defaultText
 
                         anchors.verticalCenter: parent.verticalCenter
                         inputMethodHints: Qt.ImhEmailCharactersOnly | Qt.ImhNoAutoUppercase
