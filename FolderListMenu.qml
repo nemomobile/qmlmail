@@ -21,7 +21,14 @@ Item {
         {
            realHeight = window.height;
         }
-        var maxHeight = 50 * (5 + mailFolderListModel.totalNumberOfFolders());
+
+        //Unfortunately item heights have been hard-coded. In this situation,
+        //this is the appropriate fix for bug https://bugs.meego.com/show_bug.cgi?id=19151
+        //var maxHeight = 50 * (5 + mailFolderListModel.totalNumberOfFolders());
+        var maxHeight = sort.height + sortFilter.height
+        + createFolder.height + renameFolder.height + deleteFolder.height +
+        goToFolder.height + (50 * mailFolderListModel.totalNumberOfFolders())
+
         if (maxHeight > (realHeight - 170))
         {
             scrollInFolderList = true;
