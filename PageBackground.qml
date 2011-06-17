@@ -16,10 +16,12 @@ Image {
     clip: true
     BorderImage {
         id: panel
+        property bool isLandscape: (window.inLandscape || window.inInvertedLandscape)
+        property int landscapeSideMargin: 8 + (window.width - window.height)/2
         anchors.fill: parent
         anchors.topMargin: 8
-        anchors.leftMargin: 8
-        anchors.rightMargin: 8
+        anchors.leftMargin: isLandscape ? landscapeSideMargin : 8
+        anchors.rightMargin: isLandscape ? landscapeSideMargin : 8
         anchors.bottomMargin: 5
         source: "image://themedimage/widgets/apps/media/content-background"
         border.left:   8
@@ -37,7 +39,6 @@ Image {
     }
     Item {
         id: toolbarArea
-        //opacity: 0.3
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: parent.bottom
