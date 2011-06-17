@@ -14,10 +14,11 @@ import Qt.labs.gestures 2.0
 
 Item {
     id: container
-    width: parent.width
-    parent: readingView
     anchors.fill: parent
     
+    property string progressBarText: ""
+    property bool progressBarVisible: false
+    property real progressBarPercentage: 0
     property string uri;
     property bool downloadInProgress: false
     property bool openFlag: false
@@ -91,16 +92,16 @@ Item {
             target: emailAgent
             onAttachmentDownloadStarted: {
                 downloadInProgress = true;
-                progressBar.text = downloadingAttachmentLabel;
-                progressBar.visible = true;
+                progressBarText = downloadingAttachmentLabel;
+                progressBarVisible = true;
             }
 
             onProgressUpdate: {
-                progressBar.percentage = percent;
+                progressBarPercentage = percent;
             }
 
             onAttachmentDownloadCompleted: {
-                progressBar.visible = false;
+                progressBarVisible = false;
                 downloadInProgress = false;
                 if (openFlag == true)
                 {
@@ -244,7 +245,7 @@ Item {
         anchors.top: (window.numberOfMailAttachments > 0) ? attachmentRect.bottom : subjectRect.bottom
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.bottom: progressBar.visible ? progressBar.top : previousNextEmailRect.top
+        anchors.bottom: parent.bottom
         border.width: 1
         border.color: "black"
         color: "white"
@@ -343,16 +344,16 @@ Item {
                 }
 
                 onLoadStarted: {
-                    progressBar.text = downloadingContentLabel;
-                    progressBar.visible = true;
+                    progressBarText = downloadingContentLabel;
+                    progressBarVisible = true;
                 }
 
                 onLoadFinished: {
-                    progressBar.visible = false;
+                    progressBarVisible = false;
                 }
 
                 onLoadProgress: {
-                    progressBar.percentage=progress;
+                    progressBarPercentage=progress;
                 }
 
             }
@@ -377,92 +378,4 @@ Item {
     }
 
 
-    BorderImage {
-        id: progressBar
-        property alias text: progressText.text
-        property alias percentage: progressBarPrivate.percentage
-
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.bottom: previousNextEmailRect.top
-        visible: false
-        height: theme.fontPixelSizeLarge + 4
-        source: "image://theme/navigationBar_l"
-
-        ProgressBar {
-            id: progressBarPrivate
-            anchors.left: parent.left
-            anchors.right: progressText.left
-            anchors.bottom: parent.bottom
-            height: parent.height
-            fontColor: "white"
-            fontColorFilled: "white"
-        }
-
-        Text {
-            id: progressText
-            anchors.right: parent.right
-            anchors.rightMargin: 10
-            anchors.bottom: parent.bottom
-            anchors.top: parent.top
-            horizontalAlignment: Text.AlignLeft
-            verticalAlignment:Text.AlignVCenter
-            font.pixelSize: theme.fontPixelSizeLarge
-            color: theme.fontColorMediaHighlight
-        }
-    }
-
-    Item {
-        id: previousNextEmailRect
-        anchors.bottom: readingViewToolbar.top
-        anchors.left: parent.left
-        anchors.right: parent.right
-        width: parent.width
-        height: previousEmailButton.height
-        //color: "#0d0303"
-    BorderImage {
-        id: navigationBar
-        width: parent.width
-        source: "image://themedimage/widgets/common/action-bar/action-bar-background"
-    }
-
-        ToolbarButton  {
-            id: previousEmailButton
-            anchors.left: parent.left
-            anchors.top: parent.top
-            visible: window.currentMessageIndex > 0 ? true : false
-            iconName: "mail-message-previous" 
-            onClicked: {
-                if (window.currentMessageIndex > 0)
-                {
-                    window.currentMessageIndex = window.currentMessageIndex - 1;
-                    window.updateReadingView(window.currentMessageIndex);
-                }
-            }
-        }
-
-        ToolbarButton {
-            id: nextEmailButton
-
-            anchors.right: parent.right
-            anchors.top: parent.top
-            visible: (window.currentMessageIndex + 1) < messageListModel.messagesCount() ? true : false
-            iconName: "mail-message-next" 
-
-            onClicked: {
-                if (window.currentMessageIndex < messageListModel.messagesCount())
-                {
-                    window.currentMessageIndex = window.currentMessageIndex + 1;
-                    window.updateReadingView(window.currentMessageIndex);
-                }
-            }
-        }
-    } 
-    ReadingViewToolbar {
-        id: readingViewToolbar
-        anchors.right: parent.right
-        anchors.left: parent.left
-        anchors.bottom: parent.bottom
-        width: parent.width
-    }
 }

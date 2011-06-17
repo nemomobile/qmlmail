@@ -488,7 +488,26 @@ Window {
                     }
                 }
             }
-            FolderListView {}
+            PageBackground {
+                contents: FolderListView {
+                    id: folderListContainer
+                }
+                toolbar: FolderListViewToolbar {
+                    id: folderListViewToolbar
+                    folderListContainer: folderListContainer
+
+                    onEditModeBegin: {
+                        messageListModel.deSelectAllMessages();
+                        folderListContainer.inSelectMode = true;
+                        folderListContainer.numOfSelectedMessages = 0;
+                    }
+
+                    onEditModeEnd: {
+                        messageListModel.deSelectAllMessages();
+                        folderListContainer.inSelectMode = false;
+                    }
+                }
+            }
         }
     }
 
@@ -505,7 +524,10 @@ Window {
                 accountList.push(qsTr("Account switcher"));
                 window.accountFilterModel = accountList;
             }
-            AccountPage {}
+            PageBackground {
+                contents: AccountPage {}
+                toolbar: AccountViewToolbar {}
+            }
         }
     }
 
@@ -552,8 +574,12 @@ Window {
             property alias composer: composerView.composer
             anchors.fill: parent
             pageTitle: qsTr("Composer")
-            ComposerView {
-                id: composerView
+            PageBackground {
+                contents: ComposerView {
+                    id: composerView
+                }
+                toolbar: ComposerViewToolbar {
+                }
             }
         }
     }
@@ -614,8 +640,15 @@ Window {
                     }
                 }
             }
-
-            ReadingView {
+            PageBackground {
+                contents: ReadingView {
+                    id: reading
+                }
+                toolbar: ReadingViewBottomBar {
+                    progressBarText: reading.progressBarText
+                    progressBarVisible: reading.progressBarVisible
+                    progressBarPercentage: reading.progressBarPercentage
+                }
             }
         }
     }

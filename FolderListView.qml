@@ -12,8 +12,6 @@ import MeeGo.App.Email 0.1
 
 Item {
     id: folderListContainer
-    width: window.width
-    parent: folderListView
     anchors.fill: parent
 
     property string chooseFolder: qsTr("Choose folder:")
@@ -105,7 +103,7 @@ Item {
 
     function isDraftFolder()
     {
-        return folderListContainer.parent.pageTitle.indexOf( qsTr("Drafts") ) != -1 ;
+        return folderListView.pageTitle.indexOf( qsTr("Drafts") ) != -1 ;
     }
 
     ModalDialog {
@@ -195,10 +193,7 @@ Item {
 
     Item {
         id: emptyMailboxView
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.bottom: folderListViewToolbar.top
-        anchors.top: parent.top
+        anchors.fill: parent
         opacity: messageListView.count > 0 ? 0 : 1
         Text {
             id: noMessageText
@@ -212,11 +207,7 @@ Item {
 
     ListView {
         id: messageListView
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.top: parent.top
-        anchors.bottom: folderListViewToolbar.top
-        width: parent.width
+        anchors.fill: parent
         clip: true
 
         opacity: count > 0 ? 1 : 0
@@ -473,20 +464,6 @@ Item {
                     contextMenu.show();
                 }
             }
-        }
-    }
-    FolderListViewToolbar {
-        id: folderListViewToolbar
-
-        onEditModeBegin: {
-            messageListModel.deSelectAllMessages();
-            folderListContainer.inSelectMode = true;
-            folderListContainer.numOfSelectedMessages = 0;
-        }
-
-        onEditModeEnd: {
-            messageListModel.deSelectAllMessages();
-            folderListContainer.inSelectMode = false;
         }
     }
 }

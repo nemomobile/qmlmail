@@ -13,8 +13,6 @@ import MeeGo.App.Email 0.1
 
 Item {
     id: container
-    width: window.width
-    parent: accountListView
     anchors.fill: parent
 
     property int topicHeight: 58
@@ -39,11 +37,7 @@ Item {
 
     ListView {
         id: listView
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.top: parent.top
-        anchors.bottom: accountListViewToolbar.top
-        width: parent.width
+        anchors.fill: parent
         clip: true
         model: mailAccountListModel
         spacing: 1
@@ -52,7 +46,7 @@ Item {
 
         delegate: Rectangle {
             id: accountItem
-            width: container.width
+            width: parent.width
             height: theme.listBackgroundPixelHeightTwo
 
             //: Label that displays the number of unread e-mail messages.  Note plural handling.
@@ -165,14 +159,5 @@ Item {
                 }
             }
         }
-    }
-    Item {
-        id: accountListViewToolbar
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
-        width: window.width
-        height: 120
-        AccountViewToolbar {}
     }
 }

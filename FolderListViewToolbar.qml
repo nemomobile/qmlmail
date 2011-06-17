@@ -17,6 +17,7 @@ Item {
     height: navigationBarImage.height
 
     property bool inEditMode: false
+    property Item folderListContainer
 
     signal editModeBegin();
     signal editModeEnd();
