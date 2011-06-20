@@ -18,6 +18,7 @@ Item {
     }
 
     Flickable {
+        id: confirmFlick
         clip: true
         anchors.fill: parent
         contentWidth: content.width
@@ -66,6 +67,19 @@ Item {
                 }
                 WelcomeButtons {}
             }
+        }
+        Component.onCompleted: {
+            if(confirmScreenSaveRestore.restoreRequired) {
+                confirmFlick.contentY = confirmScreenSaveRestore.value("email-confirm-confirmFlick-contentY");
+            }
+        }
+    }
+
+    SaveRestoreState {
+        id: confirmScreenSaveRestore
+        onSaveRequired: {
+            setValue("email-confirm-confirmFlick-contentY", confirmFlick.contentY);
+            sync();
         }
     }
 }
