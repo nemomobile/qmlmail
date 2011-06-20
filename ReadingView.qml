@@ -209,7 +209,7 @@ Item {
             }
             Text {
                 width: subjectRect.width - subjectLabel.width - 10
-                font.pixelSize: theme.fontPixelSizeLarge
+                font.pixelSize: theme.fontPixelSizeNormal
                 text: window.mailSubject
                 anchors.verticalCenter: parent.verticalCenter
                 elide: Text.ElideRight
