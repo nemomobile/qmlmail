@@ -75,6 +75,7 @@ FocusScope {
         HtmlField {
             id: htmlEditPane
             anchors.fill: parent
+            anchors.bottomMargin: 5
             focus: true
             font.pixelSize: theme.fontPixelSizeLarge
             visible: window.composeInTextMode ? false : true
@@ -100,6 +101,7 @@ FocusScope {
             }
 
             anchors.fill: parent
+            anchors.bottomMargin: 5
         }
     }
 }

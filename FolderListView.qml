@@ -12,8 +12,6 @@ import MeeGo.App.Email 0.1
 
 Item {
     id: folderListContainer
-    width: window.width
-    parent: folderListView
     anchors.fill: parent
 
     property string chooseFolder: qsTr("Choose folder:")
@@ -105,7 +103,7 @@ Item {
 
     function isDraftFolder()
     {
-        return folderListContainer.parent.pageTitle.indexOf( qsTr("Drafts") ) != -1 ;
+        return folderListView.pageTitle.indexOf( qsTr("Drafts") ) != -1 ;
     }
 
     ModalDialog {
@@ -195,10 +193,7 @@ Item {
 
     Item {
         id: emptyMailboxView
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.bottom: folderListViewToolbar.top
-        anchors.top: parent.top
+        anchors.fill: parent
         opacity: messageListView.count > 0 ? 0 : 1
         Text {
             id: noMessageText
@@ -212,18 +207,14 @@ Item {
 
     ListView {
         id: messageListView
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.top: parent.top
-        anchors.bottom: folderListViewToolbar.top
-        width: parent.width
+        anchors.fill: parent
         clip: true
 
         opacity: count > 0 ? 1 : 0
 
         model: messageListModel
 
-        footer: Rectangle {
+        footer: Item {
             id: getMoreMessageRect
             height: 90
             width: parent.width
@@ -232,6 +223,9 @@ Item {
                     return true;
                 else
                     return false;
+            }
+            ListSeparator {
+                id: separator
             }
             Button {
                 anchors.verticalCenter: parent.verticalCenter
@@ -251,23 +245,22 @@ Item {
             }
         }
 
-        delegate: Rectangle {
+        delegate: Item {
             id: dinstance
             height: theme.listBackgroundPixelHeightTwo
             width: parent.width
-            Image {
+            ListSeparator {
+                id: separator
+                visible: index > 0
+            }
+            Rectangle {
                 id: itemBackground
-                anchors.fill: parent
-                source: {
-                    if (inSelectMode)
-                    {
-                        return selected ? "image://theme/email/bg_unreademail_l" : "image://theme/email/bg_reademail_l";
-                    }
-                    else
-                    {
-                        return readStatus ? "image://theme/email/bg_reademail_l" : "image://theme/email/bg_unreademail_l";
-                    }
-                }
+                anchors.top: separator.visible ? separator.bottom : parent.top
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.bottom: parent.bottom
+                opacity: ((inSelectMode && !selected) || (!inSelectMode && readStatus)) ? 0 : 1
+                color: theme_blockColorActive
             }
 
             Image {
@@ -473,20 +466,6 @@ Item {
                     contextMenu.show();
                 }
             }
-        }
-    }
-    FolderListViewToolbar {
-        id: folderListViewToolbar
-
-        onEditModeBegin: {
-            messageListModel.deSelectAllMessages();
-            folderListContainer.inSelectMode = true;
-            folderListContainer.numOfSelectedMessages = 0;
-        }
-
-        onEditModeEnd: {
-            messageListModel.deSelectAllMessages();
-            folderListContainer.inSelectMode = false;
         }
     }
 }
