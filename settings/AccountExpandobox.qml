@@ -135,7 +135,7 @@ Expandobox {
                         DropDownControl {
                             label: qsTr("Server type")
                             model: Settings.serviceModel
-                            selectedIndex: model.recvType
+                            selectedIndex: recvType
                             onTriggered: accountSettingsModel.setDataWrapper(listIndex, index, 38)
                         },
                         TextControl {
@@ -153,7 +153,7 @@ Expandobox {
                         DropDownControl {
                             label: qsTr("Security")
                             model: Settings.encryptionModel
-                            selectedIndex: model.recvSecurity
+                            selectedIndex: recvSecurity
                             onTriggered: accountSettingsModel.setDataWrapper(listIndex, index, 41)
                         },
                         TextControl {
@@ -190,13 +190,13 @@ Expandobox {
                         DropDownControl {
                             label: qsTr("Authentication")
                             model: Settings.authenticationModel
-                            selectedIndex: model.sendAuth
+                            selectedIndex: sendAuth
                             onTriggered: accountSettingsModel.setDataWrapper(listIndex, index, 46)
                         },
                         DropDownControl {
                             label: qsTr("Security")
                             model: Settings.encryptionModel
-                            selectedIndex: model.sendSecurity;
+                            selectedIndex: sendSecurity;
                             onTriggered: accountSettingsModel.setDataWrapper(listIndex, index, 47)
                         },
                         TextControl {
