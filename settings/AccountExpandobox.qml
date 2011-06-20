@@ -75,7 +75,7 @@ Expandobox {
                     if (unique(model.description)) {
                         return model.description;
                     } else {
-                        return qsTr("%1 - %2").arg(model.address).arg(model.description);
+                        return model.address + " - " + model.description;   //i18n ok
                     }
                 }
             }
