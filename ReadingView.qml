@@ -256,61 +256,35 @@ Page {
         }
     }
 
-    Rectangle {
-        id: bodyTextArea
+    Flickable {
+        id: flick
         anchors.top: (window.numberOfMailAttachments > 0) ? attachmentRect.bottom : subjectRect.bottom
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: parent.bottom
-        border.width: 1
-        border.color: "black"
-        color: "white"
-        Flickable {
-            id: flick
+
+        contentWidth: edit.paintedWidth;
+        contentHeight: edit.paintedHeight;
+        clip: true
+
+        TextEdit {
+            id: edit
             anchors.left: parent.left
+            anchors.leftMargin: UiConstants.DefaultMargin
             anchors.top: parent.top
-            anchors.topMargin: 2
-            width: parent.width
-            height: parent.height
-
-            property variant centerPoint
-
-            contentWidth: {
-                return edit.paintedWidth;
-            }
-            contentHeight:  {
-                return edit.paintedHeight;
-            }
-            clip: true
-         
-            function ensureVisible(r)
-            {
-                if (contentX >= r.x)
-                    contentX = r.x;
-                else if (contentX+width <= r.x+r.width)
-                    contentX = r.x+r.width-width;
-                if (contentY >= r.y)
-                    contentY = r.y;
-                else if (contentY+height <= r.y+r.height)
-                    contentY = r.y+r.height-height;
-            }
-
-            TextEdit {
-                id: edit
-                anchors.left: parent.left
-                anchors.leftMargin: 5
-                width: flick.width
-                height: flick.height
-                focus: true
-                wrapMode: TextEdit.Wrap
-                //textFormat: TextEdit.RichText
-                readOnly: true
-                onCursorRectangleChanged: flick.ensureVisible(cursorRectangle)
-                text: window.mailBody
-//                visible:  (window.mailHtmlBody == "")
-            }
-
+            anchors.topMargin: UiConstants.DefaultMargin
+            width: flick.width - (UiConstants.DefaultMargin * 2)
+            height: flick.height + (UiConstants.DefaultMargin * 2)
+            focus: true
+            wrapMode: TextEdit.Wrap
+            readOnly: true
+            text: window.mailBody
         }
+
+    }
+
+    ScrollDecorator {
+        flickableItem: flick
     }
 
     tools: ToolBarLayout {
