@@ -7,7 +7,7 @@
  */
 
 import QtQuick 1.1
-import com.nokia.meego 1.1
+import com.nokia.meego 1.2
 import com.nokia.extras 1.1
 import org.nemomobile.email 0.1
 
@@ -19,9 +19,18 @@ Page {
     property alias interactive: listView.interactive
     property alias model: listView.model
 
+    PageHeader {
+        id: pageHeader
+        color: "#0066ff"
+        text: "Mail"
+    }
+
     ListView {
         id: listView
-        anchors.fill: parent
+        anchors.top: pageHeader.bottom
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
         clip: true
         model: mailAccountListModel
 

@@ -7,7 +7,7 @@
  */
 
 import QtQuick 1.1
-import com.nokia.meego 1.1
+import com.nokia.meego 1.2
 import org.nemomobile.email 0.1
 
 Page {
@@ -197,25 +197,31 @@ Page {
         }
     }
 
-    Item {
-        id: emptyMailboxView
-        anchors.fill: parent
-        opacity: messageListView.count > 0 ? 0 : 1
-        Text {
-            id: noMessageText
-            text: qsTr ("There are no messages in this folder.")
-            anchors.centerIn: emptyMailboxView
-            color:theme.fontColorNormal
-            elide: Text.ElideRight
-        }
+    PageHeader {
+        id: pageHeader
+        color: "#0066ff"
+        text: currentAccountDisplayName + " " + mailFolderListModel.inboxFolderName()
     }
 
     ListView {
         id: messageListView
-        anchors.fill: parent
+        anchors.top: pageHeader.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
         clip: true
 
-        opacity: count > 0 ? 1 : 0
+        Item {
+            id: emptyMailboxView
+            opacity: messageListView.count > 0 ? 0 : 1
+            Text {
+                id: noMessageText
+                text: qsTr ("There are no messages in this folder.")
+                anchors.centerIn: emptyMailboxView
+                color:theme.fontColorNormal
+                elide: Text.ElideRight
+            }
+        }
 
         model: messageListModel
 
