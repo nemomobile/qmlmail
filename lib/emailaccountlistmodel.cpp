@@ -7,8 +7,9 @@
  */
 
 
-#include <QMailStore>
+#include <qmailstore.h>
 #include <qmailnamespace.h>
+
 #include "emailaccountlistmodel.h"
 
 EmailAccountListModel::EmailAccountListModel(QObject *parent) :

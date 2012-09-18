@@ -2,15 +2,21 @@ include (../common.pri)
 TEMPLATE = lib
 TARGET = Email
 
-QT += declarative webkit
+QT += declarative webkit network
 CONFIG += qt \
     plugin \
     link_pkgconfig \
     mobility
 
 PKGCONFIG += qmfmessageserver\
-    qmfclient \
-    mlite
+    qmfclient
+
+packagesExist(mlite) {
+    PKGCONFIG += mlite
+    DEFINES += HAS_MLITE
+} else {
+    warning("mlite not available. Some functionality may not work as expected.")
+}
 
 INCLUDEPATH += ../lib
 LIBS += -L../lib -lmeegoemail

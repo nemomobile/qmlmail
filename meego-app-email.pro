@@ -1,7 +1,7 @@
 include(common.pri)
 TEMPLATE = subdirs 
 CONFIG += ordered
-SUBDIRS += lib plugin content
+SUBDIRS += lib plugin
 
 qmlfiles.files += *.qml settings/
 qmlfiles.path += $$INSTALL_ROOT/usr/share/$$TARGET

@@ -9,9 +9,10 @@
 #ifndef EMAILMESSAGE_H
 #define EMAILMESSAGE_H
 
-#include <QMailAccount>
-#include <QMailStore>
 #include <QDeclarativeItem>
+
+#include <qmailaccount.h>
+#include <qmailstore.h>
 
 class EmailMessage : public QDeclarativeItem
 {

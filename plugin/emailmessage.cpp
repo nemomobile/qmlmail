@@ -7,10 +7,12 @@
  */
 
 
-#include <QMailAccount>
-#include <QMailStore>
 #include <QDeclarativeItem>
 #include <QFileInfo>
+
+#include <qmailaccount.h>
+#include <qmailstore.h>
+
 #include "emailagent.h"
 #include "emailmessage.h"
 #include "qmailnamespace.h"

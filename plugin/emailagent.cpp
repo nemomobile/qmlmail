@@ -7,16 +7,17 @@
  */
 
 
-#include "emailagent.h"
-#include <QMailAccount>
-#include <QMailStore>
 #include <QTimer>
 #include <QDir>
 #include <QUrl>
 #include <QFile>
 #include <QProcess>
-#include <qmailnamespace.h>
 
+#include <qmailnamespace.h>
+#include <qmailaccount.h>
+#include <qmailstore.h>
+
+#include "emailagent.h"
 
 static int sRetrievedMinimum = 0;
 
@@ -30,16 +31,18 @@ EmailAgent *EmailAgent::instance()
 }
 
 EmailAgent::EmailAgent(QDeclarativeItem *parent)
-    : QDeclarativeItem(parent), 
-    m_retrieving(false),
-    m_transmitting(false),
-    m_exporting(false),
-    m_cancelling(false),
-    m_retrievalAction(new QMailRetrievalAction(this)),
-    m_storageAction(new QMailStorageAction(this)),
-    m_transmitAction(new QMailTransmitAction(this)), 
-    m_exportAction(new QMailRetrievalAction(this)),
-    m_confirmDeleteMail(new MGConfItem("/apps/meego-app-email/confirmdeletemail"))
+    : QDeclarativeItem(parent)
+    , m_retrieving(false)
+    , m_transmitting(false)
+    , m_exporting(false)
+    , m_cancelling(false)
+    , m_retrievalAction(new QMailRetrievalAction(this))
+    , m_storageAction(new QMailStorageAction(this))
+    , m_transmitAction(new QMailTransmitAction(this))
+    , m_exportAction(new QMailRetrievalAction(this))
+#ifdef HAS_MLITE
+    , m_confirmDeleteMail(new MGConfItem("/apps/meego-app-email/confirmdeletemail"))
+#endif
 {
     initMailServer(); 
 
@@ -142,7 +145,7 @@ void EmailAgent::createFolder (const QString &name, QVariant mailAccountId, QVar
 
     QMailFolderId parentId = parentFolderId.value<QMailFolderId>();
 
-    m_storageAction->createFolder(name, accountId, parentId);
+    m_storageAction->onlineCreateFolder(name, accountId, parentId);
 }
 
 void EmailAgent::deleteFolder(QVariant folderId)
@@ -151,7 +154,7 @@ void EmailAgent::deleteFolder(QVariant folderId)
     QMailFolderId id = folderId.value<QMailFolderId>();
     Q_ASSERT(id.isValid());
 
-    m_storageAction->deleteFolder(id);
+    m_storageAction->onlineDeleteFolder(id);
 }
 
 void EmailAgent::renameFolder(QVariant folderId, const QString &name)
@@ -161,7 +164,7 @@ void EmailAgent::renameFolder(QVariant folderId, const QString &name)
     QMailFolderId id = folderId.value<QMailFolderId>();
     Q_ASSERT(id.isValid());
 
-    m_storageAction->renameFolder(id, name);
+    m_storageAction->onlineRenameFolder(id, name);
 }
 
 void EmailAgent::synchronize(QVariant id)
@@ -308,7 +311,11 @@ QString EmailAgent::getSignatureForAccount(QVariant vMailAccountId)
 
 bool EmailAgent::confirmDeleteMail()
 {
+#ifdef HAS_MLITE
     return m_confirmDeleteMail->value().toBool();
+#else
+    return true;
+#endif
 }
 
 void EmailAgent::exportAccountChanges(const QMailAccountId id)

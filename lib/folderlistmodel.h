@@ -17,9 +17,10 @@
 #undef Status
 #endif
 
+#include <qmailfolder.h>
+#include <qmailaccount.h>
+
 #include <QAbstractListModel>
-#include <QMailFolder>
-#include <QMailAccount>
 
 class FolderListModel : public QAbstractListModel
 {

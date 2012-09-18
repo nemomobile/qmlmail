@@ -6,38 +6,43 @@
  * http://www.apache.org/licenses/LICENSE-2.0
  */
 
-#include <QMailStore>
-#include <QMailMessage>
-#include <QtNetwork/QNetworkConfigurationManager>
+#include <QNetworkConfigurationManager>
 #include <QTimer>
+
+#include <qmailstore.h>
+#include <qmailmessage.h>
 
 #include "emailaccount.h"
 
 EmailAccount::EmailAccount()
-    : mAccount(new QMailAccount()),
-    mAccountConfig(new QMailAccountConfiguration()),
-    mRecvCfg(0),
-    mSendCfg(0),
-    mRetrievalAction(new QMailRetrievalAction(this)),
-    mTransmitAction(new QMailTransmitAction(this)),
-    mErrorCode(0),
-    mUpdateIntervalConf(new MGConfItem("/apps/meego-app-email/updateinterval")),
-    mSignatureConf(new MGConfItem("/apps/meego-app-email/signature"))
+    : mAccount(new QMailAccount())
+    , mAccountConfig(new QMailAccountConfiguration())
+    , mRecvCfg(0)
+    , mSendCfg(0)
+    , mRetrievalAction(new QMailRetrievalAction(this))
+    , mTransmitAction(new QMailTransmitAction(this))
+    , mErrorCode(0)
+#ifdef HAS_MLITE
+    , mUpdateIntervalConf(new MGConfItem("/apps/meego-app-email/updateinterval"))
+    , mSignatureConf(new MGConfItem("/apps/meego-app-email/signature"))
+#endif
 { 
     mAccount->setMessageType(QMailMessage::Email);
     init();
 }
 
 EmailAccount::EmailAccount(const QMailAccount &other)
-    : mAccount(new QMailAccount(other)),
-    mAccountConfig(new QMailAccountConfiguration()),
-    mRecvCfg(0),
-    mSendCfg(0),
-    mRetrievalAction(new QMailRetrievalAction(this)),
-    mTransmitAction(new QMailTransmitAction(this)),
-    mErrorCode(0),
-    mUpdateIntervalConf(new MGConfItem("/apps/meego-app-email/updateinterval")),
-    mSignatureConf(new MGConfItem("/apps/meego-app-email/signature"))
+    : mAccount(new QMailAccount(other))
+    , mAccountConfig(new QMailAccountConfiguration())
+    , mRecvCfg(0)
+    , mSendCfg(0)
+    , mRetrievalAction(new QMailRetrievalAction(this))
+    , mTransmitAction(new QMailTransmitAction(this))
+    , mErrorCode(0)
+#ifdef HAS_MLITE
+    , mUpdateIntervalConf(new MGConfItem("/apps/meego-app-email/updateinterval"))
+    , mSignatureConf(new MGConfItem("/apps/meego-app-email/signature"))
+#endif
 {
     *mAccountConfig = QMailStore::instance()->accountConfiguration(mAccount->id());
     init();
@@ -113,10 +118,16 @@ void EmailAccount::clear()
 bool EmailAccount::save()
 {
     bool result;
+#ifdef HAS_MLITE
     QString signature = mSignatureConf->value().toString();
     mAccount->setSignature(signature);
     mAccount->setStatus(QMailAccount::AppendSignature, !signature.isEmpty());
+#endif
+
+#ifdef HAS_MLITE
     mRecvCfg->setValue("checkInterval", QString("%1").arg(mUpdateIntervalConf->value().toInt()));
+#endif
+
     mAccount->setStatus(QMailAccount::UserEditable, true);
     mAccount->setStatus(QMailAccount::UserRemovable, true);
     mAccount->setStatus(QMailAccount::MessageSource, true);

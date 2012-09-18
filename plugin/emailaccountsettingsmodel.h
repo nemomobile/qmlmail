@@ -10,9 +10,13 @@
 #define EMAILACCOUNTSETTINGSMODEL_H
 
 #include <QAbstractListModel>
-#include <QMailAccount>
-#include <QMailServiceConfiguration>
+
+#include <qmailaccount.h>
+#include <qmailserviceconfiguration.h>
+
+#ifdef HAS_MLITE
 #include <mgconfitem.h>
+#endif
 
 class EmailAccountSettingsModel : public QAbstractListModel {
     Q_OBJECT
@@ -70,10 +74,13 @@ private:
     QString mSignature;
     bool mNewMailNotification;
     bool mConfirmDeleteMail;
+
+#ifdef HAS_MLITE
     MGConfItem *mUpdateIntervalConf;
     MGConfItem *mSignatureConf;
     MGConfItem *mNewMailNotificationConf;
     MGConfItem *mConfirmDeleteMailConf;
+#endif
 
     void init();
     static QMailAccountConfiguration::ServiceConfiguration *getRecvCfg(QMailAccountConfiguration &acctcfg);

@@ -18,13 +18,17 @@
 #endif
 */
 
-#include <QMailAccount>
-#include <QMailStore>
 #include <QDeclarativeItem>
-#include <QMailServiceAction>
 #include <QProcess>
 #include <QTimer>
+
+#include <qmailaccount.h>
+#include <qmailstore.h>
+#include <qmailserviceaction.h>
+
+#ifdef HAS_MLITE
 #include <mgconfitem.h>
+#endif
 
 class EmailAgent : public QDeclarativeItem
 {
@@ -105,7 +109,9 @@ private:
 
     QTimer m_exportTimer;
 
+#ifdef HAS_MLITE
     MGConfItem *m_confirmDeleteMail;
+#endif
 };
 
 #endif

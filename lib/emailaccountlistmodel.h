@@ -16,9 +16,10 @@
 #undef Status
 #endif
 
-#include <QMailAccountListModel>
 #include <QAbstractListModel>
-#include <QMailAccount>
+
+#include <qmailaccountlistmodel.h>
+#include <qmailaccount.h>
 
 class EmailAccountListModel : public QMailAccountListModel
 {

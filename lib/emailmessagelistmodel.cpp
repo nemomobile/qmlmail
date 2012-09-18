@@ -6,16 +6,18 @@
  * http://www.apache.org/licenses/LICENSE-2.0
  */
 
-
-#include "emailmessagelistmodel.h"
-#include <QMailMessage>
-#include <QMailMessageKey>
-#include <QMailStore>
-#include <QMailServiceAction>
 #include <QDateTime>
 #include <QTimer>
 #include <QProcess>
+
+#include <qmailmessage.h>
+#include <qmailmessagekey.h>
+#include <qmailstore.h>
+#include <qmailserviceaction.h>
+
 #include <qmailnamespace.h>
+
+#include "emailmessagelistmodel.h"
 
 QString EmailMessageListModel::bodyHtmlText(QMailMessagePartContainer *container) const
 {
@@ -661,7 +663,7 @@ void EmailMessageListModel::moveSelectedMessageIds(QVariant vFolderId)
 
     QMailMessage const msg(m_selectedMsgIds[0]);
 
-    m_storageAction->moveMessages(m_selectedMsgIds, id);
+    m_storageAction->onlineMoveMessages(m_selectedMsgIds, id);
     m_selectedMsgIds.clear();
     m_retrievalAction->exportUpdates(msg.parentAccountId());
 }

@@ -17,11 +17,12 @@
 #endif
 
 #include <QAbstractListModel>
-#include <QMailMessage>
-#include <QMailMessageListModel>
-#include <QMailServiceAction>
-#include <QMailAccount>
 #include <QProcess>
+
+#include <qmailmessage.h>
+#include <qmailmessagelistmodel.h>
+#include <qmailserviceaction.h>
+#include <qmailaccount.h>
 
 
 class EmailMessageListModel : public QMailMessageListModel

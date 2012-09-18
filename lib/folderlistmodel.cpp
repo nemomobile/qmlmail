@@ -7,17 +7,18 @@
  */
 
 
-#include "folderlistmodel.h"
-#include <QMailAccount>
-#include <QMailFolder>
-#include <QMailMessage>
-#include <QMailMessageKey>
-#include <QMailStore>
 #include <QDateTime>
 #include <QTimer>
 #include <QProcess>
-#include <qmailnamespace.h>
 
+#include <qmailnamespace.h>
+#include <qmailaccount.h>
+#include <qmailfolder.h>
+#include <qmailmessage.h>
+#include <qmailmessagekey.h>
+#include <qmailstore.h>
+
+#include "folderlistmodel.h"
 
 
 FolderListModel::FolderListModel(QObject *parent) :
