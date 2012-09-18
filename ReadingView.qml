@@ -9,26 +9,8 @@
 import QtQuick 1.1
 import com.nokia.meego 1.1
 import org.nemomobile.email 0.1
-import QtWebKit 1.0
 
 /*
-            actionMenuModel : window.mailReadFlag ? [qsTr("Mark as unread")] : [qsTr("Mark as read")]
-            actionMenuPayload: [0]
-
-            onActionMenuTriggered: {
-                if (selectedItem == 0) {
-                    if (window.mailReadFlag)
-                    {
-                        emailAgent.markMessageAsUnread (window.mailId);
-                        window.mailReadFlag = 0;
-                    }
-                    else
-                    {
-                        emailAgent.markMessageAsRead (window.mailId);
-                        window.mailReadFlag = 1;
-                    }
-                }
-            }
                 toolbar: ReadingViewBottomBar {
                     progressBarText: reading.progressBarText
                     progressBarVisible: reading.progressBarVisible
@@ -287,7 +269,26 @@ Page {
         flickableItem: flick
     }
 
+    Menu {
+        id: menu
+        MenuLayout {
+            MenuItem {
+                text: window.mailReadFlag ? qsTr("Mark as unread") : qsTr("Mark as read")
+                onClicked: {
+                    if (window.mailReadFlag) {
+                        emailAgent.markMessageAsUnread (window.mailId);
+                        window.mailReadFlag = 0;
+                    } else {
+                        emailAgent.markMessageAsRead (window.mailId);
+                        window.mailReadFlag = 1;
+                    }
+                }
+            }
+        }
+    }
+
     tools: ToolBarLayout {
         ToolIcon { iconId: "toolbar-back"; onClicked: { pageStack.pop(); }  }
+        ToolIcon { iconId: "toolbar-view-menu" ; onClicked: menu.open(); }
     }
 }
