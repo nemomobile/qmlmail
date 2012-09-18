@@ -6,7 +6,7 @@
  * http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import QtQuick 1.0
+import QtQuick 1.1
 Item {
     height: 2
     width: parent.width

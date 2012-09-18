@@ -7,9 +7,9 @@
  */
 
 
-import QtQuick 1.0
-import MeeGo.Components 0.1
-import MeeGo.App.Email 0.1
+import QtQuick 1.1
+import com.nokia.meego 1.1
+import org.nemomobile.email 0.1
 
 BorderImage {
     id: composerViewToolbar

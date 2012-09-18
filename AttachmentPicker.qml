@@ -6,8 +6,8 @@
  * http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import QtQuick 1.0
-import MeeGo.Components 0.1
+import QtQuick 1.1
+import com.nokia.meego 1.1
 
 Item {
     id: attachmentPickerButton
