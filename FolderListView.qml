@@ -258,51 +258,12 @@ Page {
             height: UiConstants.ListItemHeightSmall
             width: parent.width
 
-            Rectangle {
-                id: itemBackground
-                anchors.fill: parent
-                opacity: ((inSelectMode && !selected) || (!inSelectMode && readStatus)) ? 0 : 1
-                color: theme_blockColorActive
-            }
-
-            Image {
-                id: readStatusIcon
-                anchors.left: parent.left
-                anchors.leftMargin: UiConstants.DefaultMargin
-                anchors.verticalCenter: parent.verticalCenter
-                source: "image://themedimage/widgets/apps/email/email-unread"
-                opacity: {
-                    if (inSelectMode == true || readStatus == true)
-                        return 0;
-                    else
-                        return 1;
-                }
-            }
-
-            Image {
-                id: selectIcon
-                anchors.left: parent.left
-                anchors.leftMargin: UiConstants.DefaultMargin
-                anchors.verticalCenter: parent.verticalCenter
-                source:"image://themedimage/widgets/common/checkbox/checkbox-background"
-                opacity: (inSelectMode == true && selected == 0) ? 1 : 0
-            }
-
-            Image {
-                id: selectActiveIcon
-                anchors.left: parent.left
-                anchors.leftMargin: UiConstants.DefaultMargin
-                anchors.verticalCenter: parent.verticalCenter
-                source:"image://themedimage/widgets/common/checkbox/checkbox-background-active"
-                opacity: (inSelectMode == true && selected == 1) ? 1 : 0
-            }
-
             Item {
                 id: fromLine
                 anchors.top: parent.top
                 anchors.left: parent.left
                 width: parent.width
-                height: theme.listBackgroundPixelHeightTwo / 2
+                height: UiConstants.ListItemHeightSmall / 2
 
                 Text {
                     id: senderText
@@ -317,7 +278,7 @@ Page {
                 }
                 Text {
                     anchors.right: parent.right
-                    anchors.rightMargin: 5
+                    anchors.rightMargin: UiConstants.DefaultMargin
                     anchors.bottom: parent.bottom
                     anchors.bottomMargin: 4
                     text: Qt.formatDate(qDateTime);
@@ -329,60 +290,19 @@ Page {
                 anchors.left: parent.left
                 anchors.right: parent.right
                 anchors.leftMargin: UiConstants.DefaultMargin
-                width: parent.width
+                anchors.rightMargin: UiConstants.DefaultMargin
                 height: theme.listBackgroundPixelHeightTwo / 2
 
                 Text {
                     id: subjectText
-                    anchors.left: parent.left
-                    anchors.top: parent.top
-                    anchors.topMargin: 4
                     text: subject
-                    width: (parent.width * 2) / 3
+                    anchors.left: parent.left
+                    anchors.right: parent.right
                     elide: Text.ElideRight
                 }
-                Image {
-                    id: attachmentLeft
-                    anchors.right: attachmentMiddle.left
-                    anchors.top: parent.top
-                    anchors.topMargin: 4
-                    source: "image://theme/email/bg_attachment_left"
-                    opacity: numberOfAttachments ? 1 : 0
-                }
-                Image {
-                    id: attachmentMiddle
-                    anchors.right: attachmentRight.left
-                    anchors.top: parent.top
-                    anchors.topMargin: 4
-                    width: numberOfAttachmentLabel.width + attachmentIcon.width + 1
-                    source: "image://theme/email/bg_attachment_mid"
-                    Text {
-                        id: numberOfAttachmentLabel
-                        anchors.verticalCenter: parent.verticalCenter
-                        text: numberOfAttachments + " " // i18n ok
-                    }
-                    opacity: numberOfAttachments ? 1 : 0
-                }
-                Image {
-                    id: attachmentRight
-                    anchors.right: parent.right
-                    anchors.top: parent.top
-                    anchors.topMargin: 4
-                    anchors.rightMargin: 5
-                    source: "image://theme/email/bg_attachment_right"
-                    opacity: numberOfAttachments ? 1 : 0
-                }
-                Image {
-                    id: attachmentIcon
-                    anchors.top: parent.top
-                    anchors.topMargin: 4
-                    height: attachmentMiddle.height
-                    anchors.left: attachmentLeft.right
-                    anchors.leftMargin: numberOfAttachmentLabel.width + 1
-                    source: "image://theme/email/icn_paperclip"
-                    z: 10000
-                    opacity: numberOfAttachments ? 1 : 0
-                }
+
+                // TODO: attachments icon, logic:
+                // opacity: numberOfAttachments ? 1 : 0
             }
 
             onClicked: {
@@ -438,6 +358,10 @@ Page {
                 window.currentMessageIndex = index;
                 contextMenu.show();
             }
+        }
+
+        ScrollDecorator {
+            flickableItem: parent
         }
     }
 
