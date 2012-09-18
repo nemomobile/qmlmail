@@ -27,7 +27,7 @@ Page {
 
         onCurrentIndexChanged: container.topicTriggered(currentIndex)
 
-        delegate: Item {
+        delegate: MouseArea {
             id: accountItem
             width: parent.width
             height: UiConstants.ListItemHeightDefault
@@ -116,20 +116,17 @@ Page {
                 anchors.verticalCenter: parent.verticalCenter
             }
 
-            MouseArea {
-                anchors.fill: parent
-                onClicked: {
-                    listView.currentIndex = index;
-                    window.currentMailAccountId = mailAccountId;
-                    window.currentMailAccountIndex = index;
-                    window.currentAccountDisplayName = displayName;
-                    messageListModel.setAccountKey (mailAccountId);
-                    mailFolderListModel.setAccountKey(mailAccountId);
-                    window.folderListViewTitle = window.currentAccountDisplayName + " " + mailFolderListModel.inboxFolderName();
-                    window.currentFolderId = mailFolderListModel.inboxFolderId();
-                    window.currentFolderName = mailFolderListModel.inboxFolderName();
-                    window.switchBook (folderList);
-                }
+            onClicked: {
+                listView.currentIndex = index;
+                window.currentMailAccountId = mailAccountId;
+                window.currentMailAccountIndex = index;
+                window.currentAccountDisplayName = displayName;
+                messageListModel.setAccountKey (mailAccountId);
+                mailFolderListModel.setAccountKey(mailAccountId);
+                window.folderListViewTitle = window.currentAccountDisplayName + " " + mailFolderListModel.inboxFolderName();
+                window.currentFolderId = mailFolderListModel.inboxFolderId();
+                window.currentFolderName = mailFolderListModel.inboxFolderName();
+                pageStack.push(Qt.resolvedUrl("FolderListView.qml"))
             }
         }
     }

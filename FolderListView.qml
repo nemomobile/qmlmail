@@ -10,22 +10,26 @@ import QtQuick 1.1
 import com.nokia.meego 1.1
 import org.nemomobile.email 0.1
 
-Item {
+Page {
     id: folderListContainer
-    anchors.fill: parent
 
+    Component.onCompleted: {
+        mailFolderListModel.setAccountKey (currentMailAccountId);
+        window.currentFolderId = mailFolderListModel.inboxFolderId();
+        //window.folderListViewTitle = currentAccountDisplayName + " " + mailFolderListModel.inboxFolderName();
+        folderServerCount = mailFolderListModel.folderServerCount(window.currentFolderId);
+        gettingMoreMessages = false;
+    }
+
+    property int dateSortKey: 1
+    property int senderSortKey: 1
+    property int subjectSortKey: 1
     property string chooseFolder: qsTr("Choose folder:")
     property string attachments: qsTr("Attachments")
     property bool gettingMoreMessages: false
     property bool inSelectMode: false
     property int numOfSelectedMessages: 0
     property int folderServerCount: 0
-
-    Component.onCompleted: { 
-        folderServerCount = mailFolderListModel.folderServerCount(window.currentFolderId);
-        window.folderListViewClickCount = 0;
-        gettingMoreMessages = false;
-    }
 
     Connections {
         target: emailAgent
@@ -201,7 +205,6 @@ Item {
             text: qsTr ("There are no messages in this folder.")
             anchors.centerIn: emptyMailboxView
             color:theme.fontColorNormal
-            font.pixelSize: theme.fontPixelSizeLarge
             elide: Text.ElideRight
         }
     }
@@ -243,17 +246,14 @@ Item {
             }
         }
 
-        delegate: Item {
+        delegate: MouseArea {
             id: dinstance
-            height: theme.listBackgroundPixelHeightTwo
+            height: UiConstants.ListItemHeightSmall
             width: parent.width
 
             Rectangle {
                 id: itemBackground
-                anchors.top: separator.visible ? separator.bottom : parent.top
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.bottom: parent.bottom
+                anchors.fill: parent
                 opacity: ((inSelectMode && !selected) || (!inSelectMode && readStatus)) ? 0 : 1
                 color: theme_blockColorActive
             }
@@ -261,7 +261,7 @@ Item {
             Image {
                 id: readStatusIcon
                 anchors.left: parent.left
-                anchors.leftMargin: 10
+                anchors.leftMargin: UiConstants.DefaultMargin
                 anchors.verticalCenter: parent.verticalCenter
                 source: "image://themedimage/widgets/apps/email/email-unread"
                 opacity: {
@@ -275,7 +275,7 @@ Item {
             Image {
                 id: selectIcon
                 anchors.left: parent.left
-                anchors.leftMargin: 10
+                anchors.leftMargin: UiConstants.DefaultMargin
                 anchors.verticalCenter: parent.verticalCenter
                 source:"image://themedimage/widgets/common/checkbox/checkbox-background"
                 opacity: (inSelectMode == true && selected == 0) ? 1 : 0
@@ -284,26 +284,12 @@ Item {
             Image {
                 id: selectActiveIcon
                 anchors.left: parent.left
-                anchors.leftMargin: 10
+                anchors.leftMargin: UiConstants.DefaultMargin
                 anchors.verticalCenter: parent.verticalCenter
                 source:"image://themedimage/widgets/common/checkbox/checkbox-background-active"
                 opacity: (inSelectMode == true && selected == 1) ? 1 : 0
             }
 
-            property string msender
-            msender: {
-                var a;
-                try
-                {
-                    a = sender ;
-                }
-                catch(err)
-                {
-                    a = "";
-                }
-                a[0] == undefined ? "" : a[0];
-            }
-           
             Item {
                 id: fromLine
                 anchors.top: parent.top
@@ -314,11 +300,10 @@ Item {
                 Text {
                     id: senderText
                     anchors.left: parent.left
-                    anchors.leftMargin: 50
+                    anchors.leftMargin: UiConstants.DefaultMargin
                     width: (parent.width * 2) / 3
                     text: senderDisplayName != "" ? senderDisplayName : senderEmailAddress
                     font.bold: readStatus ? false : true
-                    font.pixelSize: theme.fontPixelSizeNormal
                     anchors.bottom: parent.bottom
                     anchors.bottomMargin: 4
                     elide: Text.ElideRight
@@ -326,10 +311,9 @@ Item {
                 Text {
                     anchors.right: parent.right
                     anchors.rightMargin: 5
-                    font.pixelSize: theme.fontPixelSizeSmall
                     anchors.bottom: parent.bottom
                     anchors.bottomMargin: 4
-                    text: qDateTime;
+                    text: Qt.formatDate(qDateTime);
                 }
             }
             Item {
@@ -337,7 +321,7 @@ Item {
                 anchors.top: fromLine.bottom
                 anchors.left: parent.left
                 anchors.right: parent.right
-                anchors.leftMargin: 50
+                anchors.leftMargin: UiConstants.DefaultMargin
                 width: parent.width
                 height: theme.listBackgroundPixelHeightTwo / 2
 
@@ -348,7 +332,6 @@ Item {
                     anchors.topMargin: 4
                     text: subject
                     width: (parent.width * 2) / 3
-                    font.pixelSize: theme.fontPixelSizeNormal
                     elide: Text.ElideRight
                 }
                 Image {
@@ -370,7 +353,6 @@ Item {
                         id: numberOfAttachmentLabel
                         anchors.verticalCenter: parent.verticalCenter
                         text: numberOfAttachments + " " // i18n ok
-                        font.pixelSize: theme.fontPixelSizeNormal
                     }
                     opacity: numberOfAttachments ? 1 : 0
                 }
@@ -395,67 +377,65 @@ Item {
                     opacity: numberOfAttachments ? 1 : 0
                 }
             }
-            MouseArea {
-                anchors.fill: parent
-                onClicked: {
-                    if (window.folderListViewClickCount == 0)
+
+            onClicked: {
+                if (window.folderListViewClickCount == 0)
+                {
+                    if (inSelectMode)
                     {
-                        if (inSelectMode)
+                        if (selected)
                         {
-                            if (selected)
-                            {
-                                messageListModel.deSelectMessage(index);
-                                --folderListContainer.numOfSelectedMessages;
-                            }
-                            else
-                            {
-                                messageListModel.selectMessage(index);
-                                ++folderListContainer.numOfSelectedMessages;
-                            }
+                            messageListModel.deSelectMessage(index);
+                            --folderListContainer.numOfSelectedMessages;
                         }
                         else
                         {
-                            window.mailId = messageId;
-                            window.mailSubject = subject;
-                            window.mailSender = sender;
-                            window.mailTimeStamp = timeStamp;
-                            window.mailBody = body;
-                            window.mailQuotedBody = quotedBody;
-                            window.mailHtmlBody = htmlBody;
-                            window.mailAttachments = listOfAttachments;
-                            window.numberOfMailAttachments = numberOfAttachments;
-                            window.mailRecipients = recipients;
-                            toListModel.init();
-                            window.mailCc = cc;
-                            ccListModel.init();
-                            window.mailBcc = bcc;
-                            bccListModel.init();
-                            window.currentMessageIndex = index;
-                            mailAttachmentModel.init();
-                            emailAgent.markMessageAsRead (messageId);
-                            window.mailReadFlag = true;
-
-                            if ( isDraftFolder() )
-                            {   window.editableDraft= true
-				window.addPage(composer);
-                            }
-                            else
-                                window.addPage(reader);
-
+                            messageListModel.selectMessage(index);
+                            ++folderListContainer.numOfSelectedMessages;
                         }
-                        window.folderListViewClickCount = 0;
-                        return;
                     }
-                    window.folderListViewClickCount++;
+                    else
+                    {
+                        window.mailId = messageId;
+                        window.mailSubject = subject;
+                        window.mailSender = sender;
+                        window.mailTimeStamp = timeStamp;
+                        window.mailBody = body;
+                        window.mailQuotedBody = quotedBody;
+                        window.mailHtmlBody = htmlBody;
+                        window.mailAttachments = listOfAttachments;
+                        window.numberOfMailAttachments = numberOfAttachments;
+                        window.mailRecipients = recipients;
+                        toListModel.init();
+                        window.mailCc = cc;
+                        ccListModel.init();
+                        window.mailBcc = bcc;
+                        bccListModel.init();
+                        window.currentMessageIndex = index;
+                        mailAttachmentModel.init();
+                        emailAgent.markMessageAsRead (messageId);
+                        window.mailReadFlag = true;
+
+                        if ( isDraftFolder() )
+                        {   window.editableDraft= true
+            window.addPage(composer);
+                        }
+                        else
+                            window.addPage(reader);
+
+                    }
+                    window.folderListViewClickCount = 0;
+                    return;
                 }
-                onPressAndHold: {
-                    if (inSelectMode)
-                        return;
-                    window.mailId = messageId;
-                    window.mailReadFlag = readStatus;
-                    window.currentMessageIndex = index;
-                    contextMenu.show();
-                }
+                window.folderListViewClickCount++;
+            }
+            onPressAndHold: {
+                if (inSelectMode)
+                    return;
+                window.mailId = messageId;
+                window.mailReadFlag = readStatus;
+                window.currentMessageIndex = index;
+                contextMenu.show();
             }
         }
     }
