@@ -439,4 +439,14 @@ Page {
             }
         }
     }
+
+    tools: ToolBarLayout {
+        ToolIcon { iconId: "toolbar-back"; onClicked: { pageStack.pop(); }  }
+        ToolIcon { iconId: "toolbar-add"; onClicked: {
+            mailAttachmentModel.clear();
+            window.composeInTextMode = true;
+            pageStack.push(Qt.resolvedUrl("ComposerView.qml"))
+        } }
+        ToolIcon { iconId: "toolbar-view-menu" ; onClicked: colorMenu.open(); }
+    }
 }

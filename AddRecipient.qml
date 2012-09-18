@@ -7,7 +7,6 @@
  */
 
 import QtQuick 1.1
-import MeeGo.Labs.Components 0.1 as Labs
 import org.nemomobile.email 0.1
 
 
@@ -25,6 +24,7 @@ BorderImage {
 
     source: "image://theme/email/btn_addperson"
 
+/*
     Component {
         id: contactsPicker
 
@@ -36,6 +36,7 @@ BorderImage {
             }
         }
     }
+*/
 
     MouseArea {
         anchors.fill: parent

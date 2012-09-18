@@ -419,57 +419,6 @@ PageStackWindow {
         }
     }
 
-    Component {
-        id: composer
-        Page {
-            id: composerPage
-
-            Component.onCompleted: {
-
-                if (window.editableDraft)
-                {                    
-                    composerView.composer.textBody= window.mailBody
-                    composerView.composer.subject= window.mailSubject
-
-                    var idx;
-                    composerView.composer.toModel.clear();
-                    for (idx = 0; idx < window.mailRecipients.length; idx++)
-                        composerView.composer.toModel.append({"name": "", "email": window.mailRecipients[idx]});
-
-                    composerView.composer.bccModel.clear();
-                    for (idx = 0; idx < window.mailCc.length; idx ++)
-                        composerView.composer.bccModel.append({"email": window.mailCc[idx]});
-
-                    composerView.composer.bccModel.clear();
-                    for (idx = 0; idx < window.mailBcc.length; idx ++)
-                        composerView.composer.bccModel.append({"email": window.mailBcc[idx]});
-
-                    composerView.composer.attachmentsModel.clear();
-                    for (idx = 0; idx < window.mailAttachments.length; idx ++)
-                        composerView.composer.attachmentsModel.append({"uri": window.mailAttachments[idx]});
-                }
-
-                window.editableDraft= false
-                window.composerIsCurrentPage = true;
-            }
-
-            Component.onDestruction: {
-                window.composerIsCurrentPage = false;
-            }
-
-            property alias composer: composerView.composer
-            anchors.fill: parent
-            pageTitle: qsTr("Composer")
-            PageBackground {
-                contents: ComposerView {
-                    id: composerView
-                }
-                toolbar: ComposerViewToolbar {
-                }
-            }
-        }
-    }
-
     function updateReadingView (msgid)
     {
         // This function will be used to update the reading view wit speicfied msgid.

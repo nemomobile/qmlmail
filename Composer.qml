@@ -18,7 +18,7 @@ FocusScope {
     property string quotedBody: "";
 
     property alias textBody: textEditPane.text;
-    property alias htmlBody: htmlEditPane.html;
+    property alias htmlBody: textEditPane.text // htmlEditPane.html;
     property alias toModel: header.toModel
     property alias ccModel: header.ccModel
     property alias bccModel: header.bccModel
@@ -58,7 +58,7 @@ FocusScope {
     EmailHeader {
         id: header
         anchors.top: parent.top
-        anchors.topMargin:  10
+        anchors.topMargin: UiConstants.DefaultMargin
         width: parent.width
         x: 10
         z: 1000
@@ -72,6 +72,7 @@ FocusScope {
 
         source: "image://theme/email/bg_reademail_l"
 
+/*
         HtmlField {
             id: htmlEditPane
             anchors.fill: parent
@@ -87,8 +88,9 @@ FocusScope {
                     return (composer.quotedBody + "\n-- \n" + sig + "\n");
             }
         }
+*/
 
-        TextField {
+        TextArea {
             id: textEditPane
             visible: window.composeInTextMode
             font.pixelSize: theme.fontPixelSizeLarge
@@ -100,8 +102,9 @@ FocusScope {
                     return (composer.quotedBody + "\n-- \n" + sig + "\n");
             }
 
-            anchors.fill: parent
-            anchors.bottomMargin: 5
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.margins: UiConstants.DefaultMargin
         }
     }
 }

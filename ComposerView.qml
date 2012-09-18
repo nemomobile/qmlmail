@@ -8,44 +8,84 @@
 
 import QtQuick 1.1
 import com.nokia.meego 1.1
-import MeeGo.Labs.Components 0.1 as Labs
 import org.nemomobile.email 0.1
 
-FocusScope {
-    id: composerViewContainer
-    focus: true
+Page {
+    id: composerPage
 
-    property alias composer: composer
+    Component.onCompleted: {
 
-    width: parent.width
-    height: parent.height
+        if (window.editableDraft)
+        {                    
+            composerView.composer.textBody= window.mailBody
+            composerView.composer.subject= window.mailSubject
 
-    ListModel {
-        id: toRecipients
+            var idx;
+            composerView.composer.toModel.clear();
+            for (idx = 0; idx < window.mailRecipients.length; idx++)
+                composerView.composer.toModel.append({"name": "", "email": window.mailRecipients[idx]});
+
+            composerView.composer.bccModel.clear();
+            for (idx = 0; idx < window.mailCc.length; idx ++)
+                composerView.composer.bccModel.append({"email": window.mailCc[idx]});
+
+            composerView.composer.bccModel.clear();
+            for (idx = 0; idx < window.mailBcc.length; idx ++)
+                composerView.composer.bccModel.append({"email": window.mailBcc[idx]});
+
+            composerView.composer.attachmentsModel.clear();
+            for (idx = 0; idx < window.mailAttachments.length; idx ++)
+                composerView.composer.attachmentsModel.append({"uri": window.mailAttachments[idx]});
+        }
+
+        window.editableDraft= false
+        window.composerIsCurrentPage = true;
     }
 
-    ListModel {
-        id: ccRecipients
+    Component.onDestruction: {
+        window.composerIsCurrentPage = false;
     }
 
-    ListModel {
-        id: bccRecipients
-    }
-
-    ListModel {
-        id: attachments
-    }
-
-    Composer {
-        id: composer
+    FocusScope {
+        id: composerViewContainer
         focus: true
-        anchors.fill: parent
 
-        toModel: toRecipients
-        ccModel: ccRecipients
-        bccModel: bccRecipients
-        attachmentsModel: mailAttachmentModel
-        accountsModel: mailAccountListModel
+        property alias composer: composer
+
+        width: parent.width
+        height: parent.height
+
+        ListModel {
+            id: toRecipients
+        }
+
+        ListModel {
+            id: ccRecipients
+        }
+
+        ListModel {
+            id: bccRecipients
+        }
+
+        ListModel {
+            id: attachments
+        }
+
+        Composer {
+            id: composer
+            focus: true
+            anchors.fill: parent
+
+            toModel: toRecipients
+            ccModel: ccRecipients
+            bccModel: bccRecipients
+            attachmentsModel: mailAttachmentModel
+            accountsModel: mailAccountListModel
+        }
+    }
+
+    tools: ToolBarLayout {
+        ToolIcon { iconId: "toolbar-back"; onClicked: { pageStack.pop(); }  }
     }
 }
 

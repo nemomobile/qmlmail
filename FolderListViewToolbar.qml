@@ -33,25 +33,6 @@ Item {
         opacity: inEditMode == false ? 1 : 0
 
         ToolbarButton {
-        id: composeButton
-        anchors.left: parent.left
-        anchors.top: parent.top
-        iconName: "mail-compose"
-            onClicked: {
-                mailAttachmentModel.clear();
-                window.composeInTextMode = true;
-                window.addPage(composer);
-            }
-        }
-        Image {
-            id: division1
-            anchors.left: composeButton.right
-            anchors.top: parent.top
-            height: parent.height
-            source: "image://theme/email/div"
-        }
-
-        ToolbarButton {
         id: editButton
         anchors.left: division1.right
         anchors.top: parent.top

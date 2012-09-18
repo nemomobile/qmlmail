@@ -30,6 +30,7 @@ Column {
 
     spacing: 5
 
+    /*
     ModalContextMenu {
         id: ctxAttachmentMenuAction
         property int indexTapAndHeld: -1
@@ -43,9 +44,7 @@ Column {
             }
         }
     }
-
-
-    TopItem { id: topItem }
+*/
 
     function completeEmailAddresses () {
         toRecipients.complete ();
@@ -84,6 +83,7 @@ Column {
             text: qsTr ("From:")
         }
 
+/*
         DropDown {
             id: accountSelector
             width: parent.width - (ccToggle.width + fromLabel.width + 30)
@@ -101,6 +101,7 @@ Column {
                 fromEmail = index;
             }
         }
+*/
 
         Image {
             id: ccToggle
@@ -199,20 +200,16 @@ Column {
         }
     }
 
-    Row {
-        width: parent.width
-        height: 53
-        spacing: 5
+    TextField {
+        id: subjectEntry
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.margins: UiConstants.DefaultMargin
 
-        TextField {
-            id: subjectEntry
+        placeholderText: qsTr ("Enter subject here")
+    }
 
-            width: parent.width - priorityButton.width - 20
-            height: parent.height
-
-            defaultText: qsTr ("Enter subject here")
-        }
-
+/*
         Image {
             id: priorityButton
             source: "image://theme/email/btn_priority_up"
@@ -266,8 +263,7 @@ Column {
                 }
             }
         }
-
-    }
+*/
 
     AttachmentView {
         id: attachmentBar

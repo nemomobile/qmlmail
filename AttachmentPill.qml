@@ -22,8 +22,6 @@ Item {
     width: leftImage.width + centreImage.width + rightImage.width
     height: centreImage.height
 
-    TopItem { id: topItem }
-
     onUriChanged: {
         name = uri.slice (uri.lastIndexOf ('/') + 1);
     }
