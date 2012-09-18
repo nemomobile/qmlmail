@@ -103,7 +103,8 @@ Page {
 
     function isDraftFolder()
     {
-        return folderListView.pageTitle.indexOf( qsTr("Drafts") ) != -1 ;
+        return false;
+//        return folderListView.pageTitle.indexOf( qsTr("Drafts") ) != -1 ;
     }
 
     Sheet {
@@ -379,55 +380,49 @@ Page {
             }
 
             onClicked: {
-                if (window.folderListViewClickCount == 0)
+                if (inSelectMode)
                 {
-                    if (inSelectMode)
+                    if (selected)
                     {
-                        if (selected)
-                        {
-                            messageListModel.deSelectMessage(index);
-                            --folderListContainer.numOfSelectedMessages;
-                        }
-                        else
-                        {
-                            messageListModel.selectMessage(index);
-                            ++folderListContainer.numOfSelectedMessages;
-                        }
+                        messageListModel.deSelectMessage(index);
+                        --folderListContainer.numOfSelectedMessages;
                     }
                     else
                     {
-                        window.mailId = messageId;
-                        window.mailSubject = subject;
-                        window.mailSender = sender;
-                        window.mailTimeStamp = timeStamp;
-                        window.mailBody = body;
-                        window.mailQuotedBody = quotedBody;
-                        window.mailHtmlBody = htmlBody;
-                        window.mailAttachments = listOfAttachments;
-                        window.numberOfMailAttachments = numberOfAttachments;
-                        window.mailRecipients = recipients;
-                        toListModel.init();
-                        window.mailCc = cc;
-                        ccListModel.init();
-                        window.mailBcc = bcc;
-                        bccListModel.init();
-                        window.currentMessageIndex = index;
-                        mailAttachmentModel.init();
-                        emailAgent.markMessageAsRead (messageId);
-                        window.mailReadFlag = true;
-
-                        if ( isDraftFolder() )
-                        {   window.editableDraft= true
-            window.addPage(composer);
-                        }
-                        else
-                            window.addPage(reader);
-
+                        messageListModel.selectMessage(index);
+                        ++folderListContainer.numOfSelectedMessages;
                     }
-                    window.folderListViewClickCount = 0;
-                    return;
                 }
-                window.folderListViewClickCount++;
+                else
+                {
+                    window.mailId = messageId;
+                    window.mailSubject = subject;
+                    window.mailSender = sender;
+                    window.mailTimeStamp = timeStamp;
+                    window.mailBody = body;
+                    window.mailQuotedBody = quotedBody;
+                    window.mailHtmlBody = htmlBody;
+                    window.mailAttachments = listOfAttachments;
+                    window.numberOfMailAttachments = numberOfAttachments;
+                    window.mailRecipients = recipients;
+                    toListModel.init();
+                    window.mailCc = cc;
+                    ccListModel.init();
+                    window.mailBcc = bcc;
+                    bccListModel.init();
+                    window.currentMessageIndex = index;
+                    mailAttachmentModel.init();
+                    emailAgent.markMessageAsRead (messageId);
+                    window.mailReadFlag = true;
+
+                    if ( isDraftFolder() )
+                    {   window.editableDraft= true
+        window.addPage(composer);
+                    }
+                    else
+                        pageStack.push(Qt.resolvedUrl("ReadingView.qml"))
+
+                }
             }
             onPressAndHold: {
                 if (inSelectMode)

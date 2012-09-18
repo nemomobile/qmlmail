@@ -47,7 +47,6 @@ PageStackWindow {
     property string mailQuotedBody: "";
     property variant mailAttachments: []
     property int numberOfMailAttachments: 0
-    property int folderListViewClickCount: 0
     property bool refreshInProgress: false
     property bool callFromRemote: false
     property bool composerIsCurrentPage: false
@@ -412,7 +411,6 @@ PageStackWindow {
             messageListModel.setAccountKey (window.currentMailAccountId);
             mailFolderListModel.setAccountKey (window.currentMailAccountId);
             window.folderListViewTitle = currentAccountDisplayName + " " + mailFolderListModel.inboxFolderName();
-            window.folderListViewClickCount = 0;
             window.currentFolderId = mailFolderListModel.inboxFolderId();
             window.currentFolderName = mailFolderListModel.inboxFolderName();
             window.switchBook(folderList);
@@ -442,48 +440,6 @@ PageStackWindow {
         window.currentMessageIndex = msgid;
         emailAgent.markMessageAsRead (window.mailId);
         window.addPage(reader);
-    }
-
-    Component {
-        id: reader
-        Page {
-            id: readingView
-            anchors.fill: parent
-            pageTitle: window.mailSubject
-
-            Component.onDestruction: {
-                window.accountPageClickCount = 0;
-                window.folderListViewClickCount = 0;
-            }
-
-            actionMenuModel : window.mailReadFlag ? [qsTr("Mark as unread")] : [qsTr("Mark as read")]
-            actionMenuPayload: [0]
-
-            onActionMenuTriggered: {
-                if (selectedItem == 0) {
-                    if (window.mailReadFlag)
-                    {
-                        emailAgent.markMessageAsUnread (window.mailId);
-                        window.mailReadFlag = 0;
-                    }
-                    else
-                    {
-                        emailAgent.markMessageAsRead (window.mailId);
-                        window.mailReadFlag = 1;
-                    }
-                }
-            }
-            PageBackground {
-                contents: ReadingView {
-                    id: reading
-                }
-                toolbar: ReadingViewBottomBar {
-                    progressBarText: reading.progressBarText
-                    progressBarVisible: reading.progressBarVisible
-                    progressBarPercentage: reading.progressBarPercentage
-                }
-            }
-        }
     }
 */
 }
