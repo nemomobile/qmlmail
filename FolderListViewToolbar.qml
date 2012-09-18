@@ -122,8 +122,6 @@ Item {
 
         property variant selectedFolderId
 
-        TopItem { id: topItem }
-
         ContextMenu {
             id: folderSelectionMenu
 

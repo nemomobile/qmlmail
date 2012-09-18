@@ -53,21 +53,18 @@ Item {
 //            pickerLabel: qsTr("Documents")
 //            pickerImage: "image://theme/panels/pnl_icn_documents"
 //        }
-//        ListSeparator {}
 
         AttachmentPicker {
             pickerComponent: photoPicker
             pickerLabel: qsTr("Photos")
             pickerImage: "image://theme/panels/pnl_icn_photos"
         }
-        ListSeparator {}
 
         AttachmentPicker {
             pickerComponent: moviePicker
             pickerLabel: qsTr("Movies")
             pickerImage: "image://theme/panels/pnl_icn_video"
         }
-        ListSeparator {}
 
         AttachmentPicker {
             pickerComponent: musicPicker

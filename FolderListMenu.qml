@@ -9,7 +9,6 @@
 import QtQuick 1.1
 import com.nokia.meego 1.1
 import org.nemomobile.email 0.1
-import Qt.labs.gestures 2.0
 
 Item {
     id: folderListMenu
@@ -138,18 +137,16 @@ Item {
             fillMode: Image.PreserveAspectFit
         }
 
-        ModalDialog {
+        Sheet {
             id: createFolderDialog
 
             property string untitledFolder: qsTr("Untitled Folder")
 
-            showAcceptButton: true
-            showCancelButton: true
             acceptButtonText: qsTr("Create")
-            cancelButtonText: qsTr("Cancel")
+            rejectButtonText: qsTr("Cancel")
             title: createFolder.createNewFolder
 
-            content: TextEntry {
+            content: TextField {
                 id: folderNameEntry
 
                 anchors.centerIn: parent
@@ -168,7 +165,7 @@ Item {
             anchors.fill: parent
 
             onClicked: {
-                createFolderDialog.show()
+                createFolderDialog.open()
                 folderListView.closeMenu();
             }
         }
@@ -193,16 +190,14 @@ Item {
         horizontalAlignment: Text.AlignLeft
         elide: Text.ElideRight
 
-        ModalDialog {
+        Sheet {
             id: renameFolderDialog
 
-            showAcceptButton: true
-            showCancelButton: true
             acceptButtonText: qsTr("Rename")
-            cancelButtonText: qsTr("Cancel")
+            rejectButtonText: qsTr("Cancel")
             title: renameFolder.label
 
-            content: TextEntry {
+            content: TextField {
                 id: renameEntry
 
                 anchors.centerIn: parent
@@ -225,7 +220,7 @@ Item {
             anchors.fill: parent
 
             onClicked: {
-                renameFolderDialog.show()
+                renameFolderDialog.open()
                 folderListView.closeMenu();
             }
         }
@@ -250,16 +245,19 @@ Item {
         horizontalAlignment: Text.AlignLeft
         elide: Text.ElideRight
 
-        ModalMessageBox{
+        Sheet {
             id: deleteFolderDialog
 
-            showAcceptButton: true
-            showCancelButton: true
             acceptButtonText: qsTr("Yes")
-            cancelButtonText: qsTr("Cancel")
+            rejectButtonText: qsTr("Cancel")
 
             title: deleteFolder.label
-            text: qsTr("Are you sure you want to delete the folder \"%1\" and all emails inside ?").arg(window.currentFolderName)
+
+            Text {
+                // TODO: margins
+                anchors.fill: parent
+                text: qsTr("Are you sure you want to delete the folder \"%1\" and all emails inside ?").arg(window.currentFolderName)
+            }
 
 
             onAccepted: {
@@ -281,7 +279,7 @@ Item {
             anchors.fill: parent
 
             onClicked: {
-                deleteFolderDialog.show();
+                deleteFolderDialog.open();
                 folderListView.closeMenu();
             }
         }

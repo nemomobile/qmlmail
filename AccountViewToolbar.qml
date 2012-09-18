@@ -7,7 +7,6 @@
  */
 
 import QtQuick 1.1
-import MeeGo.Labs.Components 0.1 as Labs
 import com.nokia.meego 1.1
 import org.nemomobile.email 0.1
 
@@ -16,10 +15,6 @@ Item {
     anchors.bottom: parent.bottom
     width: parent.width
     height: navigationBarImage.height
-
-    Labs.ApplicationsModel {
-        id: appModel
-    }
 
     BorderImage {
         id: navigationBarImage
@@ -36,11 +31,6 @@ Item {
             anchors.left: parent.left 
             anchors.top: parent.top
             iconName: "show-settings"
-
-            onClicked: {
-                var cmd = "/usr/bin/meego-qml-launcher --app meego-ux-settings --opengl --fullscreen --cmd showPage --cdata \"Email\"";  //i18n ok
-                appModel.launch(cmd);
-            }
         }
 
         Image {

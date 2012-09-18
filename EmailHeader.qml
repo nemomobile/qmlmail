@@ -204,7 +204,7 @@ Column {
         height: 53
         spacing: 5
 
-        TextEntry {
+        TextField {
             id: subjectEntry
 
             width: parent.width - priorityButton.width - 20

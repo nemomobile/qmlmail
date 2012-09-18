@@ -52,10 +52,6 @@ Item {
         id: attachmentsModel
     }
 
-    TopItem {
-        id: folderListViewTopItem
-    }
-
     function setMessageDetails (composer, messageID, replyToAll) {
         var dateline = qsTr ("On %1 %2 wrote:").arg(messageListModel.timeStamp (messageID)).arg(messageListModel.mailSender (messageID));
 
@@ -106,10 +102,10 @@ Item {
         return folderListView.pageTitle.indexOf( qsTr("Drafts") ) != -1 ;
     }
 
-    ModalDialog {
+    Sheet {
         id: verifyDelete
         acceptButtonText: qsTr ("Yes")
-        cancelButtonText: qsTr ("Cancel")
+        rejectButtonText: qsTr ("Cancel")
         title: qsTr ("Delete Email")
         content: Text {
             text: qsTr ("Are you sure you want to delete this email?")
@@ -118,32 +114,33 @@ Item {
         onAccepted: { emailAgent.deleteMessage (window.mailId) }
     }
 
-    ContextMenu {
+    Menu {
         id: contextMenu
-        property alias model: contextActionMenu.model
-        content: ActionMenu {
-            id: contextActionMenu
-            onTriggered: {
 
-                contextMenu.hide();
-                if (index == 0)  // Reply
-                {
+        MenuLayout {
+            MenuItem {
+                text: qsTr("Reply")
+                onClicked: {
                     var newPage;
                     window.addPage (composer);
                     newPage = window.pageStack.currentPage;
                     setMessageDetails (newPage.composer, window.currentMessageIndex, false);
                     newPage.composer.setReplyFocus();
                 }
-                else if (index == 1)   // Reply to all
-                {
+            }
+            MenuItem {
+                text: qsTr("Reply to all")
+                onClicked: {
                     var newPage;
                     window.addPage (composer);
                     newPage = window.pageStack.currentPage;
                     setMessageDetails (newPage.composer, window.currentMessageIndex, true);
                     newPage.composer.setReplyFocus();
                 }
-                else if (index == 2)   // Forward
-                {
+            }
+            MenuItem {
+                text: qsTr("Forward")
+                onClicked: {
                     var newPage;
                     window.addPage (composer);
                     newPage = window.pageStack.currentPage;
@@ -167,15 +164,19 @@ Item {
                     newPage.composer.attachmentsModel = mailAttachmentModel;
                     newPage.composer.setReplyFocus();
                 }
-                else if (index == 3)   // Delete
-                {
+            }
+            MenuItem {
+                text: qsTr("Delete")
+                onClicked: {
                     if ( emailAgent.confirmDeleteMail())
-                        verifyDelete.show();
+                        verifyDelete.open();
                     else
                         emailAgent.deleteMessage (window.mailId);
                 }
-                else if (index == 4)   // Mark as read/unread
-                {
+            }
+            MenuItem {
+                text: qsTr("Toggle read") // readStatus to set text?
+                onClicked: {
                     if (window.mailReadFlag)
                     {
                         emailAgent.markMessageAsUnread (window.mailId);
@@ -224,9 +225,6 @@ Item {
                 else
                     return false;
             }
-            ListSeparator {
-                id: separator
-            }
             Button {
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.horizontalCenter: parent.horizontalCenter
@@ -249,10 +247,7 @@ Item {
             id: dinstance
             height: theme.listBackgroundPixelHeightTwo
             width: parent.width
-            ListSeparator {
-                id: separator
-                visible: index > 0
-            }
+
             Rectangle {
                 id: itemBackground
                 anchors.top: separator.visible ? separator.bottom : parent.top
@@ -334,7 +329,7 @@ Item {
                     font.pixelSize: theme.fontPixelSizeSmall
                     anchors.bottom: parent.bottom
                     anchors.bottomMargin: 4
-                    text: fuzzy.getFuzzy(qDateTime);
+                    text: qDateTime;
                 }
             }
             Item {
@@ -459,10 +454,6 @@ Item {
                     window.mailId = messageId;
                     window.mailReadFlag = readStatus;
                     window.currentMessageIndex = index;
-                    var map = mapToItem(folderListViewTopItem.topItem, mouseX, mouseY);
-                    contextMenu.model = [qsTr("Reply"), qsTr("Reply to all"), qsTr("Forward"), qsTr("Delete"), 
-                                         readStatus ? qsTr("Mark as unread") : qsTr("Mark as read")]
-                    contextMenu.setPosition(map.x, map.y);
                     contextMenu.show();
                 }
             }

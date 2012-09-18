@@ -10,7 +10,7 @@ import QtQuick 1.1
 import com.nokia.meego 1.1
 import org.nemomobile.email 0.1
 
-Window {
+PageStackWindow {
     id: window
     property string topicSender: qsTr("Sender")
     property string topicSubject: qsTr("Subject")
@@ -47,7 +47,6 @@ Window {
     property string mailQuotedBody: "";
     property variant mailAttachments: []
     property int numberOfMailAttachments: 0
-    property int accountPageClickCount: 0
     property int folderListViewClickCount: 0
     property bool refreshInProgress: false
     property bool callFromRemote: false
@@ -57,24 +56,12 @@ Window {
     property variant argv: [] 
     property variant accountFilterModel: []
 
-    Theme {
-        id: theme
-    }
-
-    toolBarTitle: qsTr("Email")
-    fullScreen: true
-    automaticBookSwitching: false
-    anchors.fill: parent
-
-    showToolBarSearch: false
-
-    bookMenuModel: accountFilterModel
-   
+/*
     overlayItem:  Item {
         id: globalSpaceItems
         anchors.fill: parent
 
-        ModalDialog {
+        Dialog {
             id:confirmDialog
             showCancelButton: false
             showAcceptButton: true
@@ -95,7 +82,7 @@ Window {
             }
             onAccepted: {}
         }
-       ModalDialog {
+       Dialog {
             id:passwordDialog
             property alias dlgText: prompt.text
             property alias dlgKey: key.text
@@ -124,7 +111,7 @@ Window {
                         wrapMode: Text.Wrap
                     }
 
-                    TextEntry {
+                    TextField {
                         id: entry
                         width: parent.width
                         anchors.topMargin: 10
@@ -145,6 +132,7 @@ Window {
             }
         }
     }
+*/
 
 
     EmailAgent {
@@ -206,11 +194,6 @@ Window {
         id: attachmentsModel
     }
 
-    Component.onCompleted: {
-        switchBook (mailAccount);
-        window.fastPageSwitch = true;
-    }
-
     function setMessageDetails (composer, messageID, replyToAll) {
         var dateline = qsTr ("On %1 %2 wrote:").arg(messageListModel.timeStamp (messageID)).arg(messageListModel.mailSender (messageID));
 
@@ -242,10 +225,6 @@ Window {
         // FIXME: Also need to only add Re: if it isn't already in the subject
         // to prevent "Re: Re: Re: Re: " subjects.
         composer.subject = "Re: " + messageListModel.subject (messageID);  //i18n ok
-    }
-
-    FuzzyDateTime {
-        id: fuzzy
     }
 
     Loader {
@@ -302,6 +281,7 @@ Window {
         }
     }
 
+/*
     Connections {
         target: mainWindow
         onCall: {
@@ -403,7 +383,22 @@ Window {
             }
         }
     }
+*/
 
+    initialPage: AccountPage {
+        id: accountListView
+        property int idx: 0
+        Component.onCompleted: {
+            var accountList = new Array();
+            accountList = mailAccountListModel.getAllDisplayNames();
+            accountList.push(qsTr("Account switcher"));
+            window.accountFilterModel = accountList;
+        }
+    }
+
+
+
+/*
     ///When a selection is made in the account filter menu, you will get a signal here:
     onBookMenuTriggered: {
         if (index == (window.accountFilterModel.length - 1)) {
@@ -424,22 +419,15 @@ Window {
         }
     }
 
-    ///Subscribe to window search events:
-    onSearch: {
-        console.log("search query: " + needle)
-    }
-
     Component {
         id: folderList
-        AppPage {
+        Page {
             id: folderListView
             anchors.fill: parent
             pageTitle: window.folderListViewTitle
             enableCustomActionMenu: true
 
             property bool folderListPageHasFocus: true
-
-            TopItem { id: folderListTopItem }
 
             function closeMenu()
             {
@@ -512,31 +500,9 @@ Window {
     }
 
     Component {
-        id: mailAccount
-        AppPage {
-            id: accountListView
-            anchors.fill: parent
-            pageTitle: qsTr("Account list")
-            property int idx: 0
-            Component.onCompleted: {
-                var accountList = new Array();
-                accountList = mailAccountListModel.getAllDisplayNames();
-                accountList.push(qsTr("Account switcher"));
-                window.accountFilterModel = accountList;
-            }
-            PageBackground {
-                contents: AccountPage {}
-                toolbar: AccountViewToolbar {}
-            }
-        }
-    }
-
-    Component {
         id: composer
-        AppPage {
+        Page {
             id: composerPage
-
-            TopItem { id: composerTopItem }
 
             Component.onCompleted: {
 
@@ -611,12 +577,10 @@ Window {
 
     Component {
         id: reader
-        AppPage {
+        Page {
             id: readingView
             anchors.fill: parent
             pageTitle: window.mailSubject
-
-            TopItem { id: readingViewTopItem }
 
             Component.onDestruction: {
                 window.accountPageClickCount = 0;
@@ -652,4 +616,5 @@ Window {
             }
         }
     }
+*/
 }

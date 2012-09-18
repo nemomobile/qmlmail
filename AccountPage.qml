@@ -7,47 +7,30 @@
  */
 
 import QtQuick 1.1
-import MeeGo.Labs.Components 0.1 as Labs
 import com.nokia.meego 1.1
+import com.nokia.extras 1.1
 import org.nemomobile.email 0.1
 
-Item {
+Page {
     id: container
-    anchors.fill: parent
 
-    property int topicHeight: 58
     signal topicTriggered(int index)
     property alias currentTopic: listView.currentIndex
     property alias interactive: listView.interactive
     property alias model: listView.model
-
-    Labs.ApplicationsModel {
-        id: appModel
-    }
-
-    Component.onCompleted: {
-        if (listView.count == 0)
-        {
-            var cmd = "/usr/bin/meego-qml-launcher --app meego-ux-settings --opengl --fullscreen --cmd showPage --cdata \"Email\"";  //i18n ok
-            appModel.launch(cmd);
-        }
-        window.currentMailAccountIndex = 0;
-    }
-
 
     ListView {
         id: listView
         anchors.fill: parent
         clip: true
         model: mailAccountListModel
-        spacing: 1
 
         onCurrentIndexChanged: container.topicTriggered(currentIndex)
 
         delegate: Item {
             id: accountItem
             width: parent.width
-            height: theme.listBackgroundPixelHeightTwo
+            height: UiConstants.ListItemHeightDefault
 
             //: Label that displays the number of unread e-mail messages.  Note plural handling.
             property string unreadMessagesLabel: qsTr("%n unread message(s)", "", unreadCount)
@@ -58,11 +41,6 @@ Item {
                 window.currentAccountDisplayName = displayName;
                 if (index == 0)
                     window.currentMailAccountId = mailAccountId;
-            }
-
-            ListSeparator {
-                id: separator
-                visible: index > 0
             }
 
             property string accountImage
@@ -104,7 +82,6 @@ Item {
             Text {
                 id: accountName
                 height: parent.height
-                font.pixelSize: theme.fontPixelSizeLarge
                 anchors.left: parent.left
                 anchors.leftMargin: 100
                 verticalAlignment: Text.AlignVCenter
@@ -129,36 +106,29 @@ Item {
                     anchors.horizontalCenter: parent.horizontalCenter
                     verticalAlignment: Text.AlignVCenter
                     text: unreadCount
-                    font.pixelSize: theme.fontPixelSizeLarge
-                    color: theme.buttonFontColor
                 }
             }
 
-            Image {
+            MoreIndicator {
                 id: goToFolderListIcon
                 anchors.right: parent.right
-                anchors.rightMargin: 20
+                anchors.rightMargin: UiConstants.DefaultMargin
                 anchors.verticalCenter: parent.verticalCenter
-                source: "image://theme/arrow-right"
             }
 
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    if (window.accountPageClickCount == 0)
-                    {
-                        listView.currentIndex = index;
-                        window.currentMailAccountId = mailAccountId;
-                        window.currentMailAccountIndex = index;
-                        window.currentAccountDisplayName = displayName;
-                        messageListModel.setAccountKey (mailAccountId);
-                        mailFolderListModel.setAccountKey(mailAccountId);
-                        window.folderListViewTitle = window.currentAccountDisplayName + " " + mailFolderListModel.inboxFolderName();
-                        window.currentFolderId = mailFolderListModel.inboxFolderId();
-                        window.currentFolderName = mailFolderListModel.inboxFolderName();
-                        window.switchBook (folderList);
-                    }
-                    window.accountPageClickCount++;
+                    listView.currentIndex = index;
+                    window.currentMailAccountId = mailAccountId;
+                    window.currentMailAccountIndex = index;
+                    window.currentAccountDisplayName = displayName;
+                    messageListModel.setAccountKey (mailAccountId);
+                    mailFolderListModel.setAccountKey(mailAccountId);
+                    window.folderListViewTitle = window.currentAccountDisplayName + " " + mailFolderListModel.inboxFolderName();
+                    window.currentFolderId = mailFolderListModel.inboxFolderId();
+                    window.currentFolderName = mailFolderListModel.inboxFolderName();
+                    window.switchBook (folderList);
                 }
             }
         }
