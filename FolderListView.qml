@@ -371,6 +371,16 @@ Page {
             window.composeInTextMode = true;
             pageStack.push(Qt.resolvedUrl("ComposerView.qml"))
         } }
+        ToolIcon { iconId: "icon-m-toolbar-refresh"; onClicked: {
+            // TODO: a spinner in the PageHeader would be neat
+            if (window.refreshInProgress == true) {
+                emailAgent.cancelSync();
+                window.refreshInProgress = false;
+            } else {
+                emailAgent.synchronize(window.currentMailAccountId);
+                window.refreshInProgress = true;
+            }
+        } }
         ToolIcon { iconId: "toolbar-view-menu" ; onClicked: colorMenu.open(); }
     }
 }

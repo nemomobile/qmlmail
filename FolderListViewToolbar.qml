@@ -58,45 +58,6 @@ Item {
             source: "image://theme/email/div"
         }
 
-        Item {
-            id:refreshButton 
-            anchors.right: parent.right
-            anchors.top: parent.top
-            height: refreshImage.height
-            width: refreshImage.width
-            Image {
-                id: refreshImage
-                anchors.centerIn: parent
-                opacity: window.refreshInProgress ? 0 : 1
-                source: "image://themedimage/icons/actionbar/view-sync"
-            }
-
-            EmailSpinner {
-                id: spinner
-                anchors.centerIn: parent
-                opacity: window.refreshInProgress ? 1 : 0
-                spinning: window.refreshInProgress
-                maxSpinTime: 3600000
-            }
-
-            MouseArea {
-                anchors.fill: parent
-                onClicked: {
-                    if (window.refreshInProgress == true)
-                    {
-                        emailAgent.cancelSync();
-                        window.refreshInProgress = false;
-                    }
-                    else
-                    {
-                        emailAgent.synchronize(window.currentMailAccountId);
-                        window.refreshInProgress = true;
-                    }
-                }
-            }
-        }
-    }
-
     Item {
         anchors.fill: parent
         opacity: inEditMode == true ? 1 : 0
