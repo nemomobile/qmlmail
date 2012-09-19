@@ -62,7 +62,6 @@ Page {
             anchors.margins: 10
             Text {
                 text: qsTr("File format is not supported.");
-                color: theme.fontColorNormal
                 wrapMode: Text.Wrap
             }
         }

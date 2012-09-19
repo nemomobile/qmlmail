@@ -52,40 +52,25 @@ Page {
                     window.currentMailAccountId = mailAccountId;
             }
 
-            property string accountImage
-
-            accountImage: {
-                if (mailServer == "gmail")
-                {
-                    "image://themedimage/icons/services/gmail"
-                }
-                else if (mailServer == "msn" || mailServer == "hotmail")
-                {
-                    "image://themedimage/icons/services/msmail"
-                }
-                else if (mailServer == "facebook")
-                {
-                    "image://themedimage/icons/services/facebook"
-                }
-                else if (mailServer == "yahoo")
-                {
-                    "image://themedimage/icons/services/yahoo"
-                }
-                else if (mailServer == "aol")
-                {
-                    "image://themedimage/icons/services/aim"
-                }
-                else
-                {
-                    "image://themedimage/icons/services/generic"
-                }
-            }
-
             Image {
                 anchors.left: parent.left
                 anchors.leftMargin: 20
                 anchors.verticalCenter: parent.verticalCenter
-                source: accountImage
+                source: {
+                    if (mailServer == "gmail") {
+                        "image://themedimage/icons/services/gmail"
+                    } else if (mailServer == "msn" || mailServer == "hotmail") {
+                        "image://themedimage/icons/services/msmail"
+                    } else if (mailServer == "facebook") {
+                        "image://themedimage/icons/services/facebook"
+                    } else if (mailServer == "yahoo") {
+                        "image://themedimage/icons/services/yahoo"
+                    } else if (mailServer == "aol") {
+                        "image://themedimage/icons/services/aim"
+                    } else {
+                        "image://themedimage/icons/services/generic"
+                    }
+                }
             }
 
             Text {

@@ -218,7 +218,6 @@ Page {
                 id: noMessageText
                 text: qsTr ("There are no messages in this folder.")
                 anchors.centerIn: emptyMailboxView
-                color:theme.fontColorNormal
                 elide: Text.ElideRight
             }
         }
