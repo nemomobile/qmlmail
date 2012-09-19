@@ -203,17 +203,19 @@ QVariant EmailMessageListModel::data(const QModelIndex & index, int role) const 
     if (role == QMailMessageModelBase::MessageTimeStampTextRole)
     {
         QMailMessageId msgId = idFromIndex(index);
-        QMailMessage message(msgId);
-        QDateTime timeStamp = message.receivedDate().toLocalTime();
+        QMailMessageMetaData message(msgId);
+        QDateTime timeStamp = message.date().toLocalTime();
         return (timeStamp.toString("hh:mm MM/dd/yyyy"));
     }
     else if (role == MessageAttachmentCountRole)
     {
         // return number of attachments
-        QMailMessage message(idFromIndex(index));
-        if (!message.status() & QMailMessageMetaData::HasAttachments)
+        QMailMessage messageMetaData(idFromIndex(index));
+        if (!messageMetaData.status() & QMailMessageMetaData::HasAttachments)
             return 0;
 
+        // TODO: can we satisfy this from metadata too?
+        QMailMessage message(idFromIndex(index));
         int numberOfAttachments = 0;
         for (uint i = 1; i < message.partCount(); i++)
         {
@@ -236,10 +238,11 @@ QVariant EmailMessageListModel::data(const QModelIndex & index, int role) const 
     else if (role == MessageAttachmentsRole)
     {
         // return a stringlist of attachments
-        QMailMessage message(idFromIndex(index));
-        if (!message.status() & QMailMessageMetaData::HasAttachments)
+        QMailMessage messageMetaData(idFromIndex(index));
+        if (!messageMetaData.status() & QMailMessageMetaData::HasAttachments)
             return QStringList();
 
+        QMailMessage message(idFromIndex(index));
         QStringList attachments;
         for (uint i = 1; i < message.partCount(); i++)
         {
@@ -262,35 +265,34 @@ QVariant EmailMessageListModel::data(const QModelIndex & index, int role) const 
     }
     else if (role == MessageRecipientsRole)
     {
+        // TODO: metadata?
         QMailMessage message (idFromIndex(index));
         QStringList recipients;
         QList<QMailAddress> addresses = message.to();
-        foreach (QMailAddress address, addresses)
-        {
+        foreach (const QMailAddress &address, addresses) {
             recipients << address.address();
         }
         return recipients;
     }
     else if (role == MessageRecipientsDisplayNameRole)
     {
+        // TODO: metadata?
         QMailMessage message (idFromIndex(index));
         QStringList recipients;
         QList<QMailAddress> addresses = message.to();
-        foreach (QMailAddress address, addresses)
-        {
+        foreach (const QMailAddress &address, addresses) {
             recipients << address.name();
         }
         return recipients;
     }
     else if (role == MessageReadStatusRole)
     {
-        QMailMessage message (idFromIndex(index));
-        quint64 status = message.status();
+        QMailMessageMetaData message (idFromIndex(index));
 
-        if (status & QMailMessage::Read)
-            return 1;			// 1 for read
+        if (message.status() & QMailMessage::Read)
+            return 1; // 1 for read
         else
-            return 0;			// 0 for unread
+            return 0; // 0 for unread
     }
     else if (role == QMailMessageModelBase::MessageBodyTextRole)
     {
@@ -322,12 +324,12 @@ QVariant EmailMessageListModel::data(const QModelIndex & index, int role) const 
     }
     else if (role == MessageSenderDisplayNameRole)
     {
-        QMailMessage message (idFromIndex(index));
+        QMailMessageMetaData message(idFromIndex(index));
         return message.from().name();
     }
     else if (role == MessageSenderEmailAddressRole)
     {
-        QMailMessage message (idFromIndex(index));
+        QMailMessageMetaData message(idFromIndex(index));
         return message.from().address();
     }
     else if (role == MessageCcRole)
@@ -532,7 +534,7 @@ QVariant EmailMessageListModel::messageId (int idx)
 QVariant EmailMessageListModel::subject (int idx)
 {
     QMailMessageId id = idFromIndex (index(idx));
-    QMailMessage msg(id);
+    QMailMessageMetaData msg(id);
     return msg.subject();
 }
 
