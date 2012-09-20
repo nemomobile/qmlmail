@@ -257,36 +257,30 @@ Page {
             height: UiConstants.ListItemHeightSmall
             width: parent.width
 
-            Item {
-                id: fromLine
+            Text {
+                id: senderText
                 anchors.top: parent.top
                 anchors.left: parent.left
-                width: parent.width
+                anchors.leftMargin: UiConstants.DefaultMargin
+                width: (parent.width * 2) / 3
                 height: UiConstants.ListItemHeightSmall / 2
-
-                Text {
-                    id: senderText
-                    anchors.left: parent.left
-                    anchors.leftMargin: UiConstants.DefaultMargin
-                    width: (parent.width * 2) / 3
-                    text: senderDisplayName != "" ? senderDisplayName : senderEmailAddress
-                    font.bold: readStatus ? false : true
-                    anchors.bottom: parent.bottom
-                    anchors.bottomMargin: 4
-                    elide: Text.ElideRight
-                }
-                Text {
-                    anchors.right: parent.right
-                    anchors.rightMargin: UiConstants.DefaultMargin
-                    anchors.bottom: parent.bottom
-                    anchors.bottomMargin: 4
-                    text: Qt.formatDate(qDateTime);
-                }
+                text: senderDisplayName != "" ? senderDisplayName : senderEmailAddress
+                font.bold: readStatus ? false : true
+                anchors.bottomMargin: 4
+                elide: Text.ElideRight
+            }
+            Text {
+                anchors.top: parent.top
+                anchors.right: parent.right
+                anchors.rightMargin: UiConstants.DefaultMargin
+                anchors.bottom: parent.bottom
+                anchors.bottomMargin: 4
+                text: Qt.formatDate(qDateTime);
             }
             Text {
                 id: subjectText
                 text: subject
-                anchors.top: fromLine.bottom
+                anchors.top: senderText.bottom
                 anchors.left: parent.left
                 anchors.right: parent.right
                 anchors.leftMargin: UiConstants.DefaultMargin
