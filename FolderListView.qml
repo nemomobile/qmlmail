@@ -283,26 +283,20 @@ Page {
                     text: Qt.formatDate(qDateTime);
                 }
             }
-            Item {
-                id: subjectLine
+            Text {
+                id: subjectText
+                text: subject
                 anchors.top: fromLine.bottom
                 anchors.left: parent.left
                 anchors.right: parent.right
                 anchors.leftMargin: UiConstants.DefaultMargin
                 anchors.rightMargin: UiConstants.DefaultMargin
                 height: theme.listBackgroundPixelHeightTwo / 2
-
-                Text {
-                    id: subjectText
-                    text: subject
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    elide: Text.ElideRight
-                }
-
-                // TODO: attachments icon, logic:
-                // opacity: numberOfAttachments ? 1 : 0
+                elide: Text.ElideRight
             }
+
+            // TODO: attachments icon, logic:
+            // opacity: numberOfAttachments ? 1 : 0
 
             onClicked: {
                 if (inSelectMode)
