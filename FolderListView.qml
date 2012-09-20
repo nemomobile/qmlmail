@@ -171,12 +171,8 @@ Page {
             id: getMoreMessageRect
             height: 90
             width: parent.width
-            visible: {
-                if (messageListView.count < folderServerCount)
-                    return true;
-                else
-                    return false;
-            }
+            visible: messageListView.count < folderServerCount
+
             Button {
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.horizontalCenter: parent.horizontalCenter
