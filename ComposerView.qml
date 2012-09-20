@@ -12,6 +12,7 @@ import org.nemomobile.email 0.1
 
 Page {
     id: composerPage
+    property alias quotedBody: composer.quotedBody
 
     Component.onCompleted: {
 

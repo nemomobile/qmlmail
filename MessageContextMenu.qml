@@ -8,44 +8,38 @@ Menu {
         MenuItem {
             text: qsTr("Reply")
             onClicked: {
-                var newPage;
-                window.addPage (composer);
-                newPage = window.pageStack.currentPage;
-                newPage.composer.setMessageDetails(window.currentMessageIndex, false);
-                newPage.composer.setReplyFocus();
+                var composer = pageStack.push(Qt.resolvedUrl("ComposerView.qml"))
+                composer.setMessageDetails(window.currentMessageIndex, false);
+                composer.setReplyFocus();
             }
         }
         MenuItem {
             text: qsTr("Reply to all")
             onClicked: {
-                var newPage;
-                window.addPage (composer);
-                newPage = window.pageStack.currentPage;
-                newPage.composer.setMessageDetails( window.currentMessageIndex, true);
-                newPage.composer.setReplyFocus();
+                var composer = pageStack.push(Qt.resolvedUrl("ComposerView.qml"))
+                composer.setMessageDetails( window.currentMessageIndex, true);
+                composer.setReplyFocus();
             }
         }
         MenuItem {
             text: qsTr("Forward")
             onClicked: {
-                var newPage;
-                window.addPage (composer);
-                newPage = window.pageStack.currentPage;
+                var composer = pageStack.push(Qt.resolvedUrl("ComposerView.qml"))
 
                 var htmlBodyText = messageListModel.htmlBody(window.currentMessageIndex);
                 if (htmlBodyText != "") {
                     window.composeInTextMode = false;
-                    newPage.composer.setQuotedHtmlBody(qsTr("-------- Forwarded Message --------"), htmlBodyText)
+                    composer.setQuotedHtmlBody(qsTr("-------- Forwarded Message --------"), htmlBodyText)
                 } else {
                     window.composeInTextMode = true;
-                    newPage.composer.quotedBody = "\n" + qsTr("-------- Forwarded Message --------") + messageListModel.quotedBody (window.currentMessageIndex);
+                    composer.quotedBody = "\n" + qsTr("-------- Forwarded Message --------") + messageListModel.quotedBody (window.currentMessageIndex);
                 }
 
-                newPage.composer.subject = qsTr("[Fwd: %1]").arg(messageListModel.subject (window.currentMessageIndex));
+                composer.subject = qsTr("[Fwd: %1]").arg(messageListModel.subject (window.currentMessageIndex));
                 window.mailAttachments = messageListModel.attachments(window.currentMessageIndex);
                 mailAttachmentModel.init();
-                newPage.composer.attachmentsModel = mailAttachmentModel;
-                newPage.composer.setReplyFocus();
+                composer.attachmentsModel = mailAttachmentModel;
+                composer.setReplyFocus();
             }
         }
         MenuItem {
