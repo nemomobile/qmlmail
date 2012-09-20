@@ -16,27 +16,26 @@ Page {
 
     Component.onCompleted: {
 
-        if (window.editableDraft)
-        {                    
-            composerView.composer.textBody= window.mailBody
-            composerView.composer.subject= window.mailSubject
+        if (window.editableDraft) {
+            composer.textBody= window.mailBody
+            composer.subject= window.mailSubject
 
             var idx;
-            composerView.composer.toModel.clear();
+            composer.toModel.clear();
             for (idx = 0; idx < window.mailRecipients.length; idx++)
-                composerView.composer.toModel.append({"name": "", "email": window.mailRecipients[idx]});
+                composer.toModel.append({"name": "", "email": window.mailRecipients[idx]});
 
-            composerView.composer.bccModel.clear();
+            composer.bccModel.clear();
             for (idx = 0; idx < window.mailCc.length; idx ++)
-                composerView.composer.bccModel.append({"email": window.mailCc[idx]});
+                composer.bccModel.append({"email": window.mailCc[idx]});
 
-            composerView.composer.bccModel.clear();
+            composer.bccModel.clear();
             for (idx = 0; idx < window.mailBcc.length; idx ++)
-                composerView.composer.bccModel.append({"email": window.mailBcc[idx]});
+                composer.bccModel.append({"email": window.mailBcc[idx]});
 
-            composerView.composer.attachmentsModel.clear();
+            composer.attachmentsModel.clear();
             for (idx = 0; idx < window.mailAttachments.length; idx ++)
-                composerView.composer.attachmentsModel.append({"uri": window.mailAttachments[idx]});
+                composer.attachmentsModel.append({"uri": window.mailAttachments[idx]});
         }
 
         window.editableDraft= false
