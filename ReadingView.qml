@@ -10,42 +10,8 @@ import QtQuick 1.1
 import com.nokia.meego 1.1
 import org.nemomobile.email 0.1
 
-/*
-                toolbar: ReadingViewBottomBar {
-                    progressBarText: reading.progressBarText
-                    progressBarVisible: reading.progressBarVisible
-                    progressBarPercentage: reading.progressBarPercentage
-                }
-*/
-
-
 Page {
     id: container
-
-    property string progressBarText: ""
-    property bool progressBarVisible: false
-    property real progressBarPercentage: 0
-    property string uri;
-    property bool downloadInProgress: false
-    property bool openFlag: false
-    property string saveLabel: qsTr("Save")
-    property string openLabel: qsTr("Open")
-    property string musicLabel: qsTr("Music")
-    property string videoLabel: qsTr("Video")
-    property string pictureLabel: qsTr("Picture")
-
-    // @todo Remove if these are no longer relevant.
-    property string attachmentSavedLabel: qsTr("Attachment saved.")
-    property string downloadingAttachmentLabel: qsTr("Downloading Attachment...")
-    property string downloadingContentLabel: qsTr("Downloading Content...")
-
-    // Placeholder strings for I18n purposes.
-
-    //: Message displayed when downloading an attachment.  Arg 1 is the name of the attachment.
-    property string savingAttachmentLabel: qsTr("Saving %1")
-
-    //: Attachment has been saved message, where arg 1 is the name of the attachment.
-    property string attachmentHasBeenSavedLabel: qsTr("%1 saved")
 
     Connections {
         target: messageListModel
@@ -53,66 +19,6 @@ Page {
             window.mailHtmlBody = messageListModel.htmlBody(window.currentMessageIndex);
         }
     }
-
-    Dialog {
-        id: unsupportedFileFormat
-        title: qsTr ("Warning")
-        content: Text {
-            text: qsTr("File format is not supported.");
-            wrapMode: Text.Wrap
-        }
-
-        onAccepted: {}
-    } 
-
-/*
-    ContextMenu {
-        id: attachmentContextMenu
-        property alias model: attachmentActionMenu.model
-        content: ActionMenu {
-            id: attachmentActionMenu
-        onTriggered: {
-            attachmentContextMenu.hide();
-            if (index == 0)  // open attachment
-            {
-                openFlag = true;
-                emailAgent.downloadAttachment(messageListModel.messageId(window.currentMessageIndex), uri);
-            }
-            else if (index == 1) // Save attachment
-            {
-                openFlag = false;
-                emailAgent.downloadAttachment(messageListModel.messageId(window.currentMessageIndex), uri);
-            }
-        }
-        Connections {
-            target: emailAgent
-            onAttachmentDownloadStarted: {
-                downloadInProgress = true;
-                progressBarText = downloadingAttachmentLabel;
-                progressBarVisible = true;
-            }
-
-            onProgressUpdate: {
-                progressBarPercentage = percent;
-            }
-
-            onAttachmentDownloadCompleted: {
-                progressBarVisible = false;
-                downloadInProgress = false;
-                if (openFlag == true)
-                {
-                   var status = emailAgent.openAttachment(uri);
-                   if (status == false)
-                   {
-                       unsupportedFileFormat.show();
-                   }
-                }
-            }
-
-        }
-        }
-    }  // end of attachmentContextMenu
-*/
 
     Rectangle {
         id: fromRect
@@ -213,10 +119,8 @@ Page {
             model: mailAttachmentModel
 
             onAttachmentSelected: {
-                container.uri = uri;
-                attachmentContextMenu.model = [openLabel, saveLabel];
-                attachmentContextMenu.setPosition(mX, mY);
-                attachmentContextMenu.show();
+                var dialog = pageStack.openDialog(Qt.resolvedUrl("AttachmentDownloadDialog.qml"))
+                dialog.uri = uri;
             }
         }
     }
