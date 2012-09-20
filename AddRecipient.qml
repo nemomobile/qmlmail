@@ -22,7 +22,7 @@ BorderImage {
 
     anchors.verticalCenter: parent.verticalCenter
 
-    source: "image://theme/email/btn_addperson"
+    source: "image://theme/icon-m-toolbar-add"
 
 /*
     Component {
