@@ -156,26 +156,8 @@ Page {
         flickableItem: flick
     }
 
-    Menu {
-        id: menu
-        MenuLayout {
-            MenuItem {
-                text: window.mailReadFlag ? qsTr("Mark as unread") : qsTr("Mark as read")
-                onClicked: {
-                    if (window.mailReadFlag) {
-                        emailAgent.markMessageAsUnread (window.mailId);
-                        window.mailReadFlag = 0;
-                    } else {
-                        emailAgent.markMessageAsRead (window.mailId);
-                        window.mailReadFlag = 1;
-                    }
-                }
-            }
-        }
-    }
-
     tools: ToolBarLayout {
         ToolIcon { iconId: "toolbar-back"; onClicked: { pageStack.pop(); }  }
-        ToolIcon { iconId: "toolbar-view-menu" ; onClicked: menu.open(); }
+        ToolIcon { iconId: "toolbar-view-menu" ; onClicked: pageStack.openDialog(Qt.resolvedUrl("MessageContextMenu.qml")) }
     }
 }
