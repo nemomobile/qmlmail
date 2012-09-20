@@ -61,51 +61,6 @@ Item {
         window.popPage();
     }
 
-    function setMessageDetails (composer, messageID, replyToAll) {
-        var dateline = qsTr ("On %1 %2 wrote:").arg(messageListModel.timeStamp (messageID)).arg(messageListModel.mailSender (messageID));
-
-        if (window.mailHtmlBody != "")
-        {
-            window.composeInTextMode = false;
-            composer.setQuotedHtmlBody(dateline, messageListModel.htmlBody(messageID))
-        }
-        else
-        {
-            window.composeInTextMode = true;
-            composer.quotedBody = "\n" + dateline + "\n" + messageListModel.quotedBody (messageID); //i18n ok
-        }
-
-        attachmentsModel.clear();
-        composer.attachmentsModel = attachmentsModel;
-        toModel.clear();
-        toModel.append({"name": "", "email": messageListModel.mailSender(messageID)});
-        composer.toModel = toModel;
-
-
-        if (replyToAll == true)
-        {
-            ccModel.clear();
-            var recipients = new Array();
-            recipients = messageListModel.recipients(messageID);
-            var idx;
-            for (idx = 0; idx < recipients.length; idx++)
-                ccModel.append({"name": "", "email": recipients[idx]});
-            composer.ccModel = ccModel;
-        }
-   
-        // "Re:" is not supposed to be translated as per RFC 2822 section 3.6.5
-        // Internet Message Format - http://www.faqs.org/rfcs/rfc2822.html
-        //
-        // "If this is done, only one instance of the literal string
-        // "Re: " ought to be used since use of other strings or more
-        // than one instance can lead to undesirable consequences."
-        // Also see: http://www.chemie.fu-berlin.de/outerspace/netnews/son-of-1036.html#5.4
-        // FIXME: Also need to only add Re: if it isn't already in the subject
-        // to prevent "Re: Re: Re: Re: " subjects.
-        composer.subject = "Re: " + messageListModel.subject (messageID);  //i18n ok
-
-    }
-
     BorderImage {
         id: navigationBar
         width: parent.width
@@ -149,7 +104,7 @@ Item {
                     var newPage;
                     window.addPage (composer);
                     newPage = window.pageStack.currentPage;
-                    setMessageDetails (newPage.composer, window.currentMessageIndex, false);
+                    newPage.composer.setMessageDetails(window.currentMessageIndex, false);
                     newPage.composer.setReplyFocus();
 		}
 	    }
@@ -172,7 +127,7 @@ Item {
                     var newPage;
                     window.addPage (composer);
                     newPage = window.pageStack.currentPage;
-                    setMessageDetails (newPage.composer, window.currentMessageIndex, true);
+                    newPage.composer.setMessageDetails(window.currentMessageIndex, true);
                     newPage.composer.setReplyFocus();
                 }
             }
