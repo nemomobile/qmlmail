@@ -124,4 +124,18 @@ Page {
             }
         }
     }
+
+    tools: ToolBarLayout {
+        ToolIcon { iconId: "icon-m-toolbar-refresh"; onClicked: {
+            // TODO: a spinner in the PageHeader would be neat
+            if (window.refreshInProgress == true) {
+                emailAgent.cancelSync();
+                window.refreshInProgress = false;
+            } else {
+                emailAgent.accountsSync();
+                window.refreshInProgress = true;
+            }
+        } }
+        ToolIcon { iconId: "toolbar-view-menu" ; onClicked: colorMenu.open(); }
+    }
 }
