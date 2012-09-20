@@ -17,14 +17,12 @@ Column {
     property int fromEmail: 0
 
     property alias toModel: toRecipients.model
-    property alias ccModel: ccRecipients.model
-    property alias bccModel: bccRecipients.model
+    property variant ccModel
+    property variant bccModel // stubs so we don't get errors
     property alias attachmentsModel: attachmentBar.model
     property EmailAccountListModel accountsModel
     property variant emailAccountList: []
     property int priority: EmailMessage.NormalPriority
-
-    property bool showOthers: false
 
     focus: true
 
@@ -48,8 +46,6 @@ Column {
 
     function completeEmailAddresses () {
         toRecipients.complete ();
-        ccRecipients.complete ();
-        bccRecipients.complete ();
     }
 
     Connections {
@@ -60,9 +56,15 @@ Column {
             {
                 window.currentMailAccountIndex = 0;
                 fromEmail = 0
-                accountSelector.selectedIndex = 0;
+                accountSelectorDialog.selectedIndex = 0;
             }
         }
+    }
+
+    Component.onCompleted: {
+        emailAccountList = accountsModel.getAllEmailAddresses();
+        fromEmail = window.currentMailAccountIndex;
+        console.log(emailAccountList)
     }
 
     // EmailAccountListModel doesn't seem to be a real ListModel
@@ -74,54 +76,38 @@ Column {
 
     Row {
         width: parent.width
-        spacing: 5
-        height: 53
+        anchors.left: fromLabel.right
+        height: 50
+        spacing: UiConstants.DefaultMargin
         z: 1000
 
-        VerticalAligner {
-            id: fromLabel
-            text: qsTr ("From:")
-        }
+    Text {
+        id: fromLabel
+        text: qsTr ("From:")
+        height: 50
 
-/*
-        DropDown {
+        verticalAlignment: Text.AlignVCenter
+    }
+
+        Button {
             id: accountSelector
-            width: parent.width - (ccToggle.width + fromLabel.width + 30)
-            minWidth: 400
-            model: emailAccountList
-            height: 53
-            title: emailAccountList[window.currentMailAccountIndex];
-            titleColor: "black"
-            replaceDropDownTitle: true
-
-            Component.onCompleted: {
-                selectedIndex = window.currentMailAccountIndex;;
-            }
-            onTriggered: {
-                fromEmail = index;
-            }
-        }
-*/
-
-        Image {
-            id: ccToggle
-            width: ccBccLabel.width + 20
-            height: parent.height
-
-            source: "image://theme/btn_blue_up"
-
-            Text {
-                id: ccBccLabel
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.horizontalCenter: parent.horizontalCenter
-                text: qsTr("Cc/Bcc")
-                color: "white"
+            text: emailAccountList[fromEmail]
+            anchors.verticalCenter: parent.verticalCenter
+            onClicked: {
+                accountSelectorDialog.open();
             }
 
-            MouseArea {
-                anchors.fill: parent
-                onClicked: {
-                    header.showOthers = !header.showOthers;
+            SelectionDialog {
+                id: accountSelectorDialog
+                model: emailAccountList
+                titleText: qsTr("Select account")
+
+                Component.onCompleted: {
+                    selectedIndex = window.currentMailAccountIndex;;
+                }
+
+                onSelectedIndexChanged: {
+                    fromEmail = selectedIndex
                 }
             }
         }
@@ -152,53 +138,7 @@ Column {
         }
     }
 
-    Row {
-        //: The Cc (carbon copy) label.
-        property string ccLabel: qsTr("Cc")
-
-        width: parent.width
-        spacing: 5
-
-        height: ccRecipients.height
-        visible: showOthers
-
-        EmailRecipientEntry {
-            id: ccRecipients
-
-            defaultText: parent.ccLabel
-            width: parent.width - ccAddButton.width - 20 - spacing
-        }
-
-        AddRecipient {
-            id: ccAddButton
-            label: parent.ccLabel
-            recipients: ccRecipients
-        }
-    }
-
-    Row {
-        //: The Bcc (blind carbon copy) label.
-        property string bccLabel: qsTr("Bcc")
-
-        width: parent.width
-        spacing: 5
-
-        height: bccRecipients.height
-        visible: showOthers
-
-        EmailRecipientEntry {
-            id: bccRecipients
-
-            defaultText: parent.bccLabel
-            width: parent.width - bccAddButton.width - 20 - spacing
-        }
-
-        AddRecipient {
-            id: bccAddButton
-            label: parent.bccLabel
-            recipients: bccRecipients
-        }
-    }
+    // TODO: CC/BCC needs working into the UI somehow.
 
     TextField {
         id: subjectEntry
