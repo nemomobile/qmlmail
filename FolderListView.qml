@@ -107,18 +107,6 @@ Page {
 //        return folderListView.pageTitle.indexOf( qsTr("Drafts") ) != -1 ;
     }
 
-    Sheet {
-        id: verifyDelete
-        acceptButtonText: qsTr ("Yes")
-        rejectButtonText: qsTr ("Cancel")
-        title: qsTr ("Delete Email")
-        content: Text {
-            text: qsTr ("Are you sure you want to delete this email?")
-        }
-
-        onAccepted: { emailAgent.deleteMessage (window.mailId) }
-    }
-
     Menu {
         id: contextMenu
 
@@ -174,7 +162,7 @@ Page {
                 text: qsTr("Delete")
                 onClicked: {
                     if ( emailAgent.confirmDeleteMail())
-                        verifyDelete.open();
+                        pageStack.openDialog(Qt.resolvedUrl("ConfirmDeleteDialog.qml"))
                     else
                         emailAgent.deleteMessage (window.mailId);
                 }
@@ -343,7 +331,7 @@ Page {
                 window.mailId = messageId;
                 window.mailReadFlag = readStatus;
                 window.currentMessageIndex = index;
-                contextMenu.show();
+                contextMenu.open();
             }
         }
 
