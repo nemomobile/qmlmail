@@ -57,13 +57,9 @@ Page {
     Dialog {
         id: unsupportedFileFormat
         title: qsTr ("Warning")
-        content: Item {
-            anchors.fill: parent
-            anchors.margins: 10
-            Text {
-                text: qsTr("File format is not supported.");
-                wrapMode: Text.Wrap
-            }
+        content: Text {
+            text: qsTr("File format is not supported.");
+            wrapMode: Text.Wrap
         }
 
         onAccepted: {}
