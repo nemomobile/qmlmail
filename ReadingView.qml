@@ -124,11 +124,7 @@ Page {
         anchors.left: parent.left
         width: parent.width
         height: 43
-        Image {
-            anchors.fill: parent
-            fillMode: Image.Tile
-            source: "image://theme/email/bg_email details_l"
-        }
+
         Row {
             spacing: 5
             height: 43
@@ -156,11 +152,7 @@ Page {
         anchors.left: parent.left
         width: parent.width
         height: 43
-        Image {
-            anchors.fill: parent
-            fillMode: Image.Tile
-            source: "image://theme/email/bg_email details_l"
-        }
+
         Row {
             spacing: 5
             height: 43
@@ -190,11 +182,7 @@ Page {
         anchors.topMargin: 1
         clip: true
         height: 43
-        Image {
-            anchors.fill: parent
-            fillMode: Image.Tile
-	    source: "image://theme/email/bg_email details_l"
-        }
+
         Row {
             spacing: 5
             height: 43
