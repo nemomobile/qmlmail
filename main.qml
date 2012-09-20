@@ -81,55 +81,6 @@ PageStackWindow {
             }
             onAccepted: {}
         }
-       Dialog {
-            id:passwordDialog
-            property alias dlgText: prompt.text
-            property alias dlgKey: key.text
-            showCancelButton: true
-            showAcceptButton: true
-            cancelButtonText: qsTr("Cancel")
-            acceptButtonText: qsTr("OK")
-            title: qsTr("Error")
-            height: 400
-
-            content: Item {
-                id:passwordContent
-                anchors.fill: parent
-                anchors.margins: 10
-                Column {
-                    anchors.fill: parent
-                    spacing: 3
-                    Text {
-                        id:prompt
-                        anchors.topMargin: 10
-                        width: parent.width
-                        text: window.errMsg;
-                        clip: false
-                        color:theme_fontColorNormal
-                        font.pixelSize: theme_fontPixelSizeLarge
-                        wrapMode: Text.Wrap
-                    }
-
-                    TextField {
-                        id: entry
-                        width: parent.width
-                        anchors.topMargin: 10
-                        anchors.bottomMargin: 5
-                        defaultText: qsTr("password")
-                        textInput.echoMode: TextInput.Password
-                    }
-                    Text {
-                        id:key
-                        text: qsTr("key")
-                        visible: false
-                    }
-                }
-            }
-
-            onAccepted: {
-                mailAccountListModel.addPassword (dlgKey, entry.text);
-            }
-        }
     }
 */
 
