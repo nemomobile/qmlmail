@@ -49,13 +49,13 @@ Page {
     function setMessageDetails(messageID, replyToAll) {
         var dateline = qsTr ("On %1 %2 wrote:").arg(messageListModel.timeStamp (messageID)).arg(messageListModel.mailSender (messageID));
 
-        if (window.mailHtmlBody != "") {
-            window.composeInTextMode = false;
-            composer.setQuotedHtmlBody(dateline, messageListModel.htmlBody(messageID))
-        } else {
+//        if (window.mailHtmlBody != "") {
+//            window.composeInTextMode = false;
+//            composer.setQuotedHtmlBody(dateline, messageListModel.htmlBody(messageID))
+//        } else {
             window.composeInTextMode = true;
             composer.quotedBody = "\n" + dateline + "\n" + messageListModel.quotedBody (messageID); //i18n ok
-        }
+//        }
 
         attachmentsModel.clear();
         composer.attachmentsModel = attachmentsModel;
