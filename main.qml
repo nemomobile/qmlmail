@@ -55,36 +55,6 @@ PageStackWindow {
     property variant argv: [] 
     property variant accountFilterModel: []
 
-/*
-    overlayItem:  Item {
-        id: globalSpaceItems
-        anchors.fill: parent
-
-        Dialog {
-            id:confirmDialog
-            showCancelButton: false
-            showAcceptButton: true
-            acceptButtonText: qsTr("OK")
-            title: qsTr("Error")
-
-            content: Item {
-                id:confirmMsg
-                anchors.fill: parent
-                anchors.margins: 10
-                Text {
-                    text: window.errMsg;
-                    anchors.fill: parent
-                    color:theme.fontColorNormal
-                    font.pixelSize: theme.fontPixelSizeLarge
-                    wrapMode: Text.Wrap
-                }
-            }
-            onAccepted: {}
-        }
-    }
-*/
-
-
     EmailAgent {
         id: emailAgent;
 
@@ -98,10 +68,9 @@ PageStackWindow {
 
         onError: {
             window.refreshInProgress = false;
-            if (code != 1040)
-            {
+            if (code != 1040) {
                 errMsg = msg;
-                confirmDialog.show();
+                pageStack.openDialog(Qt.resolvedUrl("SyncErrorDialog.qml"))
             }
         }
     }
