@@ -90,25 +90,12 @@ Page {
                 text: emailAddress + " - " + displayName  //i18n ok
             }
 
-            BorderImage {
+            CountBubble {
                 id: unreadImage
                 anchors.right: goToFolderListIcon.left 
                 anchors.rightMargin:10 
                 anchors.verticalCenter: parent.verticalCenter
-                width: text.paintedWidth + 20
-                source: unreadCount > 0 ? "image://themedimage/widgets/apps/email/accounts-unread" : "image://themedimage/widgets/apps/email/accounts-empty"
-                border.top: 5
-                border.bottom: 5
-                border.left: 5
-                border.right: 5
-
-                Text {
-                    id: text
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    verticalAlignment: Text.AlignVCenter
-                    text: unreadCount
-                }
+                value: unreadCount
             }
 
             MoreIndicator {
