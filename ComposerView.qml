@@ -13,6 +13,8 @@ import org.nemomobile.email 0.1
 Page {
     id: composerPage
     property alias quotedBody: composer.quotedBody
+    property alias subject: header.subject
+    property alias attachmentsModel: header.attachmentsModel
 
     Component.onCompleted: {
 
