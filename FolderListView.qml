@@ -66,6 +66,14 @@ Page {
         id: pageHeader
         color: "#0066ff"
         text: currentAccountDisplayName + " " + mailFolderListModel.inboxFolderName()
+
+        BusyIndicator {
+            visible: window.refreshInProgress
+            running: window.refreshInProgress
+            anchors.right: parent.right
+            anchors.rightMargin: UiConstants.DefaultMargin
+            anchors.verticalCenter: parent.verticalCenter
+        }
     }
 
     ListView {
