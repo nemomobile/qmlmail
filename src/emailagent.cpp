@@ -276,8 +276,13 @@ void EmailAgent::cancelSync()
         return;
 
     m_cancelling = true;
-    m_transmitAction->cancelOperation();
-    m_retrievalAction->cancelOperation();
+    // there's an assert on isValid (essentially is running) inside
+    // QMailServiceAction. we should fix this there, but for now, work around
+    // it.
+    if (m_transmitAction->isRunning())
+        m_transmitAction->cancelOperation();
+    if (m_retrievalAction->isRunning())
+        m_retrievalAction->cancelOperation();
 }
 
 void EmailAgent::markMessageAsRead(QVariant msgId)

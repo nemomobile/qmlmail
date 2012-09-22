@@ -68,10 +68,15 @@ PageStackWindow {
 
         onError: {
             window.refreshInProgress = false;
-            if (code != 1040) {
-                errMsg = msg;
-                pageStack.openDialog(Qt.resolvedUrl("SyncErrorDialog.qml"))
+
+            switch (code) {
+                case 1030: // cancelled by user
+                case 1040: // account modified by another process
+                    return;
             }
+
+            errMsg = msg;
+            pageStack.openDialog(Qt.resolvedUrl("SyncErrorDialog.qml"))
         }
     }
 
