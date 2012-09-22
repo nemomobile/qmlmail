@@ -16,6 +16,8 @@ Column {
     property alias subject: subjectEntry.text
     property int fromEmail: 0
 
+    spacing: UiConstants.DefaultMargin
+
     property alias toModel: toRecipients.model
     property variant ccModel
     property variant bccModel // stubs so we don't get errors
@@ -25,8 +27,6 @@ Column {
     property int priority: EmailMessage.NormalPriority
 
     focus: true
-
-    spacing: 5
 
     /*
     ModalContextMenu {
@@ -74,77 +74,42 @@ Column {
         fromEmail = window.currentMailAccountIndex;
     }
 
-    Row {
-        width: parent.width
-        anchors.left: fromLabel.right
-        height: 50
-        spacing: UiConstants.DefaultMargin
-        z: 1000
+    Button {
+        id: accountSelector
+        text: emailAccountList[fromEmail]
+        iconSource: "image://theme/icon-m-toolbar-send-sms"
+        anchors.left: parent.left
+        anchors.right: parent.right
 
-    Text {
-        id: fromLabel
-        text: qsTr ("From:")
-        height: 50
+        onClicked: {
+            accountSelectorDialog.open();
+        }
 
-        verticalAlignment: Text.AlignVCenter
-    }
+        SelectionDialog {
+            id: accountSelectorDialog
+            model: emailAccountList
+            titleText: qsTr("Select account")
 
-        Button {
-            id: accountSelector
-            text: emailAccountList[fromEmail]
-            anchors.verticalCenter: parent.verticalCenter
-            onClicked: {
-                accountSelectorDialog.open();
+            Component.onCompleted: {
+                selectedIndex = window.currentMailAccountIndex;;
             }
 
-            SelectionDialog {
-                id: accountSelectorDialog
-                model: emailAccountList
-                titleText: qsTr("Select account")
-
-                Component.onCompleted: {
-                    selectedIndex = window.currentMailAccountIndex;;
-                }
-
-                onSelectedIndexChanged: {
-                    fromEmail = selectedIndex
-                }
+            onSelectedIndexChanged: {
+                fromEmail = selectedIndex
             }
         }
     }
 
-    Row {
-        //: The "to" recipient label.
-        property string toLabel: qsTr("To")
-
+    EmailRecipientEntry {
+        id: toRecipients
         width: parent.width
-
-        spacing: 5
-
-        // Expand to fill the height correctly
-        height: toRecipients.height
-
-        EmailRecipientEntry {
-            id: toRecipients
-
-            defaultText: parent.toLabel
-            width: parent.width - toAddButton.width - 20 - spacing
-        }
-
-        AddRecipient {
-            id: toAddButton
-            label: parent.toLabel
-            recipients: toRecipients
-        }
     }
 
     // TODO: CC/BCC needs working into the UI somehow.
 
     TextField {
         id: subjectEntry
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.margins: UiConstants.DefaultMargin
+        width: parent.width
 
         placeholderText: qsTr ("Enter subject here")
     }

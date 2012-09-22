@@ -136,11 +136,12 @@ Page {
 
         EmailHeader {
             id: header
-            anchors.top: parent.top
-            anchors.topMargin: UiConstants.DefaultMargin
-            width: parent.width
-            x: 10
             z: 1000
+
+            anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.margins: UiConstants.DefaultMargin
 
             toModel: ListModel {
             }
@@ -155,36 +156,41 @@ Page {
             accountsModel: mailAccountListModel
         }
 
-        Image {
-            width: parent.width
-            anchors.top:  header.bottom
-            anchors.topMargin:  5
-            anchors.bottom:parent.bottom
-
-            source: "image://theme/email/bg_reademail_l"
-
-    /*
-            HtmlField {
-                id: htmlEditPane
-                anchors.fill: parent
-                anchors.bottomMargin: 5
-                focus: true
-                font.pixelSize: theme.fontPixelSizeLarge
-                visible: window.composeInTextMode ? false : true
-                html : {
-                    var sig = emailAgent.getSignatureForAccount(window.currentMailAccountId);
-                    if (sig == "")
-                        return composer.quotedBody;
-                    else
-                        return (composer.quotedBody + "\n-- \n" + sig + "\n");
-                }
+/*
+        HtmlField {
+            id: htmlEditPane
+            anchors.fill: parent
+            anchors.bottomMargin: 5
+            focus: true
+            font.pixelSize: theme.fontPixelSizeLarge
+            visible: window.composeInTextMode ? false : true
+            html : {
+                var sig = emailAgent.getSignatureForAccount(window.currentMailAccountId);
+                if (sig == "")
+                    return composer.quotedBody;
+                else
+                    return (composer.quotedBody + "\n-- \n" + sig + "\n");
             }
-    */
+        }
+*/
+        Rectangle {
+            id: editorBackground
+            anchors.top: header.bottom
+            anchors.topMargin: UiConstants.DefaultMargin
+            anchors.bottom: parent.bottom
+            anchors.left: parent.left
+            anchors.right: parent.right
+            color: "white"
+        }
 
+        Flickable {
+            anchors.fill: editorBackground
+            contentHeight: textEditPane.height
+            clip: true
             TextArea {
                 id: textEditPane
+                width: parent.width
                 visible: window.composeInTextMode
-                font.pixelSize: theme.fontPixelSizeLarge
                 text : {
                     var sig = emailAgent.getSignatureForAccount(window.currentMailAccountId);
                     if (sig == "")
@@ -193,9 +199,13 @@ Page {
                         return (composer.quotedBody + "\n-- \n" + sig + "\n");
                 }
 
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.margins: UiConstants.DefaultMargin
+                platformStyle: TextAreaStyle {
+                    background: ""
+                    backgroundSelected: ""
+                    backgroundDisabled: ""
+                    backgroundError: ""
+                    backgroundCornerMargin: 0
+                }
             }
         }
     }

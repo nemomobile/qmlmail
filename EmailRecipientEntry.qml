@@ -9,21 +9,11 @@
 import QtQuick 1.1
 import com.nokia.meego 1.1
 
-BorderImage {
+Column {
     id: background
 
     property alias model: repeater.model
     property alias text: input.text
-    property alias defaultText: recipientListLabel.text
-
-    border.top: 10
-    border.bottom: 10
-    border.left: 10
-    border.right: 10
-
-    height: flickable.height + 20
-    source:input.focus? "image://themedimage/widgets/common/text-area/text-area-background-active"
-                       : "image://theme/email/frm_textfield_l"
 
     function complete () {
         if (text != "") {
@@ -31,12 +21,10 @@ BorderImage {
         }
     }
 
-    Text {
+    TextField {
         id: recipientListLabel
-        x: 10
-        anchors.verticalCenter: parent.verticalCenter
-        font.pixelSize: theme.fontPixelSizeLarge
-        color: "slategrey"
+        placeholderText: "To:"
+        width: parent.width
 
         visible: input.text == "" && repeater.model.count == 0
     }
@@ -44,10 +32,7 @@ BorderImage {
     Flickable {
         id: flickable
 
-        x: 10
-        y: 10
-
-        width: parent.width - 20
+        width: parent.width
         contentWidth: width
         contentHeight: recipientEntry.height
         height: recipientEntry.height < 75 ? recipientEntry.height : 75
@@ -66,20 +51,16 @@ BorderImage {
             }
         }
 
-        Item {
+        MouseArea {
             id: recipientEntry
 
             width: parent.width
-            height: flow.height < 35 ? 35 : flow.height;
+            height: flow.height
 
-            MouseArea {
-                anchors.fill: parent
-
-                onClicked: {
-                    input.visible = true;
-                    input.forceActiveFocus();
-                    input.width =input.font.pixelSize
-                }
+            onClicked: {
+                input.visible = true;
+                input.forceActiveFocus();
+                input.width =input.font.pixelSize
             }
 
             Flow {
