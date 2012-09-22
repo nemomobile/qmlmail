@@ -87,6 +87,16 @@ Page {
 
     }
 
+    function setReplyFocus() {
+        composer.focus = true;
+        if (window.composeInTextMode) {
+            textEditPane.focus = true;
+            return textEditPane.focus;
+        } else {
+            return htmlEditPane.setFocusElement(replyElementId)
+        }
+    }
+
 
 
 
@@ -122,17 +132,6 @@ Page {
             newBody += "<blockquote style=\"margin: 0pt 0pt 0pt 0.8ex; border-left: 1px solid rgb(204, 204, 204); padding-left: 1ex;\">\n";
             newBody += quotedHtml + "\n</blockquote>\n";
             quotedBody = newBody;
-        }
-
-        function setReplyFocus() {
-            focus = true;
-            if (window.composeInTextMode) {
-                focus = true;
-                textEditPane.focus = true;
-                return textEditPane.focus;
-            } else {
-                return htmlEditPane.setFocusElement(replyElementId)
-            }
         }
 
         EmailHeader {
@@ -201,8 +200,58 @@ Page {
         }
     }
 
+    Component {
+        id: messageComponent
+
+        EmailMessage {
+            id: emailMessage
+        }
+    }
+
     tools: ToolBarLayout {
         ToolIcon { iconId: "toolbar-back"; onClicked: { pageStack.pop(); }  }
+        ToolIcon {
+            iconId: "icon-m-toolbar-send-sms";
+            onClicked: {
+                var i;
+                var message;
+
+                composer.completeEmailAddresses();
+
+                message = messageComponent.createObject(composer);
+                message.setFrom (mailAccountListModel.getEmailAddressByIndex(composer.fromEmail));
+
+                var to = new Array ();
+                for (i = 0; i < composer.toModel.count; i++)
+                    to[i] = composer.toModel.get (i).email;
+                message.setTo (to);
+
+                var cc = new Array ();
+                for (i = 0; i < composer.ccModel.count; i++)
+                    cc[i] = composer.ccModel.get (i).email;
+                message.setCc (cc);
+
+                var bcc = new Array ();
+                for (i = 0; i < composer.bccModel.count; i++)
+                    bcc[i] = composer.bccModel.get (i).email;
+                message.setBcc (bcc);
+
+                var att = new Array ();
+                for (i = 0; i < composer.attachmentsModel.count; i++)
+                    att[i] = composer.attachmentsModel.get (i).uri;
+                message.setAttachments (att);
+
+                message.setSubject (composer.subject);
+                message.setPriority (composer.priority);
+                if (window.composeInTextMode)
+                    message.setBody (composer.textBody, true);
+                else
+                    message.setBody (composer.htmlBody, false);
+
+                message.send ();
+                pageStack.pop();
+            }
+        }
     }
 }
 

@@ -20,65 +20,6 @@ BorderImage {
     source: "image://theme/navigationBar_l"
 
     ToolbarButton {
-        id: sendButton
-
-        anchors.left: parent.left
-        anchors.top: parent.top
-
-        iconName: "mail-send"
-
-        onClicked: {
-            var i;
-            var message;
-
-            composer.completeEmailAddresses ();
-
-            message = messageComponent.createObject (composer);
-            message.setFrom (mailAccountListModel.getEmailAddressByIndex(composer.fromEmail));
-
-            var to = new Array ();
-            for (i = 0; i < composer.toModel.count; i++) {
-                to[i] = composer.toModel.get (i).email;
-            }
-            message.setTo (to);
-
-            var cc = new Array ();
-            for (i = 0; i < composer.ccModel.count; i++) {
-                cc[i] = composer.ccModel.get (i).email;
-            }
-            message.setCc (cc);
-
-            var bcc = new Array ();
-            for (i = 0; i < composer.bccModel.count; i++) {
-                bcc[i] = composer.bccModel.get (i).email;
-            }
-            message.setBcc (bcc);
-
-            var att = new Array ();
-            for (i = 0; i < composer.attachmentsModel.count; i++) {
-                att[i] = composer.attachmentsModel.get (i).uri;
-            }
-            message.setAttachments (att);
-
-            message.setSubject (composer.subject);
-            message.setPriority (composer.priority);
-            if (window.composeInTextMode)
-                message.setBody (composer.textBody, true);
-            else
-                message.setBody (composer.htmlBody, false);
-
-            message.send ();
-            window.popPage ();
-        }
-    }
-
-    ToolbarDivider {
-        id: division1
-        anchors.left: sendButton.right
-        height: parent.height
-    }
-
-    ToolbarButton {
         id: saveButton
 
         anchors.left: division1.right
@@ -182,32 +123,6 @@ BorderImage {
         id: division3
         anchors.left: addAttachmentButton.right
         height: parent.height
-    }
-
-    ToolbarDivider {
-        id: division4
-        anchors.right: cancelButton.left
-        height: parent.height
-    }
-
-    ToolbarButton {
-        id: cancelButton
-
-        anchors.right: parent.right
-        anchors.top: parent.top
-
-        iconName: "edit-delete"
-
-        onClicked: {
-            verifyCancel.show();
-        }
-    }
-    Component {
-        id: messageComponent
-
-        EmailMessage {
-            id: emailMessage
-        }
     }
 
     ModalMessageBox {
