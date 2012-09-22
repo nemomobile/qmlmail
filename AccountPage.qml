@@ -66,17 +66,11 @@ Page {
                 anchors.verticalCenter: parent.verticalCenter
                 source: {
                     if (mailServer == "gmail") {
-                        "image://themedimage/icons/services/gmail"
+                        "icons/gmail.png"
                     } else if (mailServer == "msn" || mailServer == "hotmail") {
-                        "image://themedimage/icons/services/msmail"
-                    } else if (mailServer == "facebook") {
-                        "image://themedimage/icons/services/facebook"
-                    } else if (mailServer == "yahoo") {
-                        "image://themedimage/icons/services/yahoo"
-                    } else if (mailServer == "aol") {
-                        "image://themedimage/icons/services/aim"
+                        "icons/msmail.png"
                     } else {
-                        "image://themedimage/icons/services/generic"
+                        "icons/generic.png"
                     }
                 }
             }
