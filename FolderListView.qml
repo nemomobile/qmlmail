@@ -65,7 +65,7 @@ Page {
     PageHeader {
         id: pageHeader
         color: "#0066ff"
-        text: currentAccountDisplayName + " " + mailFolderListModel.inboxFolderName()
+        text: currentAccountDisplayName + " " + currentFolderName
 
         BusyIndicator {
             visible: window.refreshInProgress
