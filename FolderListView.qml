@@ -74,6 +74,13 @@ Page {
             anchors.rightMargin: UiConstants.DefaultMargin
             anchors.verticalCenter: parent.verticalCenter
         }
+
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+                pageStack.openDialog(Qt.resolvedUrl("FolderSelectionDialog.qml"))
+            }
+        }
     }
 
     ListView {
