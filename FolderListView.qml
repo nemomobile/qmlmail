@@ -107,7 +107,7 @@ Page {
         footer: Item {
             id: getMoreMessageRect
             height: 90
-            width: parent.width
+            width: messageListView.width
             visible: messageListView.count < folderServerCount
 
             Button {
