@@ -56,28 +56,15 @@ Page {
                 }
             }
 
-            Image {
-                anchors.left: parent.left
-                anchors.leftMargin: 20
-                anchors.verticalCenter: parent.verticalCenter
-                source: {
-                    if (mailServer == "gmail") {
-                        "icons/gmail.png"
-                    } else if (mailServer == "msn" || mailServer == "hotmail") {
-                        "icons/msmail.png"
-                    } else {
-                        "icons/generic.png"
-                    }
-                }
-            }
-
             Label {
-                id: accountName
                 height: parent.height
                 anchors.left: parent.left
-                anchors.leftMargin: 100
+                anchors.leftMargin: UiConstants.DefaultMargin
+                anchors.right: unreadImage.left
+                anchors.rightMargin: UiConstants.DefaultMargin
                 verticalAlignment: Text.AlignVCenter
                 text: emailAddress + " - " + displayName  //i18n ok
+                elide: Text.ElideRight
             }
 
             CountBubble {
