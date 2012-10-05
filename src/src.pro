@@ -42,9 +42,5 @@ HEADERS += \
     htmlfield.h
 
 
-target.path = $$[QT_INSTALL_LIBS]
+target.path = /usr/bin
 INSTALLS += target
-
-pkgconfig.files += meegoemail.pc
-pkgconfig.path += $$[QT_INSTALL_LIBS]/pkgconfig
-INSTALLS += pkgconfig
