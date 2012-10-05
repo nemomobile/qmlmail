@@ -7,6 +7,7 @@
  */
 
 import QtQuick 1.1
+import com.nokia.meego 1.1
 
 MouseArea {
     // email address
@@ -18,7 +19,7 @@ MouseArea {
     width: content.width
     height: 35
 
-    Text {
+    Label {
         id: content
         anchors.verticalCenter: parent.verticalCenter
         text: {
