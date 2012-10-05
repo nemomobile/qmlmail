@@ -1,0 +1,28 @@
+<RCC>
+    <qresource prefix="/">
+        <file>qml/AccountPage.qml</file>
+        <file>qml/AddAttachmentToolbar.qml</file>
+        <file>qml/AddAttachmentView.qml</file>
+        <file>qml/AttachmentDownloadDialog.qml</file>
+        <file>qml/AttachmentPicker.qml</file>
+        <file>qml/AttachmentPill.qml</file>
+        <file>qml/AttachmentView.qml</file>
+        <file>qml/ComposerView.qml</file>
+        <file>qml/ComposerViewToolbar.qml</file>
+        <file>qml/ConfirmDeleteDialog.qml</file>
+        <file>qml/EmailAddress.qml</file>
+        <file>qml/EmailHeader.qml</file>
+        <file>qml/EmailRecipientEntry.qml</file>
+        <file>qml/FolderListMenu.qml</file>
+        <file>qml/FolderListView.qml</file>
+        <file>qml/FolderListViewToolbar.qml</file>
+        <file>qml/FolderSelectionDialog.qml</file>
+        <file>qml/MessageContextMenu.qml</file>
+        <file>qml/ReadingView.qml</file>
+        <file>qml/ReadingViewBottomBar.qml</file>
+        <file>qml/ReadingViewToolbar.qml</file>
+        <file>qml/SortFilter.qml</file>
+        <file>qml/SyncErrorDialog.qml</file>
+        <file>qml/main.qml</file>
+    </qresource>
+</RCC>

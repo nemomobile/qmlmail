@@ -18,6 +18,7 @@ packagesExist(mlite) {
 
 OBJECTS_DIR = .obj
 MOC_DIR = .moc
+RESOURCES += res.qrc
 
 SOURCES += \
     emailaccountlistmodel.cpp \

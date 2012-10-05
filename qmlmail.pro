@@ -3,16 +3,13 @@ TEMPLATE = subdirs
 CONFIG += ordered
 SUBDIRS += src
 
-qmlfiles.files += *.qml settings/
-qmlfiles.path += $$INSTALL_ROOT/usr/share/$$TARGET
-
 desktop.files += qmlmail.desktop
 desktop.path += $$INSTALL_ROOT/usr/share/applications/
 
-INSTALLS += qmlfiles desktop
+INSTALLS += desktop
 
 TRANSLATIONS += *.qml settings/*.qml settings/*.js
-PROJECT_NAME = meego-app-email
+PROJECT_NAME = qmlmail
 
 dist.commands += rm -fR $${PROJECT_NAME}-$${VERSION} &&
 dist.commands += git clone . $${PROJECT_NAME}-$${VERSION} &&

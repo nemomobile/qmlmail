@@ -97,7 +97,7 @@ int main(int argc, char **argv)
 
     QUrl url;
     if (urlstring.isEmpty())
-        url = QUrl::fromLocalFile("main.qml");
+        url = QUrl("qrc:/qml/main.qml");
     else
         url = QUrl::fromUserInput(urlstring);
 
