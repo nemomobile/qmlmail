@@ -90,6 +90,7 @@ Page {
         anchors.right: parent.right
         anchors.bottom: parent.bottom
         clip: true
+        cacheBuffer: height
 
         Item {
             id: emptyMailboxView
@@ -130,22 +131,22 @@ Page {
 
         delegate: MouseArea {
             id: dinstance
-            height: UiConstants.ListItemHeightSmall
+            height: UiConstants.ListItemHeightDefault
             width: parent.width
 
-            Text {
+            Label {
                 id: senderText
                 anchors.top: parent.top
                 anchors.left: parent.left
                 anchors.leftMargin: UiConstants.DefaultMargin
                 width: (parent.width * 2) / 3
-                height: UiConstants.ListItemHeightSmall / 2
+                height: UiConstants.ListItemHeightDefault / 2
                 text: senderDisplayName != "" ? senderDisplayName : senderEmailAddress
                 font.bold: readStatus ? false : true
                 anchors.bottomMargin: 4
                 elide: Text.ElideRight
             }
-            Text {
+            Label {
                 anchors.top: parent.top
                 anchors.right: parent.right
                 anchors.rightMargin: UiConstants.DefaultMargin
@@ -153,7 +154,7 @@ Page {
                 anchors.bottomMargin: 4
                 text: Qt.formatDate(qDateTime);
             }
-            Text {
+            Label {
                 id: subjectText
                 text: subject
                 anchors.top: senderText.bottom
