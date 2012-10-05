@@ -49,15 +49,11 @@ Page {
             width: parent.width
             height: UiConstants.ListItemHeightDefault
 
-            //: Label that displays the number of unread e-mail messages.  Note plural handling.
-            property string unreadMessagesLabel: qsTr("%n unread message(s)", "", unreadCount)
-
-            property string accountDisplayName;
-            accountDisplayName: {
-                accountDisplayName = displayName;
-                window.currentAccountDisplayName = displayName;
-                if (index == 0)
+            Component.onCompleted: {
+                if (index == 0) {
+                    window.currentAccountDisplayName = displayName;
                     window.currentMailAccountId = mailAccountId;
+                }
             }
 
             Image {
@@ -75,7 +71,7 @@ Page {
                 }
             }
 
-            Text {
+            Label {
                 id: accountName
                 height: parent.height
                 anchors.left: parent.left
@@ -116,7 +112,6 @@ Page {
 
     tools: ToolBarLayout {
         ToolIcon { iconId: "icon-m-toolbar-refresh"; onClicked: {
-            // TODO: a spinner in the PageHeader would be neat
             if (window.refreshInProgress == true) {
                 emailAgent.cancelSync();
                 window.refreshInProgress = false;

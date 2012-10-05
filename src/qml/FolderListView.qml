@@ -136,24 +136,17 @@ Page {
 
             Label {
                 id: senderText
-                anchors.top: parent.top
                 anchors.left: parent.left
+                anchors.right: parent.right
                 anchors.leftMargin: UiConstants.DefaultMargin
-                width: (parent.width * 2) / 3
+                anchors.rightMargin: UiConstants.DefaultMargin
                 height: UiConstants.ListItemHeightDefault / 2
                 text: senderDisplayName != "" ? senderDisplayName : senderEmailAddress
                 font.bold: readStatus ? false : true
                 anchors.bottomMargin: 4
                 elide: Text.ElideRight
             }
-            Label {
-                anchors.top: parent.top
-                anchors.right: parent.right
-                anchors.rightMargin: UiConstants.DefaultMargin
-                anchors.bottom: parent.bottom
-                anchors.bottomMargin: 4
-                text: Qt.formatDate(qDateTime);
-            }
+
             Label {
                 id: subjectText
                 text: subject
