@@ -233,7 +233,7 @@ Page {
         ToolIcon { iconId: "toolbar-add"; onClicked: {
             mailAttachmentModel.clear();
             window.composeInTextMode = true;
-            pageStack.push(Qt.resolvedUrl("ComposerView.qml"))
+            pageStack.openSheet(Qt.resolvedUrl("ComposerSheet.qml"))
         } }
         ToolIcon { iconId: "icon-m-toolbar-refresh"; onClicked: {
             // TODO: a spinner in the PageHeader would be neat

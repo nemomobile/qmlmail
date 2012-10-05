@@ -8,7 +8,7 @@ Menu {
         MenuItem {
             text: qsTr("Reply")
             onClicked: {
-                var composer = pageStack.push(Qt.resolvedUrl("ComposerView.qml"))
+                var composer = pageStack.openSheet(Qt.resolvedUrl("ComposerSheet.qml"))
                 composer.setMessageDetails(window.currentMessageIndex, false);
                 composer.setReplyFocus();
             }
@@ -16,7 +16,7 @@ Menu {
         MenuItem {
             text: qsTr("Reply to all")
             onClicked: {
-                var composer = pageStack.push(Qt.resolvedUrl("ComposerView.qml"))
+                var composer = pageStack.openSheet(Qt.resolvedUrl("ComposerSheet.qml"))
                 composer.setMessageDetails( window.currentMessageIndex, true);
                 composer.setReplyFocus();
             }
@@ -24,7 +24,7 @@ Menu {
         MenuItem {
             text: qsTr("Forward")
             onClicked: {
-                var composer = pageStack.push(Qt.resolvedUrl("ComposerView.qml"))
+                var composer = pageStack.openSheet(Qt.resolvedUrl("ComposerSheet.qml"))
 
                 var htmlBodyText = messageListModel.htmlBody(window.currentMessageIndex);
                 if (htmlBodyText != "") {

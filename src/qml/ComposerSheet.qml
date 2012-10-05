@@ -10,8 +10,10 @@ import QtQuick 1.1
 import com.nokia.meego 1.1
 import org.nemomobile.email 0.1
 
-Page {
+Sheet {
     id: composerPage
+    acceptButtonText: qsTr("Send")
+    rejectButtonText: qsTr("Discard")
     property alias quotedBody: composer.quotedBody
     property alias subject: header.subject
     property alias attachmentsModel: header.attachmentsModel
@@ -99,14 +101,10 @@ Page {
         }
     }
 
-
-
-
-    FocusScope {
+    content: FocusScope {
         id: composer
         focus:  true
-        width: parent.width
-        height: parent.height
+	anchors.fill: parent
 
         property string quotedBody: "";
 
@@ -220,50 +218,44 @@ Page {
         }
     }
 
-    tools: ToolBarLayout {
-        ToolIcon { iconId: "toolbar-back"; onClicked: { pageStack.pop(); }  }
-        ToolIcon {
-            iconId: "icon-m-toolbar-send-sms";
-            onClicked: {
-                var i;
-                var message;
+    onAccepted: {
+        var i;
+        var message;
 
-                composer.completeEmailAddresses();
+        composer.completeEmailAddresses();
 
-                message = messageComponent.createObject(composer);
-                message.setFrom (mailAccountListModel.getEmailAddressByIndex(composer.fromEmail));
+        message = messageComponent.createObject(composer);
+        message.setFrom (mailAccountListModel.getEmailAddressByIndex(composer.fromEmail));
 
-                var to = new Array ();
-                for (i = 0; i < composer.toModel.count; i++)
-                    to[i] = composer.toModel.get (i).email;
-                message.setTo (to);
+        var to = new Array ();
+        for (i = 0; i < composer.toModel.count; i++)
+            to[i] = composer.toModel.get (i).email;
+        message.setTo (to);
 
-                var cc = new Array ();
-                for (i = 0; i < composer.ccModel.count; i++)
-                    cc[i] = composer.ccModel.get (i).email;
-                message.setCc (cc);
+        var cc = new Array ();
+        for (i = 0; i < composer.ccModel.count; i++)
+            cc[i] = composer.ccModel.get (i).email;
+        message.setCc (cc);
 
-                var bcc = new Array ();
-                for (i = 0; i < composer.bccModel.count; i++)
-                    bcc[i] = composer.bccModel.get (i).email;
-                message.setBcc (bcc);
+        var bcc = new Array ();
+        for (i = 0; i < composer.bccModel.count; i++)
+            bcc[i] = composer.bccModel.get (i).email;
+        message.setBcc (bcc);
 
-                var att = new Array ();
-                for (i = 0; i < composer.attachmentsModel.count; i++)
-                    att[i] = composer.attachmentsModel.get (i).uri;
-                message.setAttachments (att);
+        var att = new Array ();
+        for (i = 0; i < composer.attachmentsModel.count; i++)
+            att[i] = composer.attachmentsModel.get (i).uri;
+        message.setAttachments (att);
 
-                message.setSubject (composer.subject);
-                message.setPriority (composer.priority);
-                if (window.composeInTextMode)
-                    message.setBody (composer.textBody, true);
-                else
-                    message.setBody (composer.htmlBody, false);
+        message.setSubject (composer.subject);
+        message.setPriority (composer.priority);
+        if (window.composeInTextMode)
+            message.setBody (composer.textBody, true);
+        else
+            message.setBody (composer.htmlBody, false);
 
-                message.send ();
-                pageStack.pop();
-            }
-        }
+        message.send ();
+        pageStack.pop();
     }
 }
 
