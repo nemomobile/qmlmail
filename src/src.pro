@@ -20,6 +20,10 @@ OBJECTS_DIR = .obj
 MOC_DIR = .moc
 RESOURCES += res.qrc
 
+QML_FILES = qml/*.qml
+
+OTHER_FILES += $${QML_FILES}
+
 SOURCES += \
     emailaccountlistmodel.cpp \
     emailmessagelistmodel.cpp \
