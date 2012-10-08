@@ -19,6 +19,10 @@ packagesExist(mlite) {
 OBJECTS_DIR = .obj
 MOC_DIR = .moc
 
+QML_FILES = qml/*.qml
+
+OTHER_FILES += $${QML_FILES}
+
 SOURCES += \
     emailaccountlistmodel.cpp \
     emailmessagelistmodel.cpp \
