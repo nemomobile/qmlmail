@@ -35,7 +35,7 @@ QueryDialog {
 
     id: attachmentContextMenu
     titleText: qsTr("Download?")
-    message:: qsTr("Do you want to download %1").arg(uri)
+    message: qsTr("Do you want to download %1").arg(uri)
     onAccepted: {
         emailAgent.downloadAttachment(messageListModel.messageId(window.currentMessageIndex), uri);
     }
