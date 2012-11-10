@@ -25,26 +25,7 @@ QML_FILES = qml/*.qml
 OTHER_FILES += $${QML_FILES}
 
 SOURCES += \
-    emailaccountlistmodel.cpp \
-    emailmessagelistmodel.cpp \
-    folderlistmodel.cpp \
-    emailagent.cpp \
-    emailmessage.cpp \
-    emailaccountsettingsmodel.cpp \
-    emailaccount.cpp \
-    htmlfield.cpp \
     main.cpp
-
-HEADERS += \
-    emailaccountlistmodel.h \
-    emailmessagelistmodel.h \
-    folderlistmodel.h \
-    emailagent.h \
-    emailmessage.h \
-    emailaccountsettingsmodel.h \
-    emailaccount.h \
-    htmlfield.h
-
 
 target.path = /usr/bin
 INSTALLS += target
