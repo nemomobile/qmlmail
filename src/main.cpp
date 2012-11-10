@@ -38,15 +38,6 @@
 #include <applauncherd/MDeclarativeCache>
 #endif
 
-#include "folderlistmodel.h"
-#include "emailaccountlistmodel.h"
-#include "emailmessagelistmodel.h"
-#include "emailagent.h"
-#include "emailmessage.h"
-#include "emailaccountsettingsmodel.h"
-#include "emailaccount.h"
-#include "htmlfield.h"
-
 #ifdef HAS_BOOSTER
 Q_DECL_EXPORT
 #endif
@@ -100,16 +91,6 @@ int main(int argc, char **argv)
         url = QUrl("qrc:/qml/main.qml");
     else
         url = QUrl::fromUserInput(urlstring);
-
-    // TODO: move to nemo-qml-plugins?
-    qmlRegisterType<FolderListModel>("org.nemomobile.email", 0, 1, "FolderListModel");
-    qmlRegisterType<EmailAccountListModel>("org.nemomobile.email", 0, 1, "EmailAccountListModel");
-    qmlRegisterType<EmailMessageListModel>("org.nemomobile.email", 0, 1, "EmailMessageListModel");
-    qmlRegisterType<EmailAgent>("org.nemomobile.email", 0, 1, "EmailAgent");
-    qmlRegisterType<EmailMessage>("org.nemomobile.email", 0, 1, "EmailMessage");
-    qmlRegisterType<EmailAccountSettingsModel>("org.nemomobile.email", 0, 1, "EmailAccountSettingsModel");
-    qmlRegisterType<EmailAccount>("org.nemomobile.email", 0, 1, "EmailAccount");
-    qmlRegisterType<HtmlField>("org.nemomobile.email", 0, 1, "HtmlField");
 
     QObject::connect(view->engine(), SIGNAL(quit()), application, SLOT(quit()));
     view->setSource(url);
