@@ -6,9 +6,6 @@ QT += declarative webkit network
 CONFIG += link_pkgconfig \
     mobility
 
-PKGCONFIG += qmfmessageserver \
-    qmfclient
-
 packagesExist(mlite) {
     PKGCONFIG += mlite
     DEFINES += HAS_MLITE
