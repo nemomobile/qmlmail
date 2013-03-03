@@ -83,6 +83,11 @@ Page {
         }
     }
 
+    ViewPlaceholder {
+        text: qsTr ("No messages in this folder")
+        enabled: messageListView.count == 0
+    }
+
     ListView {
         id: messageListView
         anchors.top: pageHeader.bottom
@@ -91,18 +96,6 @@ Page {
         anchors.bottom: parent.bottom
         clip: true
         cacheBuffer: height
-
-        Item {
-            id: emptyMailboxView
-            opacity: messageListView.count > 0 ? 0 : 1
-            Text {
-                id: noMessageText
-                text: qsTr ("There are no messages in this folder.")
-                anchors.centerIn: emptyMailboxView
-                elide: Text.ElideRight
-            }
-        }
-
         model: messageListModel
 
         footer: Item {

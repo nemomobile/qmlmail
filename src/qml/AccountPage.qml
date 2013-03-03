@@ -33,6 +33,11 @@ Page {
         }
     }
 
+    ViewPlaceholder {
+        text: "No accounts configured"
+        enabled: listView.count == 0
+    }
+
     ListView {
         id: listView
         anchors.top: pageHeader.bottom
