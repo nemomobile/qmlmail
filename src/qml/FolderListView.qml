@@ -8,6 +8,7 @@
 
 import QtQuick 1.1
 import com.nokia.meego 1.2
+import com.nokia.extras 1.1
 import org.nemomobile.email 0.1
 
 Page {
@@ -122,35 +123,14 @@ Page {
             }
         }
 
-        delegate: MouseArea {
+        delegate: ListDelegate {
             id: dinstance
-            height: UiConstants.ListItemHeightDefault
-            width: parent.width
+            x: UiConstants.DefaultMargin
+            width: ListView.view.width - UiConstants.DefaultMargin * 2
 
-            Label {
-                id: senderText
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.leftMargin: UiConstants.DefaultMargin
-                anchors.rightMargin: UiConstants.DefaultMargin
-                height: UiConstants.ListItemHeightDefault / 2
-                text: senderDisplayName != "" ? senderDisplayName : senderEmailAddress
-                font.bold: readStatus ? false : true
-                anchors.bottomMargin: 4
-                elide: Text.ElideRight
-            }
-
-            Label {
-                id: subjectText
-                text: subject
-                anchors.top: senderText.bottom
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.leftMargin: UiConstants.DefaultMargin
-                anchors.rightMargin: UiConstants.DefaultMargin
-                height: theme.listBackgroundPixelHeightTwo / 2
-                elide: Text.ElideRight
-            }
+            titleText: senderDisplayName != "" ? senderDisplayName : senderEmailAddress
+            titleWeight: readStatus ? Font.Normal : Font.Bold
+            subtitleText:  subject
 
             // TODO: attachments icon, logic:
             // opacity: numberOfAttachments ? 1 : 0

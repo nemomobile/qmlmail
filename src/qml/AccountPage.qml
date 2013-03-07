@@ -49,10 +49,10 @@ Page {
 
         onCurrentIndexChanged: container.topicTriggered(currentIndex)
 
-        delegate: MouseArea {
+        delegate: ListDelegate {
             id: accountItem
-            width: parent.width
-            height: UiConstants.ListItemHeightDefault
+            x: UiConstants.DefaultMargin
+            width: ListView.view.width - UiConstants.DefaultMargin * 2
 
             Component.onCompleted: {
                 if (index == 0) {
@@ -61,16 +61,7 @@ Page {
                 }
             }
 
-            Label {
-                height: parent.height
-                anchors.left: parent.left
-                anchors.leftMargin: UiConstants.DefaultMargin
-                anchors.right: unreadImage.left
-                anchors.rightMargin: UiConstants.DefaultMargin
-                verticalAlignment: Text.AlignVCenter
-                text: emailAddress + " - " + displayName  //i18n ok
-                elide: Text.ElideRight
-            }
+            titleText: emailAddress + " - " + displayName  //i18n ok
 
             CountBubble {
                 id: unreadImage
