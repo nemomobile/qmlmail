@@ -232,6 +232,5 @@ Page {
                 window.refreshInProgress = true;
             }
         } }
-        ToolIcon { iconId: "toolbar-view-menu" ; onClicked: colorMenu.open(); }
     }
 }
