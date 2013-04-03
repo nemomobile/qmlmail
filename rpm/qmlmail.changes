@@ -1,0 +1,12 @@
+* Fri Mar 08 2013 Robin Burchell <robin+mer@viroteck.net> - 0.0.7
+- Remove non-functional menus (from Ruediger Gad)
+- Use ListDelegate in lists (from Robin)
+
+* Sun Mar 03 2013 Robin Burchell <robin+mer@viroteck.net> - 0.0.6
+- Move mail classes to nemo-qml-plugins (from Valerio)
+- Remove remnant of Intel's tablet UX (from Robin)
+- Implement common empty state views (from Robin)
+
+* Sun Oct 14 2012 Robin Burchell <robin+mer@viroteck.net> - 0.0.5
+- Fixes NEMO#385: E-Mail application missing from Nemo
+- Initial packaging
