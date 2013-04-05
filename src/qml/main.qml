@@ -91,14 +91,14 @@ PageStackWindow {
     EmailAccountListModel {
         id: mailAccountListModel
 
-        onAccountAdded: {
+        onAccountsAdded: {
             var accountList = new Array();
             accountList = mailAccountListModel.getAllDisplayNames();
             accountList.push(qsTr("Account switcher"));
             window.accountFilterModel = accountList;
         }
 
-        onAccountRemoved: {
+        onAccountsRemoved: {
             var accountList = new Array();
             accountList = mailAccountListModel.getAllDisplayNames();
             accountList.push(qsTr("Account switcher"));
