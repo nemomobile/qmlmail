@@ -50,7 +50,7 @@ Column {
 
     Connections {
         target: mailAccountListModel
-        onAccountAdded: {
+        onAccountsAdded: {
             emailAccountList = accountsModel.getAllEmailAddresses();
             if (window.currentMailAccountIndex == -1)
             {
