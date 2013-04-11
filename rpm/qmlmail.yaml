@@ -19,7 +19,7 @@ PkgConfigBR:
 Requires:
     - qt-components >= 1.4.8
     - libqmfmessageserver1
-    - nemo-qml-plugins-email
+    - nemo-qml-plugin-email
  
 Files:
     - "%{_bindir}/qmlmail"
