@@ -13,6 +13,14 @@ packagesExist(mlite) {
     warning("mlite not available. Some functionality may not work as expected.")
 }
 
+packagesExist(qdeclarative-boostable) {
+    message("Building with qdeclarative-boostable support")
+    DEFINES += HAS_BOOSTER
+    PKGCONFIG += qdeclarative-boostable
+} else {
+    warning("qdeclarative-boostable not available; startup times will be slower")
+}
+
 OBJECTS_DIR = .obj
 MOC_DIR = .moc
 RESOURCES += res.qrc

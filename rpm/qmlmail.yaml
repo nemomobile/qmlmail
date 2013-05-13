@@ -20,6 +20,7 @@ Requires:
     - qt-components >= 1.4.8
     - libqmfmessageserver1
     - nemo-qml-plugin-email
+    - mapplauncherd-booster-qtcomponents
  
 Files:
     - "%{_bindir}/qmlmail"
