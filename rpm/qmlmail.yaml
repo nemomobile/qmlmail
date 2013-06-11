@@ -19,7 +19,7 @@ PkgConfigBR:
 Requires:
     - qt-components >= 1.4.8
     - libqmfmessageserver1
-    - nemo-qml-plugin-email
+    - nemo-qml-plugin-email >= 0.0.8
     - qmlsettings-account-plugin-email
     - mapplauncherd-booster-qtcomponents
  
