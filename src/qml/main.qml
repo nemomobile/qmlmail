@@ -93,14 +93,14 @@ PageStackWindow {
 
         onAccountsAdded: {
             var accountList = new Array();
-            accountList = mailAccountListModel.getAllDisplayNames();
+            accountList = mailAccountListModel.allDisplayNames();
             accountList.push(qsTr("Account switcher"));
             window.accountFilterModel = accountList;
         }
 
         onAccountsRemoved: {
             var accountList = new Array();
-            accountList = mailAccountListModel.getAllDisplayNames();
+            accountList = mailAccountListModel.allDisplayNames();
             accountList.push(qsTr("Account switcher"));
             window.accountFilterModel = accountList;
         }
@@ -281,7 +281,7 @@ PageStackWindow {
         property int idx: 0
         Component.onCompleted: {
             var accountList = new Array();
-            accountList = mailAccountListModel.getAllDisplayNames();
+            accountList = mailAccountListModel.allDisplayNames();
             accountList.push(qsTr("Account switcher"));
             window.accountFilterModel = accountList;
         }
@@ -297,9 +297,9 @@ PageStackWindow {
         }
         else
         {
-            window.currentMailAccountId = mailAccountListModel.getAccountIdByIndex(index);
+            window.currentMailAccountId = mailAccountListModel.accountId(index);
             window.currentMailAccountIndex = index;
-            window.currentAccountDisplayName = mailAccountListModel.getDisplayNameByIndex(index);
+            window.currentAccountDisplayName = mailAccountListModel.displayName(index);
             messageListModel.setAccountKey (window.currentMailAccountId);
             mailFolderListModel.setAccountKey (window.currentMailAccountId);
             window.folderListViewTitle = currentAccountDisplayName + " " + mailFolderListModel.inboxFolderName();
