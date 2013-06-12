@@ -51,7 +51,7 @@ Column {
     Connections {
         target: mailAccountListModel
         onAccountsAdded: {
-            emailAccountList = accountsModel.getAllEmailAddresses();
+            emailAccountList = accountsModel.allEmailAddresses();
             if (window.currentMailAccountIndex == -1)
             {
                 window.currentMailAccountIndex = 0;
@@ -62,7 +62,7 @@ Column {
     }
 
     Component.onCompleted: {
-        emailAccountList = accountsModel.getAllEmailAddresses();
+        emailAccountList = accountsModel.allEmailAddresses();
         fromEmail = window.currentMailAccountIndex;
         console.log(emailAccountList)
     }
@@ -70,7 +70,7 @@ Column {
     // EmailAccountListModel doesn't seem to be a real ListModel
     // We need to convert it to one to set it in the DropDown
     onAccountsModelChanged: {
-        emailAccountList = accountsModel.getAllEmailAddresses();
+        emailAccountList = accountsModel.allEmailAddresses();
         fromEmail = window.currentMailAccountIndex;
     }
 

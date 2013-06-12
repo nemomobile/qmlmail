@@ -18,7 +18,7 @@ Source0:    %{name}-%{version}.tar.bz2
 Source100:  qmlmail.yaml
 Requires:   qt-components >= 1.4.8
 Requires:   libqmfmessageserver1
-Requires:   nemo-qml-plugin-email
+Requires:   nemo-qml-plugin-email >= 0.0.8
 Requires:   qmlsettings-account-plugin-email
 Requires:   mapplauncherd-booster-qtcomponents
 BuildRequires:  pkgconfig(QtCore) >= 4.7.0

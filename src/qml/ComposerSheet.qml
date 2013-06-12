@@ -225,7 +225,7 @@ Sheet {
         composer.completeEmailAddresses();
 
         message = messageComponent.createObject(composer);
-        message.setFrom (mailAccountListModel.getEmailAddressByIndex(composer.fromEmail));
+        message.setFrom (mailAccountListModel.emailAddress(composer.fromEmail));
 
         var to = new Array ();
         for (i = 0; i < composer.toModel.count; i++)
