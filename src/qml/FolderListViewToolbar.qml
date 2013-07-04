@@ -62,7 +62,7 @@ Item {
         anchors.fill: parent
         opacity: inEditMode == true ? 1 : 0
 
-        property variant selectedFolderId
+        property int selectedFolderId
 
         ContextMenu {
             id: folderSelectionMenu
