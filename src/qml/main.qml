@@ -22,9 +22,9 @@ PageStackWindow {
     property string folderListViewTitle: ""
     property int animationDuration: 250
 
-    property variant currentMailAccountId: 0;   // holds the actual QMailAccountId object
+    property int currentMailAccountId: 0;   // holds the actual QMailAccountId object
     property int currentMailAccountIndex: -1;    // holds the current account index to account list model
-    property variant currentFolderId: 0;
+    property int currentFolderId: 0;
     property string currentFolderName
     property string currentAccountDisplayName;
 
