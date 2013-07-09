@@ -302,9 +302,9 @@ PageStackWindow {
             window.currentAccountDisplayName = mailAccountListModel.displayName(index);
             messageListModel.setAccountKey (window.currentMailAccountId);
             mailFolderListModel.setAccountKey (window.currentMailAccountId);
-            window.folderListViewTitle = currentAccountDisplayName + " " + mailFolderListModel.inboxFolderName();
-            window.currentFolderId = mailFolderListModel.inboxFolderId();
-            window.currentFolderName = mailFolderListModel.inboxFolderName();
+            window.folderListViewTitle = currentAccountDisplayName + " Inbox";
+            window.currentFolderId = emailAgent.inboxFolderId(window.currentMailAccountId);
+            window.currentFolderName = "Inbox";
             window.switchBook(folderList);
         }
     }

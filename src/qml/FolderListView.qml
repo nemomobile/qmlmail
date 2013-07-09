@@ -16,8 +16,8 @@ Page {
 
     Component.onCompleted: {
         mailFolderListModel.setAccountKey (currentMailAccountId);
-        window.currentFolderId = mailFolderListModel.inboxFolderId();
-        //window.folderListViewTitle = currentAccountDisplayName + " " + mailFolderListModel.inboxFolderName();
+        window.currentFolderId = emailAgent.inboxFolderId(currentMailAccountId);
+        //window.folderListViewTitle = currentAccountDisplayName + " Inbox";
         folderServerCount = mailFolderListModel.folderServerCount(window.currentFolderId);
         gettingMoreMessages = false;
     }
