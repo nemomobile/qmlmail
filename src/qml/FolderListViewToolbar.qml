@@ -81,7 +81,7 @@ Item {
                     {
                        realHeight = window.height;
                     }
-                    var maxHeight = 50 * (1 + mailFolderListModel.totalNumberOfFolders());
+                    var maxHeight = 50 * (1 + mailFolderListModel.numberOfFolders());
                     if (maxHeight > (realHeight - 170))
                     {
                         folderSelectionMenu.scrollInFolderList = true;
