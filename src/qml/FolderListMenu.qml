@@ -23,10 +23,10 @@ Item {
 
         //Unfortunately item heights have been hard-coded. In this situation,
         //this is the appropriate fix for bug https://bugs.meego.com/show_bug.cgi?id=19151
-        //var maxHeight = 50 * (5 + mailFolderListModel.totalNumberOfFolders());
+        //var maxHeight = 50 * (5 + mailFolderListModel.numberOfFolders());
         var maxHeight = sort.height + sortFilter.height
         + createFolder.height + renameFolder.height + deleteFolder.height +
-        goToFolder.height + (50 * mailFolderListModel.totalNumberOfFolders())
+        goToFolder.height + (50 * mailFolderListModel.numberOfFolders())
 
         if (maxHeight > (realHeight - 170))
         {
@@ -265,7 +265,7 @@ Item {
                 emailAgent.deleteFolder(window.currentFolderId);
 
                 // Switch to the INBOX.
-                window.currentFolderId = mailFolderListModel.inboxFolderId();
+                window.currentFolderId = emailAgent.inboxFolderId(window.currentMailAccountId);
                 window.currentFolderName = mailFolderListModel.inboxFolderName();
                 window.folderListViewTitle = currentAccountDisplayName + " " + window.currentFolderName;
                 folderListView.closeMenu();
