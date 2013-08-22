@@ -1,7 +1,7 @@
 include(../common.pri)
 TARGET = qmlmail
 TEMPLATE = app
-QT += declarative webkit network
+QT += qml quick webkit network
 
 CONFIG += link_pkgconfig \
     mobility
@@ -13,13 +13,14 @@ packagesExist(mlite) {
     warning("mlite not available. Some functionality may not work as expected.")
 }
 
-packagesExist(qdeclarative-boostable) {
-    message("Building with qdeclarative-boostable support")
+packagesExist(qdeclarative5-boostable) {
+    message("Building with qdeclarative5-boostable support")
     DEFINES += HAS_BOOSTER
-    PKGCONFIG += qdeclarative-boostable
+    PKGCONFIG += qdeclarative5-boostable
 } else {
-    warning("qdeclarative-boostable not available; startup times will be slower")
+    warning("qdeclarative5-boostable not available; startup times will be slower")
 }
+
 
 OBJECTS_DIR = .obj
 MOC_DIR = .moc

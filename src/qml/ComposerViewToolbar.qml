@@ -7,8 +7,8 @@
  */
 
 
-import QtQuick 1.1
-import com.nokia.meego 1.1
+import QtQuick 2.0
+import com.nokia.meego 2.0
 import org.nemomobile.email 0.1
 
 BorderImage {

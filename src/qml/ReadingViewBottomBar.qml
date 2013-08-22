@@ -6,10 +6,10 @@
  * http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import QtQuick 1.1
-import com.nokia.meego 1.1
+import QtQuick 2.0
+import com.nokia.meego 2.0
 import org.nemomobile.email 0.1
-import QtWebKit 1.0
+import QtWebKit 3.0
 import Qt.labs.gestures 2.0
 
 Item {
