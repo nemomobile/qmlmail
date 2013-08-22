@@ -9,19 +9,19 @@ Sources:
     - "%{name}-%{version}.tar.bz2"
 Description: Mail application using Qt Quick for Nemo Mobile.
 Configure: none
-Builder: qmake
+Builder: qmake5
 PkgConfigBR:
-    - QtCore >= 4.7.0
-    - QtDeclarative
-    - QtWebKit
-    - qdeclarative-boostable
+    - Qt5Core 
+    - Qt5Quick
+    - Qt5WebKit
+    - qdeclarative5-boostable
 
 Requires:
-    - qt-components >= 1.4.8
-    - libqmfmessageserver1
-    - nemo-qml-plugin-email >= 0.0.8
+    - qt-components-qt5
+    - libqmfmessageserver1-qt5
+    - nemo-qml-plugin-email-qt5 >= 0.0.8
     - qmlsettings-account-plugin-email
-    - mapplauncherd-booster-qtcomponents
+    - mapplauncherd-booster-qtcomponents-qt5
  
 Files:
     - "%{_bindir}/qmlmail"

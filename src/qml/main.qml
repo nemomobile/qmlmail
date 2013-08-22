@@ -6,8 +6,8 @@
  * http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import QtQuick 1.1
-import com.nokia.meego 1.1
+import QtQuick 2.0
+import com.nokia.meego 2.0
 import org.nemomobile.email 0.1
 
 PageStackWindow {
@@ -47,7 +47,7 @@ PageStackWindow {
     property string mailQuotedBody: "";
     property variant mailAttachments: []
     property int numberOfMailAttachments: 0
-    property bool refreshInProgress: false
+    property bool refreshInProgress: emailAgent.synchronizing
     property bool callFromRemote: false
     property bool composerIsCurrentPage: false
     property bool composeInTextMode: true
@@ -58,15 +58,7 @@ PageStackWindow {
     EmailAgent {
         id: emailAgent;
 
-        onSyncBegin: {
-            window.refreshInProgress = true;
-        }
-
-        onSyncCompleted: {
-            window.refreshInProgress = false;
-        }
-
-        onError: {
+	onError: {
             window.refreshInProgress = false;
 
             switch (code) {

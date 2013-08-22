@@ -1,5 +1,5 @@
-import QtQuick 1.1
-import com.nokia.meego 1.2
+import QtQuick 2.0
+import com.nokia.meego 2.0
 
 QueryDialog {
     property string uri

@@ -6,7 +6,7 @@
  * http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import QtQuick 1.1
+import QtQuick 2.0
 import org.nemomobile.email 0.1
 
 Flickable {
