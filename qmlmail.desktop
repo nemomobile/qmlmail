@@ -24,5 +24,5 @@ Name[el]=Ηλεκτρονικό ταχυδρομείο
 Name[de]=E-Mail
 Name[da]=E-mail
 Name[cs]=E-mail
-Icon=icons-Applications-email
+Icon=icon-app-email
 Exec=/usr/bin/invoker --single-instance -r 5 --type=qt-components-qt5 /usr/bin/qmlmail -fullscreen -platform wayland
